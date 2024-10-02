@@ -105,7 +105,7 @@ training_args = TrainingArguments(
     ignore_data_skip=True  
 
     # warmup_steps=1000,
-    # learning_rate=1e-6
+    learning_rate=1e-6
 
 )
 

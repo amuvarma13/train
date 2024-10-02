@@ -69,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(400, 800))
+new_dataset = dataset.select(range(0, 800))
 
 
 def compute_metrics(eval_pred):
@@ -102,7 +102,7 @@ training_args = TrainingArguments(
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True,
-    learning_rate=1e-4,
+    # learning_rate=1e-4,
     # ignore_data_skip=True, 
 
     # warmup_steps=1000,

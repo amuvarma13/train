@@ -18,8 +18,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-# model_name = "./mymodel/checkpoint-200"
-model_name = "google/gemma-2-2b"
+model_name = "./mymodel/checkpoint-200"
+# model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1

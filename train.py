@@ -13,15 +13,13 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "mymodel"
-# project_name = "2b-500k-6_layer_interleave-debug-0"
-# dataset_id = "amuvarma/6_layer_interleave-102345-500k-0"
+
 dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-# model_name = "amuvarma/complete_2b-750k-interleave_x_modal-2-xyz-2-1"
-# model_name = "./2b-750k_and500k-interleave_x_modal-2/checkpoint-334"
-model_name = "./mymodel/checkpoint-200"
+# model_name = "./mymodel/checkpoint-200"
+model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1

@@ -7,13 +7,13 @@ from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullState
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import os
-import wandb
+# import wandb
 from huggingface_hub import HfApi, create_repo
 
 
 
 base_repo_id = "mymodel"
-project_name = "2b-500k-6_layer_interleave-debug-0"
+# project_name = "2b-500k-6_layer_interleave-debug-0"
 # dataset_id = "amuvarma/6_layer_interleave-102345-500k-0"
 dataset_id = "amuvarma/500k-wdups-tts-1"
 
@@ -32,10 +32,10 @@ save_steps = 1000
 
 
 
-wandb.init(
-    project=project_name, 
-    name = "run-3node-500k-post750k-fp16-eager"
-    )
+# wandb.init(
+#     project=project_name, 
+#     name = "run-3node-500k-post750k-fp16-eager"
+#     )
  
 number_add_tokens = 6 * 1024 + 10
 
@@ -105,7 +105,7 @@ training_args = TrainingArguments(
 
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    report_to="wandb", 
+    # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
     warmup_steps=200,

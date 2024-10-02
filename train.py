@@ -26,7 +26,7 @@ tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
 pad_token = 0
-save_steps = 1000
+save_steps = 100
 
 
 
@@ -95,7 +95,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=60,
+    logging_steps=10,
     fp16=True,
 
     output_dir=f"./{base_repo_id}",
@@ -103,7 +103,7 @@ training_args = TrainingArguments(
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    warmup_steps=200,
+
     # warmup_steps=1000,
     # learning_rate=1e-6
 

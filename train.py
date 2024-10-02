@@ -116,7 +116,7 @@ trainer = Trainer(
     compute_metrics=compute_metrics,  
 )
 
-trainer.train()
+trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
 
 # print(trainer.model)
 num_eval_samples = 10  # You can adjust this number

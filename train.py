@@ -133,7 +133,7 @@ trainer = FSDPTrainer(
 )
 # reset_trainer_state(trainer)
 # trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-trainer._load_from_checkpoint(f"./{base_repo_id}/checkpoint-200")
+trainer.load_from_checkpoint(f"./{base_repo_id}/checkpoint-200")
 trainer.train()
 
 # # print(trainer.model)

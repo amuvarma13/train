@@ -116,7 +116,7 @@ trainer = Trainer(
     compute_metrics=compute_metrics,  
 )
 
-trainer.train(resume_from_checkpoint=model_name)
+trainer.train()
 
 # print(trainer.model)
 num_eval_samples = 10  # You can adjust this number

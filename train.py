@@ -24,7 +24,7 @@ tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
 pad_token = 0
-save_steps = 100
+save_steps = 200
 
 
 
@@ -69,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(400))
+new_dataset = dataset.select(range(400, 800))
 
 
 def compute_metrics(eval_pred):

@@ -21,7 +21,7 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 # model_name = "amuvarma/complete_2b-750k-interleave_x_modal-2-xyz-2-1"
 # model_name = "./2b-750k_and500k-interleave_x_modal-2/checkpoint-334"
-model_name = "google/gemma-2-2b"
+model_name = "./mymodel/checkpoint-200"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -39,25 +39,25 @@ save_steps = 100
  
 number_add_tokens = 6 * 1024 + 10
 
-# class FSDPTrainer(Trainer):
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.repo_id = base_repo_id
-#         self.api = HfApi()
+class FSDPTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.repo_id = base_repo_id
+        self.api = HfApi()
 
-#     def save_model(self, output_dir=None, _internal_call=False):
-#         if output_dir is None:
-#             output_dir = self.args.output_dir
+    def save_model(self, output_dir=None, _internal_call=False):
+        if output_dir is None:
+            output_dir = self.args.output_dir
 
-#         self.save_and_push_model(output_dir)
+        self.save_and_push_model(output_dir)
 
-#     def save_and_push_model(self, output_dir):
-#         save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+    def save_and_push_model(self, output_dir):
+        save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
         
-#         with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
-#             cpu_state_dict = self.model.state_dict()
+        with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
+            cpu_state_dict = self.model.state_dict()
         
-#         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
+        self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
@@ -109,7 +109,7 @@ training_args = TrainingArguments(
 
 )
 
-trainer = Trainer(
+trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,

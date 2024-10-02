@@ -18,8 +18,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-model_name = "./mymodel/checkpoint-200"
-# model_name = "google/gemma-2-2b"
+# model_name = "./mymodel/checkpoint-200"
+model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -69,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(0, 400))
+new_dataset = dataset.select(range(0, 800))
 
 
 def compute_metrics(eval_pred):
@@ -117,8 +117,8 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
-# trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-trainer.train()
+trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
+# trainer.train()
 
 # # print(trainer.model)
 # num_eval_samples = 10  # You can adjust this number

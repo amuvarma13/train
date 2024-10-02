@@ -18,8 +18,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-# model_name = "./mymodel/checkpoint-200"
-model_name = "google/gemma-2-2b"
+model_name = "./mymodel/checkpoint-200"
+# model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -65,7 +65,7 @@ model.gradient_checkpointing_enable()
 
 
 tokenizer_length = len(tokenizer)
-model.resize_token_embeddings(tokenizer_length + number_add_tokens)
+# model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
@@ -79,15 +79,16 @@ def compute_metrics(eval_pred):
     return {"accuracy": accuracy} 
 
 
-def preprocess_function(examples, ):
-    examples['labels'] = [
-        (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
-    ]
-    return examples
+# def preprocess_function(examples, ):
+#     examples['labels'] = [
+#         (token_id if token_id != pad_token else -100) for token_id in examples['input_ids']
+#     ]
+#     return examples
 
 
 
-train_dataset = new_dataset.map(preprocess_function, batched=False, num_proc=4)
+train_dataset = new_dataset
+# .map(preprocess_function, batched=False, num_proc=4)
 
 training_args = TrainingArguments(
     overwrite_output_dir=True,

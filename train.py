@@ -131,9 +131,10 @@ trainer = FSDPTrainer(
     train_dataset=train_dataset,
     compute_metrics=compute_metrics,  
 )
-reset_trainer_state(trainer)
-trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-# trainer.train()
+# reset_trainer_state(trainer)
+# trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
+trainer._load_from_checkpoint(f"./{base_repo_id}/checkpoint-200")
+trainer.train()
 
 # # print(trainer.model)
 # num_eval_samples = 10  # You can adjust this number

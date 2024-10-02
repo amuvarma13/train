@@ -9,7 +9,6 @@ from tqdm import tqdm
 import os
 # import wandb
 from huggingface_hub import HfApi, create_repo
-from transformers import Trainer, TrainerState, TrainerControl
 
 
 
@@ -38,11 +37,6 @@ save_steps = 200
  
 number_add_tokens = 6 * 1024 + 10
 
-def load_fsdp_checkpoint(model, checkpoint_path):
-    with FSDP.state_dict_type(model, StateDictType.FULL_STATE_DICT, FullStateDictConfig(offload_to_cpu=True, rank0_only=True)):
-        state_dict = torch.load(checkpoint_path, map_location='cpu')
-        model.load_state_dict(state_dict['model_state_dict'])
-
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -63,22 +57,6 @@ class FSDPTrainer(Trainer):
         
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
-
-def reset_trainer_state(trainer: Trainer):
-    # Reset the step count and epoch
-    trainer.state = TrainerState()
-    trainer.control = TrainerControl()
-    
-    # Reset the optimizer's step
-    if trainer.optimizer:
-        for param_group in trainer.optimizer.param_groups:
-            param_group['step'] = 0
-    
-    # Reset the learning rate scheduler
-    if trainer.lr_scheduler:
-        trainer.lr_scheduler.last_epoch = -1
-
-
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
@@ -91,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(0, 800))
+new_dataset = dataset.select(range(400, 800))
 
 
 def compute_metrics(eval_pred):
@@ -123,7 +101,8 @@ training_args = TrainingArguments(
     fsdp="auto_wrap",
     # report_to="wandb", 
     save_steps=save_steps,
-    remove_unused_columns=True, 
+    remove_unused_columns=True,
+    ignore_data_skip=True  
 
     # warmup_steps=1000,
     # learning_rate=1e-6
@@ -136,10 +115,9 @@ trainer = FSDPTrainer(
     train_dataset=train_dataset,
     compute_metrics=compute_metrics,  
 )
-# reset_trainer_state(trainer)
-# trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-load_fsdp_checkpoint(trainer.model, f"./{base_repo_id}/checkpoint-200")
-trainer.train()
+
+trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
+# trainer.train()
 
 # # print(trainer.model)
 # num_eval_samples = 10  # You can adjust this number

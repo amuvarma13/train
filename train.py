@@ -18,8 +18,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-# model_name = "./mymodel/checkpoint-200"
-model_name = "google/gemma-2-2b"
+model_name = "./mymodel/checkpoint-200"
+# model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -69,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(0, 400))
+new_dataset = dataset.select(range(400, 800))
 
 
 def compute_metrics(eval_pred):
@@ -115,72 +115,70 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
-# trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-trainer.train()
+trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
+# trainer.train()
 
-# print(trainer.model)
-num_eval_samples = 10  # You can adjust this number
-eval_dataset = dataset.shuffle(seed=42).select(range(num_eval_samples))
-eval_dataloader = DataLoader(eval_dataset, batch_size=1, shuffle=False)
+# # print(trainer.model)
+# num_eval_samples = 10  # You can adjust this number
+# eval_dataset = dataset.shuffle(seed=42).select(range(num_eval_samples))
+# eval_dataloader = DataLoader(eval_dataset, batch_size=1, shuffle=False)
 
 
-def evaluate_on_samples(model, dataset, num_samples=1):
-    model.train()  
-    device = next(model.parameters()).device 
+# def evaluate_on_samples(model, dataset, num_samples=1):
+#     model.train()  
+#     device = next(model.parameters()).device 
 
     
     
     
     
-    total_loss = 0
+#     total_loss = 0
     
-    with torch.no_grad():
-        for batch in tqdm(eval_dataloader, desc="Evaluating"):
-            input_ids = torch.tensor(batch['input_ids']).to(device)
-            attention_mask = torch.tensor(batch['attention_mask']).to(device)
-            labels = torch.tensor(batch['labels']).to(device)
-            if input_ids.dim() == 1:
-                input_ids = input_ids.unsqueeze(0)
-                attention_mask = attention_mask.unsqueeze(0)
-                labels = labels.unsqueeze(0)
+#     with torch.no_grad():
+#         for batch in tqdm(eval_dataloader, desc="Evaluating"):
+#             input_ids = torch.tensor(batch['input_ids']).to(device)
+#             attention_mask = torch.tensor(batch['attention_mask']).to(device)
+#             labels = torch.tensor(batch['labels']).to(device)
+#             if input_ids.dim() == 1:
+#                 input_ids = input_ids.unsqueeze(0)
+#                 attention_mask = attention_mask.unsqueeze(0)
+#                 labels = labels.unsqueeze(0)
             
-            outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
-            loss = outputs.loss
-            total_loss += loss.item()
+#             outputs = model(input_ids=input_ids, attention_mask=attention_mask, labels=labels)
+#             loss = outputs.loss
+#             total_loss += loss.item()
     
-    average_loss = total_loss / num_samples
-    print(f"Average loss over {num_samples} samples: {average_loss}")
+#     average_loss = total_loss / num_samples
+#     print(f"Average loss over {num_samples} samples: {average_loss}")
 
-    return average_loss
-
-
-first_eval_loss = evaluate_on_samples(trainer.model, train_dataset, num_eval_samples)
-print(f"First evaluation loss: {first_eval_loss}")
+#     return average_loss
 
 
-full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-
-with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
-    state_dict = trainer.model.state_dict()
-
-trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
+# first_eval_loss = evaluate_on_samples(trainer.model, train_dataset, num_eval_samples)
+# print(f"First evaluation loss: {first_eval_loss}")
 
 
+# full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+
+# with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
+#     state_dict = trainer.model.state_dict()
+
+# trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
 
 
 
-eval_loss = evaluate_on_samples(trainer.model, train_dataset, num_eval_samples)
-print(f"Evaluation complete. Average loss: {eval_loss}")
 
 
-load_repo_id = f"./complete_{base_repo_id}"
-new_model = AutoModelForCausalLM.from_pretrained(load_repo_id)
-new_model.to("cuda")
-
-new_eval_loss = evaluate_on_samples(new_model, train_dataset, num_eval_samples)
-print(f"New evaluation loss: {new_eval_loss}")
+# eval_loss = evaluate_on_samples(trainer.model, train_dataset, num_eval_samples)
+# print(f"Evaluation complete. Average loss: {eval_loss}")
 
 
+# load_repo_id = f"./complete_{base_repo_id}"
+# new_model = AutoModelForCausalLM.from_pretrained(load_repo_id)
+# new_model.to("cuda")
+
+# new_eval_loss = evaluate_on_samples(new_model, train_dataset, num_eval_samples)
+# print(f"New evaluation loss: {new_eval_loss}")
 
 
 
@@ -202,34 +200,36 @@ print(f"New evaluation loss: {new_eval_loss}")
 
 
 
-# def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
-#     api = HfApi()
 
-#     try:
-#         api.create_repo(repo_id=repo_id, exist_ok=True)
-#     except Exception as e:
-#         print(f"Error creating repository: {e}")
-#         return None
 
-#     try:
-#         uploaded_files = []
-#         for root, _, files in os.walk(local_folder):
-#             for file in files:
-#                 file_path = os.path.join(root, file)
-#                 rel_path = os.path.relpath(file_path, local_folder)
-#                 print(f"Uploading {rel_path}")
-#                 api.upload_file(
-#                     path_or_fileobj=file_path,
-#                     path_in_repo=rel_path,
-#                     repo_id=repo_id,
-#                     commit_message=commit_message
-#                 )
-#                 uploaded_files.append(rel_path)
+# # def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
+# #     api = HfApi()
+
+# #     try:
+# #         api.create_repo(repo_id=repo_id, exist_ok=True)
+# #     except Exception as e:
+# #         print(f"Error creating repository: {e}")
+# #         return None
+
+# #     try:
+# #         uploaded_files = []
+# #         for root, _, files in os.walk(local_folder):
+# #             for file in files:
+# #                 file_path = os.path.join(root, file)
+# #                 rel_path = os.path.relpath(file_path, local_folder)
+# #                 print(f"Uploading {rel_path}")
+# #                 api.upload_file(
+# #                     path_or_fileobj=file_path,
+# #                     path_in_repo=rel_path,
+# #                     repo_id=repo_id,
+# #                     commit_message=commit_message
+# #                 )
+# #                 uploaded_files.append(rel_path)
         
-#         print(f"Successfully uploaded {len(uploaded_files)} files to {repo_id}")
-#         return api.get_full_repo_name(repo_id)
-#     except Exception as e:
-#         print(f"Error during upload: {e}")
-#         return None
+# #         print(f"Successfully uploaded {len(uploaded_files)} files to {repo_id}")
+# #         return api.get_full_repo_name(repo_id)
+# #     except Exception as e:
+# #         print(f"Error during upload: {e}")
+# #         return None
     
-# push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/complete_{base_repo_id}", "Update model")
+# # push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/complete_{base_repo_id}", "Update model")

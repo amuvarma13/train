@@ -18,8 +18,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-# model_name = "./mymodel/checkpoint-200"
-model_name = "google/gemma-2-2b"
+model_name = "./mymodel/checkpoint-200"
+# model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -102,7 +102,7 @@ training_args = TrainingArguments(
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True,
-    # learning_rate=1e-4,
+    learning_rate=2.5e-5,
     # ignore_data_skip=True, 
 
     # warmup_steps=1000,
@@ -117,8 +117,8 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
-trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-# trainer.train()
+# trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
+trainer.train()
 
 # # print(trainer.model)
 # num_eval_samples = 10  # You can adjust this number

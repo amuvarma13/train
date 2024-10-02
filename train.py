@@ -39,25 +39,25 @@ save_steps = 1000
  
 number_add_tokens = 6 * 1024 + 10
 
-class FSDPTrainer(Trainer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.repo_id = base_repo_id
-        self.api = HfApi()
+# class FSDPTrainer(Trainer):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.repo_id = base_repo_id
+#         self.api = HfApi()
 
-    def save_model(self, output_dir=None, _internal_call=False):
-        if output_dir is None:
-            output_dir = self.args.output_dir
+#     def save_model(self, output_dir=None, _internal_call=False):
+#         if output_dir is None:
+#             output_dir = self.args.output_dir
 
-        self.save_and_push_model(output_dir)
+#         self.save_and_push_model(output_dir)
 
-    def save_and_push_model(self, output_dir):
-        save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+#     def save_and_push_model(self, output_dir):
+#         save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
         
-        with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
-            cpu_state_dict = self.model.state_dict()
+#         with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
+#             cpu_state_dict = self.model.state_dict()
         
-        self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
+#         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
@@ -99,7 +99,7 @@ training_args = TrainingArguments(
     fp16=True,
 
     output_dir=f"./{base_repo_id}",
-    fsdp="auto_wrap",
+    # fsdp="auto_wrap",
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
@@ -109,7 +109,7 @@ training_args = TrainingArguments(
 
 )
 
-trainer = FSDPTrainer(
+trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,

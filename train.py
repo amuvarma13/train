@@ -38,6 +38,11 @@ save_steps = 200
  
 number_add_tokens = 6 * 1024 + 10
 
+def load_fsdp_checkpoint(model, checkpoint_path):
+    with FSDP.state_dict_type(model, StateDictType.FULL_STATE_DICT, FullStateDictConfig(offload_to_cpu=True, rank0_only=True)):
+        state_dict = torch.load(checkpoint_path, map_location='cpu')
+        model.load_state_dict(state_dict['model_state_dict'])
+
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -133,7 +138,7 @@ trainer = FSDPTrainer(
 )
 # reset_trainer_state(trainer)
 # trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
-trainer._load_from_checkpoint(f"./{base_repo_id}/checkpoint-200")
+load_fsdp_checkpoint(trainer.model, f"./{base_repo_id}/checkpoint-200")
 trainer.train()
 
 # # print(trainer.model)

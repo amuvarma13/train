@@ -69,7 +69,7 @@ model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(0, 800))
+new_dataset = dataset.select(range(400, 800))
 
 
 def compute_metrics(eval_pred):

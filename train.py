@@ -9,6 +9,7 @@ from tqdm import tqdm
 import os
 # import wandb
 from huggingface_hub import HfApi, create_repo
+from transformers import Trainer, TrainerState, TrainerControl
 
 
 
@@ -18,8 +19,8 @@ dataset_id = "amuvarma/500k-wdups-tts-1"
 
 
 
-model_name = "./mymodel/checkpoint-200"
-# model_name = "google/gemma-2-2b"
+# model_name = "./mymodel/checkpoint-200"
+model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
@@ -57,6 +58,22 @@ class FSDPTrainer(Trainer):
         
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
+
+def reset_trainer_state(trainer: Trainer):
+    # Reset the step count and epoch
+    trainer.state = TrainerState()
+    trainer.control = TrainerControl()
+    
+    # Reset the optimizer's step
+    if trainer.optimizer:
+        for param_group in trainer.optimizer.param_groups:
+            param_group['step'] = 0
+    
+    # Reset the learning rate scheduler
+    if trainer.lr_scheduler:
+        trainer.lr_scheduler.last_epoch = -1
+
+
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
@@ -65,11 +82,11 @@ model.gradient_checkpointing_enable()
 
 
 tokenizer_length = len(tokenizer)
-# model.resize_token_embeddings(tokenizer_length + number_add_tokens)
+model.resize_token_embeddings(tokenizer_length + number_add_tokens)
 
 dataset = load_dataset(dataset_id, split="train")
 
-new_dataset = dataset.select(range(0, 800))
+new_dataset = dataset.select(range(400, 800))
 
 
 def compute_metrics(eval_pred):
@@ -114,7 +131,7 @@ trainer = FSDPTrainer(
     train_dataset=train_dataset,
     compute_metrics=compute_metrics,  
 )
-
+reset_trainer_state(trainer)
 trainer.train( resume_from_checkpoint=f"./{base_repo_id}/checkpoint-200")
 # trainer.train()
 

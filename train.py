@@ -99,7 +99,7 @@ training_args = TrainingArguments(
     fp16=True,
 
     output_dir=f"./{base_repo_id}",
-    # fsdp="auto_wrap",
+    fsdp="auto_wrap",
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 

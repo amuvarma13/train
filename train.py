@@ -33,9 +33,6 @@ wandb.init(
 
 number_add_tokens = 6 * 1024 + 10
 
-
-
-
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -85,13 +82,7 @@ def compute_metrics(eval_pred):
     accuracy = (predictions == labels).mean()
     return {"accuracy": accuracy} 
 
-
-
-
 train_dataset = dataset
-
-
-
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
@@ -103,7 +94,6 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
- 
 
 )
 
@@ -116,11 +106,6 @@ trainer = FSDPTrainer(
 
 trainer.train()
 # trainer.train(resume_from_checkpoint=model_name)
-
-# print(trainer.model)
-num_eval_samples = 10  # You can adjust this number
-eval_dataset = dataset.shuffle(seed=42).select(range(num_eval_samples))
-eval_dataloader = DataLoader(eval_dataset, batch_size=1, shuffle=False)
 
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

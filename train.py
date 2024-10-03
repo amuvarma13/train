@@ -21,7 +21,7 @@ tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
 pad_token = 0
-save_steps = 1000
+save_steps = 4000
 
 
 wandb.init(

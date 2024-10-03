@@ -37,4 +37,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         return None
 
 
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/complete_{base_repo_id}-xyz-2-1", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/complete_{base_repo_id}", "Update model")

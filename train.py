@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.2-dups3-tts-0"
+dataset_id = "amuvarma/2.2-wdups-tts-1"
 
 model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
@@ -86,7 +86,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=20,
+    logging_steps=60,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

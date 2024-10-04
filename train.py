@@ -86,14 +86,14 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=20,
+    logging_steps=1,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    learning_rate=1e-4,
+    # learning_rate=1e-4,
 
 )
 

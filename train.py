@@ -94,7 +94,7 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True, 
     # warmup_steps=100000,
-    learning_rate=1e-9,
+    learning_rate=0
 
 )
 

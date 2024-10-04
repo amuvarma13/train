@@ -22,7 +22,7 @@ def download_repo_files(repo_id, local_dir, exclude_files):
             print(f"Error downloading {file}: {str(e)}")
 
 # Usage
-local_dir = "/content/downloaded_model"
+local_dir = "./mymodel"
 # exclude_files = ["checkpoint-62500/optimizer.bin", "checkpoint-62500/pytorch_model_fsdp.bin"]
 exclude_files = []
 

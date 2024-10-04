@@ -16,7 +16,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "3dups"
 dataset_id = "amuvarma/2.2-dups3-tts-0"
 
-model_name = "./mymodel"
+model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1

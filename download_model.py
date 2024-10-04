@@ -1,7 +1,7 @@
 from huggingface_hub import hf_hub_download, HfApi
 import os
 
-base_model = "amuvarma/complete_2b-750k-interleave_x_modal-2-xyz-2-1"
+base_model = "amuvarma/complete_2b-750k-interleave_x_modal-2-xyz-2
 
 def download_repo_files(repo_id, local_dir, exclude_files):
     api = HfApi()

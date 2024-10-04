@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.2-wdups-tts-0"
+dataset_id = "amuvarma/2.2-wdups-tts-1"
 
 model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"

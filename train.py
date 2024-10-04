@@ -94,7 +94,8 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True,
-    learning_rate=1e-3,
+    learning_rate=5e-4,
+    max_grad_norm=1.0,
     # warmup_steps=4000, 
 
 )

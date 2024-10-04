@@ -92,7 +92,7 @@ training_args = TrainingArguments(
     fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
-    remove_unused_columns=True,
+    remove_unused_columns=True, 
     learning_rate=1e-4,
 
 )

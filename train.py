@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "2.3m-test-0"
-project_name = "2b-500k-6_layer_interleave-0"
+project_name = "3dups"
 dataset_id = "amuvarma/2.2-dups3-tts-0"
 
 model_name = "google/gemma-2-2b"
@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "3node-new"
+    name = "3nodes"
     )
  
 

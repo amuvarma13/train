@@ -7,14 +7,14 @@ from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullState
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import os
-# import wandb
+import wandb
 from huggingface_hub import HfApi, create_repo
 
 
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.2-wdups-tts-1"
+dataset_id = "amuvarma/2.2-dups3-tts-0"
 
 model_name = "./mymodel"
 tokenizer_name = "google/gemma-2-2b"
@@ -24,10 +24,10 @@ pad_token = 0
 save_steps = 4000
 
 
-# wandb.init(
-#     project=project_name, 
-#     name = "3nodeshigherlr"
-#     )
+wandb.init(
+    project=project_name, 
+    name = "3nodeshigherlr"
+    )
  
  
 
@@ -86,11 +86,11 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=1,
+    logging_steps=30,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    # report_to="wandb", 
+    report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
     # warmup_steps=100000,
@@ -105,8 +105,8 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
-# trainer.train()
-trainer.train(resume_from_checkpoint="./mymodel")
+trainer.train()
+# trainer.train(resume_from_checkpoint="./mymodel")
 
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

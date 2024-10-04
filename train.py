@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "1nodes"
+    name = "3nodes"
     )
  
  
@@ -86,7 +86,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=60,
+    logging_steps=20,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

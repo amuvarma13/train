@@ -86,7 +86,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=30,
+    logging_steps=60,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
@@ -94,7 +94,7 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True, 
     # warmup_steps=100000,
-    learning_rate=7.5e-5,
+    # learning_rate=7.5e-5,
 
 )
 

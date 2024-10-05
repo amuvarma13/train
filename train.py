@@ -105,7 +105,7 @@ trainer = FSDPTrainer(
 )
 
 # trainer.train()
-trainer.train(resume_from_checkpoint="./2.3m-test/checkpoint-4000")
+trainer.train(resume_from_checkpoint="./2.3m-test-0/checkpoint-4000")
 
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

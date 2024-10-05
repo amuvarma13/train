@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "1nodewdupsnebius"
+    name = "1nodewdupsrunpod"
     )
  
  

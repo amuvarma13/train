@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "1nodewdups"
+    name = "2nodewdups"
     )
  
  
@@ -73,6 +73,8 @@ model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dataset_id, split="train")
 
+print("Dataset loaded")
+
 
 
 def compute_metrics(eval_pred):
@@ -97,6 +99,8 @@ training_args = TrainingArguments(
 
 )
 
+print("Training arguments set")
+
 trainer = FSDPTrainer(
     model=model,
     args=training_args,
@@ -104,6 +108,7 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
+print("Trainer created")
 trainer.train()
 # trainer.train(resume_from_checkpoint="./2.3m-test-0/checkpoint-4000")
 

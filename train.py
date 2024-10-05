@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "2nodeshigherlr"
+    name = "2nodesvhigherlr"
     )
  
  
@@ -94,7 +94,7 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True, 
     # warmup_steps=100000,
-    # learning_rate=1e-4,
+    learning_rate=2e-4,
 
 )
 

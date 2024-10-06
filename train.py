@@ -19,7 +19,7 @@ dataset_id = "amuvarma/2.3m-llama-wdups"
 model_name = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
 epochs = 1
-batch_size = 1
+batch_size = 2
 pad_token = 0
 save_steps = 4000
 

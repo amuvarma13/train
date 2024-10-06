@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.2-wdups-tts-0"
+dataset_id = "amuvarma/2.3m-llama-wdups"
 
 model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "2nodeswdupsnebius"
+    name = "2nodeswdupsrunpodllama3bflashattn"
     )
  
  
@@ -58,8 +58,8 @@ class FSDPTrainer(Trainer):
 
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager")
-model.gradient_checkpointing_enable()
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+# model.gradient_checkpointing_enable()
 
 
 
@@ -88,14 +88,14 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=30,
+    logging_steps=60,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    learning_rate=7e-5,
+    # learning_rate=7e-5,
 
 
 )

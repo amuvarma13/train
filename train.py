@@ -14,10 +14,10 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.3m-llama-wdups"
+dataset_id = "amuvarma/2.2-wdups-tts-0"
 
-model_name = "meta-llama/Llama-3.2-3B-Instruct"
-tokenizer_name = "meta-llama/Llama-3.2-3B-Instruct"
+model_name = "google/gemma-2-2b"
+tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
 pad_token = 0
@@ -26,7 +26,7 @@ save_steps = 4000
 
 wandb.init(
     project=project_name, 
-    name = "2nodeswdupsrunpodllama3bflashattn"
+    name = "1nodewdupsrunpod"
     )
  
  
@@ -58,7 +58,7 @@ class FSDPTrainer(Trainer):
 
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="eager")
 model.gradient_checkpointing_enable()
 
 

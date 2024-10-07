@@ -13,20 +13,20 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "2.3m-test-0"
-project_name = "3dups"
-dataset_id = "amuvarma/2.2-wdups-tts-0"
+project_name = "3dupscontent"
+dataset_id = "amuvarma/2.2-dups3-onlyrow1-tts-0"
 
 model_name = "google/gemma-2-2b"
 tokenizer_name = "google/gemma-2-2b"
 epochs = 1
 batch_size = 1
 pad_token = 0
-save_steps = 4000
+save_steps = 10000
 
 
 wandb.init(
     project=project_name, 
-    name = "1nodewdupsrunpod"
+    name = "1nodew3dupsjustcontent"
     )
  
  

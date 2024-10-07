@@ -37,4 +37,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         return None
 
 
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/gemma-wdups-2node-checkpoint-60000", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/gemma-wdups-2node-checkpoint-56000", "Update model")

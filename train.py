@@ -26,7 +26,7 @@ save_steps = 10000
 
 wandb.init(
     project=project_name, 
-    name = "1nodew3dupsjustcontent"
+    name = "2nodeswdupsfrom56000"
     )
  
  
@@ -110,8 +110,8 @@ trainer = FSDPTrainer(
 )
 
 # print("Trainer created")
-trainer.train()
-# trainer.train(resume_from_checkpoint="./mymodel")
+# trainer.train()
+trainer.train(resume_from_checkpoint="./2.3m-test-0/checkpoint-56000")
 
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

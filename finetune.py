@@ -64,7 +64,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=ds["train"].select(range(100)),
+    train_dataset=ds["train"],
 )
 
 # Start training
@@ -72,4 +72,4 @@ trainer.train()
 
 # Save the fine-tuned model
 
-trainer.model.save_pretrained(f"./fintune-24k")
+trainer.model.save_pretrained(f"./finetune-24k")

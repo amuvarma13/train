@@ -64,7 +64,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=ds["train"],
+    train_dataset=ds["train"].select(range(100)),
 )
 
 # Start training
@@ -72,9 +72,4 @@ trainer.train()
 
 # Save the fine-tuned model
 
-full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-
-with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
-    state_dict = trainer.model.state_dict()
-
-trainer.model.save_pretrained(f"./fintune-24k", state_dict=state_dict)
+trainer.model.save_pretrained(f"./fintune-24k")

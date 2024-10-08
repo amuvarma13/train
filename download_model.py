@@ -1,7 +1,7 @@
 from huggingface_hub import hf_hub_download, HfApi
 import os
 
-base_model = "amuvarma/gemma-wdups-2node-checkpoint-56000"
+base_model = "amuvarma/llama-checkpoint-204000"
 
 def download_repo_files(repo_id, local_dir, exclude_files):
     api = HfApi()

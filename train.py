@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project=project_name, 
-    name = "2nodeswdupsfrom56000"
+    name = "llama1nodeswdupsfrom204000"
     )
  
  

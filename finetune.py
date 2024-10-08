@@ -4,6 +4,9 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingA
 from peft import get_peft_model, LoraConfig, TaskType
 from datasets import Dataset
 import wandb
+from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
+from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
+from torch.utils.data import DataLoader
 dsn = "amuvarma/24k-gcp-llama"
 ds = load_dataset(dsn)
 
@@ -47,7 +50,7 @@ print(f"trainable params: {trainable_params} || all params: {all_param} || train
 # Define training arguments
 training_args = TrainingArguments(
     output_dir="./results",
-    num_train_epochs=3,
+    num_train_epochs=1,
     per_device_train_batch_size=4,
     logging_steps=20,
     warmup_steps=500,
@@ -68,4 +71,10 @@ trainer = Trainer(
 trainer.train()
 
 # Save the fine-tuned model
-model.save_pretrained("./fine_tuned_model")
+
+full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+
+with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
+    state_dict = trainer.model.state_dict()
+
+trainer.model.save_pretrained(f"./fintune-24k", state_dict=state_dict)

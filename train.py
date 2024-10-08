@@ -15,8 +15,8 @@ base_repo_id = "2.3m-test-0"
 project_name = "3dups"
 dataset_id = "amuvarma/2.3m-llama-wdups"
 
-model_name = "google/gemma-2-2b"
-tokenizer_name = "google/gemma-2-2b"
+model_name = "meta-llama/Llama-3.1-8B-Instruct"
+tokenizer_name = "meta-llama/Llama-3.1-8B-Instruct"
 epochs = 1
 batch_size = 1
 pad_token = 0

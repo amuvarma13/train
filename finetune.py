@@ -11,7 +11,7 @@ ds = load_dataset(dsn)
 
 # Load the pre-trained model and tokenizer
 model_name = "amuvarma/llama-checkpoint-180000"  # Replace with your model
-model = AutoModelForCausalLM.from_pretrained(model_name)
+model = AutoModelForCausalLM.from_pretrained(model_name, attention_implementation="flash_attention_2")
 
 
 

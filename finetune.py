@@ -51,7 +51,7 @@ print(f"trainable params: {trainable_params} || all params: {all_param} || train
 training_args = TrainingArguments(
     output_dir="./results",
     num_train_epochs=1,
-    per_device_train_batch_size=4,
+    per_device_train_batch_size=2,
     logging_steps=20,
     warmup_steps=500,
     weight_decay=0.01,

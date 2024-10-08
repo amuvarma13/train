@@ -3,15 +3,22 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
 from peft import get_peft_model, LoraConfig, TaskType
 from datasets import Dataset
-
+import wandb
 dsn = "amuvarma/24k-gcp-llama"
 ds = load_dataset(dsn)
 
 
+wandb.init(
+    project="finetune-lora", 
+    name = "llama1node-oqkv-24k"
+    )
+ 
 
 # Load the pre-trained model and tokenizer
 model_name = "amuvarma/llama-checkpoint-180000"  # Replace with your model
 model = AutoModelForCausalLM.from_pretrained(model_name, attention_implementation="flash_attention_2")
+
+
 
 
 

@@ -16,7 +16,7 @@ wandb.init(
 
 # Load the pre-trained model and tokenizer
 model_name = "amuvarma/llama-checkpoint-180000"  # Replace with your model
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2", torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
 
 
@@ -53,7 +53,8 @@ training_args = TrainingArguments(
     warmup_steps=500,
     weight_decay=0.01,
     logging_dir="./logs",
-    report_to="wandb"
+    report_to="wandb", 
+    fp16=True,
 )
 
 # Initialize Trainer

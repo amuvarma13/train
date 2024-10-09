@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dataset_id = "amuvarma/2.3m-llama-wdups"
+dsn = "amuvarma/24k-gcp-llama"
 
 model_name = "amuvarma/llama-checkpoint-180000"  # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -70,7 +70,7 @@ new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
 tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
-dataset = load_dataset(dataset_id, split="train")
+dataset = load_dataset(dsn, split="train")
 
 print("Dataset loaded")
 

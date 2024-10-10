@@ -67,9 +67,9 @@ tokenizer_length = len(tokenizer)
 tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
 
 
-new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
-tokenizer.add_tokens(new_tokens)
-model.resize_token_embeddings(len(tokenizer))
+# new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
+# tokenizer.add_tokens(new_tokens)
+# model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
 

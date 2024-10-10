@@ -61,6 +61,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
+print(model)
 
 
 tokenizer_length = len(tokenizer)

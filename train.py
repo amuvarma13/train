@@ -58,19 +58,18 @@ class FSDPTrainer(Trainer):
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
-model.gradient_checkpointing_enable()
-# model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+# model.gradient_checkpointing_enable()
+model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
-print(model)
 
 
 tokenizer_length = len(tokenizer)
 tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
 
 
-# new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
-# tokenizer.add_tokens(new_tokens)
-# model.resize_token_embeddings(len(tokenizer))
+new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
+tokenizer.add_tokens(new_tokens)
+model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
 
@@ -96,7 +95,7 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    gradient_accumulation_steps=4,  # Adjust this value as needed
+    gradient_accumulation_steps=16,  # Adjust this value as needed
     # learning_rate=7e-5,
 
 

@@ -58,8 +58,8 @@ class FSDPTrainer(Trainer):
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
-# model.gradient_checkpointing_enable()
-model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+model.gradient_checkpointing_enable()
+# model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
 
 
@@ -91,11 +91,11 @@ training_args = TrainingArguments(
     logging_steps=1,
     fp16=True,
     output_dir=f"./{base_repo_id}",
-    fsdp="full_shard",
+    fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    gradient_accumulation_steps=16,  # Adjust this value as needed
+    # gradient_accumulation_steps=16,  # Adjust this value as needed
     # learning_rate=7e-5,
 
 

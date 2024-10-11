@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project="blend_tests", 
-    name = "15ktext-5kaudio"
+    name = "justaudiotokens"
     )
  
  

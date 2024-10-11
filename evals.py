@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "1_1_5k"
+    name = "0_1_5k"
     )
  
  

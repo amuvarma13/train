@@ -14,7 +14,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "3dups"
 dsn = "amuvarma/audio_eval_small"
 
-model_name = "2.3m-test-0/checkpoint-1250"
+model_name = "2.3m-test-0/checkpoint-2500"
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1

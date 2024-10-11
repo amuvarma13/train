@@ -4,7 +4,7 @@ from datasets import load_dataset
 from torch.utils.data import DataLoader
 
 # Step 1: Load the model and tokenizer
-model_name = "meta-llama/Llama-3.2-3B"
+model_name = "amuvarma/convo-llama-13k-text""
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
 # Step 2: Load the dataset

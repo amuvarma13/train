@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "2.3m-test-0"
-project_name = "3dups"
+project_name = "text-evals"
 dsn = "amuvarma/conversation_text-tune-13k-25kl"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "1_10k"
+    name = "core-llama"
     )
  
  

@@ -37,4 +37,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         return None
 
 
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/llama-5k-only-audio", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/llama-joint-5k-1:1", "Update model")

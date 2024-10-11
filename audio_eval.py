@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "3dups"
 dsn = "amuvarma/audio_eval_small"
 
-model_name = "amuvarma/convo-llama-13k-text"
+model_name = "amuvarma/llama-joint-5k-1to1"
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1

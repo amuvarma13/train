@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
-model_name = "2.3m-test-0/checkpoint-2500"
+model_name = "2.3m-test-0/checkpoint-625"
 epochs = 1
 batch_size = 1
 pad_token = 128263
@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "0_1_5k"
+    name = "5kpureaudio"
     )
  
  
@@ -145,4 +145,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         print(f"Error during upload: {e}")
         return None
     
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/llama-audio-no-text", "Update model")
+# push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/llama-audio-no-text", "Update model")

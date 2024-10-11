@@ -11,7 +11,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name)
 dataset = load_dataset("amuvarma/audio_eval_small")
 
 # Step 3: Create DataLoader
-dataloader = DataLoader(dataset["train"], batch_size=4)
+dataloader = DataLoader(dataset["train"], batch_size=1)
 
 # Step 4: Compute the loss
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

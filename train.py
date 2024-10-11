@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project="blend_tests", 
-    name = "pure_5k"
+    name = "15ktext-5kaudio"
     )
  
  
@@ -88,7 +88,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=12,
+    logging_steps=48,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

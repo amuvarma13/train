@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/blend-llama-10k"
+dsn = "amuvarma/5k-llama-wdups"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -25,7 +25,7 @@ save_steps = 10000
 
 wandb.init(
     project="blend_tests", 
-    name = "1_10k"
+    name = "pure_5k"
     )
  
  
@@ -88,7 +88,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=24,
+    logging_steps=12,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

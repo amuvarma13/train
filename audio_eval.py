@@ -6,7 +6,6 @@ from torch.utils.data import DataLoader
 # Step 1: Load the model and tokenizer
 model_name = "meta-llama/Llama-3.2-3B"
 model = AutoModelForCausalLM.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # Step 2: Load the dataset
 dataset = load_dataset("amuvarma/audio_eval_small")

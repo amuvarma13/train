@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/convo-fpsft-13k"
+dsn = "amuvarma/conversation_text-tune-13k-25kl"
 
 model_name = "amuvarma/llama-2.3m-full"  # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"

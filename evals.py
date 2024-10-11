@@ -16,7 +16,6 @@ project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
 model_name = "2.3m-test-0/checkpoint-2500"
-tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
 pad_token = 128263
@@ -56,20 +55,13 @@ class FSDPTrainer(Trainer):
 
 
 
-tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
 
 
-tokenizer_length = len(tokenizer)
-tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
 
-
-new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
-tokenizer.add_tokens(new_tokens)
-model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
 

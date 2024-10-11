@@ -13,19 +13,19 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/conversation-tune-13k"
+dsn = "amuvarma/llama-5k-audio-no-text"
 
-model_name = "amuvarma/llama-2.3m-full"  # Replace with your model
+model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
-pad_token = 0
+pad_token = 128263
 save_steps = 10000
 
 
 wandb.init(
-    project=project_name, 
-    name = "smallsinglevoicepretrain"
+    project="blend_tests", 
+    name = "15ktext-5kaudio"
     )
  
  
@@ -57,7 +57,7 @@ class FSDPTrainer(Trainer):
 
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, )
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
@@ -88,14 +88,14 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=60,
+    logging_steps=48,
     fp16=True,
     output_dir=f"./{base_repo_id}",
-    fsdp="full_shard",
+    fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    gradient_accumulation_steps=16,  # Adjust this value as needed
+    # gradient_accumulation_steps=16,  # Adjust this value as needed
     # learning_rate=7e-5,
 
 
@@ -122,35 +122,3 @@ with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_sta
 
 trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
 
-
-def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
-    api = HfApi()
-
-    try:
-        api.create_repo(repo_id=repo_id, exist_ok=True)
-    except Exception as e:
-        print(f"Error creating repository: {e}")
-        return None
-
-    try:
-        uploaded_files = []
-        for root, _, files in os.walk(local_folder):
-            for file in files:
-                file_path = os.path.join(root, file)
-                rel_path = os.path.relpath(file_path, local_folder)
-                print(f"Uploading {rel_path}")
-                api.upload_file(
-                    path_or_fileobj=file_path,
-                    path_in_repo=rel_path,
-                    repo_id=repo_id,
-                    commit_message=commit_message
-                )
-                uploaded_files.append(rel_path)
-        
-        print(f"Successfully uploaded {len(uploaded_files)} files to {repo_id}")
-        return api.get_full_repo_name(repo_id)
-    except Exception as e:
-        print(f"Error during upload: {e}")
-        return None
-    
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/conversationtune-13k", "Update model")

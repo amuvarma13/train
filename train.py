@@ -13,10 +13,10 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/300-emo-instruct"
+dsn = "amuvarma/conversation-tune-13k"
 
 model_name = "amuvarma/convo-fpsft-13k-text" # Replace with your model
-tokenizer_name = "amuvarma/conversation-tune-13k"
+tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
 pad_token = 128263

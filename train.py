@@ -13,9 +13,9 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/llama-5k-audio-no-text"
+dsn = "amuvarma/300-emo-instruct"
 
-model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
+model_name = "amuvarma/convo-fpsft-13k-text" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
@@ -24,8 +24,8 @@ save_steps = 10000
 
 
 wandb.init(
-    project="blend_tests", 
-    name = "justaudiotokens"
+    project="emotions", 
+    name = "300-1-epochs"
     )
  
  

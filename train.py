@@ -97,7 +97,7 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True, 
     # gradient_accumulation_steps=16,  # Adjust this value as needed
-    # learning_rate=7e-5,
+    learning_rate=7e-9,
 
 
 )

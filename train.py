@@ -155,4 +155,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         print(f"Error during upload: {e}")
         return None
     
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/llama-15ktext-5kaudio", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/emo-tags-300", "Update model")

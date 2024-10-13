@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "3dups"
-dsn = "amuvarma/300-emo-instruct"
+dsn = "amuvarma/5500-emo-instruct-0"
 
 model_name = "amuvarma/convo-fpsft-13k" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -89,7 +89,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=1,
+    logging_steps=12,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

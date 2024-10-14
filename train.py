@@ -24,8 +24,8 @@ save_steps = 10000
 
 
 wandb.init(
-    project="emotions", 
-    name = "300-1-epochs"
+    project="evals_text_conversational", 
+    name = "pretrained-llama"
     )
  
  

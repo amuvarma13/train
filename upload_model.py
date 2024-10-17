@@ -37,4 +37,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         return None
 
 
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/luna-trejo-1300-3eps-0", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/luna-trejo-1300-vad-no-tags", "Update model")

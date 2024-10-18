@@ -17,7 +17,7 @@ dsn = "amuvarma/luna-trejo-vad-no-emo-1"
 
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
-epochs = 3
+epochs = 1
 batch_size = 1
 pad_token = 128263
 save_steps = 10000

@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "3dups"
 dsn = "amuvarma/luna-trejo-vad-no-emo-1"
 
-model_name = "amuvarma/emo-tags-5500-nodups" # Replace with your model
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 3
 batch_size = 1

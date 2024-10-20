@@ -11,7 +11,7 @@ import wandb
 from huggingface_hub import HfApi, create_repo
 
 
-base_repo_id = "2.3m-test-0"
+base_repo_id = "models"
 project_name = "catastrophic-forgetting"
 dsn = "amuvarma/50k-llama-dups3-contonly"
 

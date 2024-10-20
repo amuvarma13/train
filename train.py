@@ -15,8 +15,8 @@ base_repo_id = "models"
 project_name = "catastrophic-forgetting"
 dsn = "amuvarma/50k-llama-dups3-contonly"
 
-model_name = "meta-llama/Llama-3.2-8B" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.2-8B"
+model_name = "meta-llama/Llama-3.1-8B" # Replace with your model
+tokenizer_name = "meta-llama/Llama-3.1-8B"
 epochs = 3
 batch_size = 5
 pad_token = 128263

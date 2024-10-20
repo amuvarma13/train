@@ -15,17 +15,17 @@ base_repo_id = "models"
 project_name = "catastrophic-forgetting"
 dsn = "amuvarma/50k-llama-dups3-contonly"
 
-model_name = "meta-llama/Llama-3.2-1B" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.2-1B"
+model_name = "meta-llama/Llama-3.2-8B" # Replace with your model
+tokenizer_name = "meta-llama/Llama-3.2-8B"
 epochs = 3
-batch_size = 15
+batch_size = 5
 pad_token = 128263
 save_steps = 10000
 
 
 wandb.init(
     project=project_name,
-    name = "run-1b-0"
+    name = "run-8b-0"
     )
  
  
@@ -89,7 +89,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=24,
+    logging_steps=72,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

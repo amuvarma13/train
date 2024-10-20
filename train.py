@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "2.3m-test-0"
 project_name = "catastrophic-forgetting"
-dsn = "amuvarma/50k-llama-wdups"
+dsn = "amuvarma/50k-llama-dups3-contonly"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"

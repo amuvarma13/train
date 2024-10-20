@@ -61,6 +61,7 @@ def custom_generate(model, input_ids, max_length=4000, temperature=0.2, top_k=50
 
             output_ids[:, i] = next_token.squeeze()
             input_ids = next_token
+            print(next_token)
 
             # if next_token.item() == tokenizer.eos_token_id:
             #     break

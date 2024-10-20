@@ -28,6 +28,7 @@ stop_token = 128258
 start = time.time()
 def custom_generate(model, input_ids, max_length=100, temperature=0.2, top_k=50, top_p=0.95):
     device = model.device
+    input_ids = input_ids.to(device)
 
     
     # Pre-allocate memory for the output

@@ -7,7 +7,7 @@ tokeniser_name = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(tokeniser_name)
 
 model_name = "amuvarma/luna-trejo-1300-vad-no-tags-3dups"
-model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, attn_implementation="flash_attention_2")
 model.cuda()
 
 prompt = '''That's horrible, I'm so upset that happened to you!'''

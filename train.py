@@ -12,10 +12,10 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "2.3m-test-0"
-project_name = "3dups"
-dsn = "amuvarma/luna-trejo-vad-no-emo-3dups-2"
+project_name = "catastrophic-forgetting"
+dsn = "amuvarma/50k-llama-wdups"
 
-model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 3
 batch_size = 1
@@ -24,8 +24,8 @@ save_steps = 10000
 
 
 wandb.init(
-    project="evals_text_conversational",  
-    name = "pretrained-llama"
+    project=project_name,
+    name = "run-3b-0"
     )
  
  
@@ -89,7 +89,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=12,
+    logging_steps=24,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

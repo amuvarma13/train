@@ -21,24 +21,51 @@ modified_input_ids = torch.cat([start_token, input_ids, end_tokens], dim=1)
 input_ids = modified_input_ids
 attention_mask = torch.ones_like(input_ids)
 
-input_ids = input_ids.to("cuda")
-attention_mask = attention_mask.to("cuda")
+# input_ids = input_ids.to("cuda")
+# attention_mask = attention_mask.to("cuda")
 stop_token = 128258
 
 start = time.time()
-generated_ids = model.generate(
-    input_ids=input_ids,
-    attention_mask=attention_mask,
-    max_length=4000,
-    num_return_sequences=1,
-    do_sample=True,
-    temperature=0.2,
-    top_k=50,
-    top_p=0.95,
-    repetition_penalty=1.05,
-    eos_token_id=stop_token,
-    # bad_words_ids=[[129162, 128911]]
-)
+def custom_generate(model, input_ids, max_length=100, temperature=0.2, top_k=50, top_p=0.95):
+    device = model.device
 
+    
+    # Pre-allocate memory for the output
+    output_ids = torch.zeros((1, max_length), dtype=torch.long, device=device)
+    output_ids[:, :input_ids.shape[1]] = input_ids
+
+    past_key_values = None
+    for i in range(input_ids.shape[1], max_length):
+        with torch.no_grad():
+            if past_key_values is None:
+                outputs = model(input_ids, use_cache=True)
+            else:
+                outputs = model(input_ids[:, -1:], use_cache=True, past_key_values=past_key_values)
+
+            logits = outputs.logits[:, -1, :] / temperature
+            past_key_values = outputs.past_key_values
+
+            # Apply top-k and top-p filtering
+            top_k_logits, top_k_indices = torch.topk(logits, top_k)
+            probs = torch.softmax(top_k_logits, dim=-1)
+            cumulative_probs = torch.cumsum(probs, dim=-1)
+            top_p_mask = cumulative_probs < top_p
+            top_p_mask[..., -1] = True
+            filtered_logits = top_k_logits * top_p_mask.float()
+            filtered_indices = top_k_indices * top_p_mask.long()
+
+            # Sample from the filtered distribution
+            next_token = torch.multinomial(torch.softmax(filtered_logits, dim=-1), num_samples=1)
+            next_token = filtered_indices.gather(-1, next_token)
+
+            output_ids[:, i] = next_token.squeeze()
+            input_ids = next_token
+
+            # if next_token.item() == tokenizer.eos_token_id:
+            #     break
+
+    return output_ids
+
+generated_ids = custom_generate(model, tokenizer, prompt)
 print(f"time taken {time.time()-start}")
 print(generated_ids.shape)

@@ -17,15 +17,15 @@ dsn = "amuvarma/50k-llama-dups3-6row"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
-epochs = 3
-batch_size = 5
+epochs = 1
+batch_size = 1
 pad_token = 128263
 save_steps = 10000
 
 
 wandb.init(
     project=project_name,
-    name = "run-8b-0"
+    name = "run-3b-0"
     )
  
  

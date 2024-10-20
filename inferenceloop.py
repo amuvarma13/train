@@ -66,6 +66,6 @@ def custom_generate(model, input_ids, max_length=100, temperature=0.2, top_k=50,
 
     return output_ids
 
-generated_ids = custom_generate(model, tokenizer, prompt)
+generated_ids = custom_generate(model, input_ids)
 print(f"time taken {time.time()-start}")
 print(generated_ids.shape)

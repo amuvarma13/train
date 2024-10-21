@@ -15,12 +15,12 @@ base_repo_id = "models"
 project_name = "content-only"
 dsn = "amuvarma/750k-content-only"
 
-model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.2-3B"
+model_name = "meta-llama/Llama-3.1-8B" # Replace with your model
+tokenizer_name = "meta-llama/Llama-3.2-8B"
 epochs = 1
-batch_size = 12
+batch_size = 4
 pad_token = 128263
-save_steps = 1000
+save_steps = 4000
 
 
 wandb.init(
@@ -89,7 +89,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=72,
+    logging_steps=216,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

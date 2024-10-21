@@ -25,7 +25,7 @@ save_steps = 3000
 
 wandb.init(
     project=project_name,
-    name = "run-3b-0"
+    name = "run-8b-0"
     )
  
  

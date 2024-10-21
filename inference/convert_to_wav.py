@@ -103,6 +103,8 @@ def convert_to_wav(generated_ids, tokenizer):
     mask = cropped_tensor != token_to_remove
     cropped_tensor = cropped_tensor[mask].view(cropped_tensor.size(0), -1)
 
+    print(cropped_tensor.tolist())
+
     processed_tensor = cropped_tensor - 128266
     original_shape = processed_tensor.shape
     new_dim_1 = (original_shape[1] // 6) * 6
@@ -128,7 +130,7 @@ def convert_to_wav(generated_ids, tokenizer):
     stacked_tensor = stacked_tensor.cpu()
     test_0 = test_0.cpu()
 
-    print(test_0[0].tolist())
+
     decode_tensor(test_0)
 
 

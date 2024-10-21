@@ -61,7 +61,7 @@ model.resize_token_embeddings(len(tokenizer))
 # Load and split dataset
 dataset = load_dataset(dsn, split="train")
 dataset = dataset.shuffle(seed=42)
-dataset = dataset.sekect(range(200))
+dataset = dataset.select(range(200))
 split_size = int(len(dataset) * (1 - validation_split))
 train_dataset = dataset.select(range(split_size))
 eval_dataset = dataset.select(range(split_size, len(dataset)))

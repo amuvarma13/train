@@ -77,19 +77,18 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,  # Added eval batch size
+    per_device_eval_batch_size=batch_size,
     logging_steps=12,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     report_to="wandb",
-    save_steps=save_steps,
-    remove_unused_columns=True,
-    evaluation_strategy="steps",  # Evaluate during training
-    eval_steps=save_steps,  # Evaluate at same frequency as saving
+    save_strategy="epoch",  # Save at end of each epoch
     save_total_limit=2,  # Keep only the last 2 checkpoints
-    load_best_model_at_end=True,  # Load the best model when training ends
-    metric_for_best_model="eval_loss"  # Use eval loss to determine best model
+    evaluation_strategy="epoch",  # Changed to evaluate at end of each epoch
+    load_best_model_at_end=True,
+    metric_for_best_model="eval_loss",
+    remove_unused_columns=True
 )
 
 print("Training arguments set")
@@ -98,7 +97,7 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    eval_dataset=eval_dataset,  # Added eval dataset
+    eval_dataset=eval_dataset,
     compute_metrics=compute_metrics,
 )
 

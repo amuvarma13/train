@@ -61,14 +61,37 @@ def custom_generate(model, input_ids, max_length=4000, temperature=0.2, top_k=50
 
             output_ids[:, i] = next_token.squeeze()
             input_ids = next_token
-            print(next_token)
 
             if next_token.item() == 128258:
                 break
 
     return output_ids
 
+import torch
+
+def remove_zeros_from_end(tensor):
+    # Flatten the tensor to make it easier to work with
+    flat_tensor = tensor.flatten()
+    
+    # Find the last non-zero element
+    last_nonzero = torch.where(flat_tensor != 0)[0]
+    
+    if len(last_nonzero) == 0:
+        # If all elements are zero, return an empty tensor with the same device and dtype
+        return torch.tensor([], device=tensor.device, dtype=tensor.dtype).reshape(1, 0)
+    else:
+        # Get the index of the last non-zero element
+        last_nonzero_index = last_nonzero[-1].item()
+        
+        # Keep all elements up to and including the last non-zero element
+        result = flat_tensor[:last_nonzero_index + 1]
+        
+        # Reshape the result to match the original tensor's shape
+        return result.reshape(1, -1)
+
+
+
 generated_ids = custom_generate(model, input_ids)
 print(f"time taken {time.time()-start}")
-print(generated_ids)
-print(generated_ids.shape)
+result = remove_zeros_from_end(generated_ids)
+print(result.shape)

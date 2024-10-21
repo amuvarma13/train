@@ -15,7 +15,7 @@ prompt = '''I'm so upset that happened to you!'''
 input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 attention_mask = torch.ones_like(input_ids)
 start_token = torch.tensor([[ 128259]], dtype=torch.int64)
-end_tokens = torch.tensor([[128009, 128260, 128261]], dtype=torch.int64)
+end_tokens = torch.tensor([[128009, 128260, 128261, 128257]], dtype=torch.int64)
 
 modified_input_ids = torch.cat([start_token, input_ids, end_tokens], dim=1)
 

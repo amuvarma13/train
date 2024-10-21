@@ -86,7 +86,7 @@ def convert_to_wav(generated_ids, tokenizer):
     extracted_tokens = generated_ids[0][second_sos_index : eos_index]
 
     decoded_text = tokenizer.decode(extracted_tokens)
-    token_to_find = 128257
+    token_to_find = 128261
     token_to_remove = 128263
 
     # Check if the token exists in the tensor

@@ -16,11 +16,11 @@ dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad"
 
 model_name = "amuvarma/llama-2.3m-full"
 tokenizer_name = "meta-llama/Llama-3.2-3B"
-epochs = 3
-batch_size = 1
+epochs = 1
+batch_size = 2
 pad_token = 128263
 save_steps = 3000
-validation_split = 0.05  # 5% validation set
+validation_split = 0.05
 
 wandb.init(
     project=project_name,
@@ -60,7 +60,7 @@ model.resize_token_embeddings(len(tokenizer))
 
 # Load and split dataset
 dataset = load_dataset(dsn, split="train")
-dataset = dataset.shuffle(seed=42)  # Shuffle before splitting
+dataset = dataset.shuffle(seed=42)
 split_size = int(len(dataset) * (1 - validation_split))
 train_dataset = dataset.select(range(split_size))
 eval_dataset = dataset.select(range(split_size, len(dataset)))
@@ -73,35 +73,55 @@ def compute_metrics(eval_pred):
     accuracy = (predictions == labels).mean()
     return {"accuracy": accuracy}
 
+# Training arguments without evaluation
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,
-    logging_steps=48,
+    logging_steps=24,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     report_to="wandb",
-    save_strategy="epoch",  # Save at end of each epoch
-    save_total_limit=2,  # Keep only the last 2 checkpoints
-    evaluation_strategy="epoch",  # Changed to evaluate at end of each epoch
-    load_best_model_at_end=True,
-    metric_for_best_model="eval_loss",
-    remove_unused_columns=True
+    save_steps=save_steps,
+    remove_unused_columns=True,
 )
 
 print("Training arguments set")
 
+# Create trainer without eval_dataset
 trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
     compute_metrics=compute_metrics,
 )
 
+# Perform training
 trainer.train()
+
+print("Training completed. Starting validation...")
+
+# Create separate evaluation args
+eval_args = TrainingArguments(
+    output_dir="./eval_output",
+    per_device_eval_batch_size=1,  # Small batch size for evaluation
+    remove_unused_columns=True,
+    fp16=True,
+    fsdp="auto_wrap"
+)
+
+# Create separate evaluation trainer
+eval_trainer = FSDPTrainer(
+    model=model,
+    args=eval_args,
+    compute_metrics=compute_metrics,
+)
+
+# Run evaluation
+eval_results = eval_trainer.evaluate(eval_dataset=eval_dataset)
+print("Validation Results:", eval_results)
+wandb.log({"final_evaluation": eval_results})
 
 # Save the final model
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

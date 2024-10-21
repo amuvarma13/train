@@ -125,7 +125,7 @@ def convert_to_wav(generated_ids, tokenizer):
 
     processed_tensor_acoustic_3 = processed_tensor[:, 5::6]
     processed_tensor_acoustic_3 = processed_tensor_acoustic_3 - 5*1024
-    stacked_tensor = torch.stack([ processed_tensor_content, processed_tensor_prosody, processed_tensor_content_1, processed_tensor_acoustic_1,processed_tensor_acoustic_2, processed_tensor_acoustic_3, ], dim=0)
+    stacked_tensor = torch.stack([ processed_tensor_prosody, processed_tensor_content, processed_tensor_content_1, processed_tensor_acoustic_1,processed_tensor_acoustic_2, processed_tensor_acoustic_3, ], dim=0)
     test_0 = stacked_tensor[:, 0, :].unsqueeze(1)
     stacked_tensor = stacked_tensor.cpu()
     test_0 = test_0.cpu()

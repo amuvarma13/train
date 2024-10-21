@@ -80,7 +80,8 @@ def remove_zeros_from_end(tensor):
         result = flat_tensor[:last_nonzero_index + 1]
     return result.reshape(1, -1)
 
-generated_ids = custom_generate(model, input_ids)
+# generated_ids = custom_generate(model, input_ids)
+generated_ids = model.generate(input_ids, max_length=4000, pad_token_id=0, eos_token_id=128258, do_sample=True, temperature=0.2, top_k=50, top_p=0.95, num_return_sequences=1)
 print(f"time taken {time.time()-start}")
 result = remove_zeros_from_end(generated_ids)
 print(result.shape)

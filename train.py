@@ -13,9 +13,9 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "content-only"
-dsn = "amuvarma/750k-content-only"
+dsn = "amuvarma/conversation-tune-13k-contentonly"
 
-model_name = "meta-llama/Llama-3.1-8B" # Replace with your model
+model_name = "amuvarma/750k-content-only" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.1-8B"
 epochs = 1
 batch_size = 4

@@ -27,46 +27,74 @@ attention_mask = torch.ones_like(input_ids)
 stop_token = 128258
 
 start = time.time()
-def custom_generate(model, input_ids, max_length=4000, temperature=0.2, top_k=50, top_p=0.95):
+import torch
+import torch.nn.functional as F
+
+def custom_generate(model, input_ids, max_length=4000, temperature=0.01, top_k=50, top_p=0.95):
     device = model.device
     input_ids = input_ids.to(device)
-
     
-    # Pre-allocate memory for the output
-    output_ids = torch.zeros((1, max_length), dtype=torch.long, device=device)
-    output_ids[:, :input_ids.shape[1]] = input_ids
-
+    # Initialize sequence with input_ids
+    generated = input_ids.clone()
+    
     past_key_values = None
-    for i in range(input_ids.shape[1], max_length):
+    eos_token_id = 128258
+    target_token_id = 128257  # The token after which to print the shape
+    
+    for _ in range(max_length - input_ids.shape[1]):
         with torch.no_grad():
             if past_key_values is None:
-                outputs = model(input_ids, use_cache=True)
+                outputs = model(input_ids=generated, use_cache=True)
             else:
-                outputs = model(input_ids[:, -1:], use_cache=True, past_key_values=past_key_values)
-
+                outputs = model(input_ids=generated[:, -1:], use_cache=True, past_key_values=past_key_values)
+            
             logits = outputs.logits[:, -1, :] / temperature
             past_key_values = outputs.past_key_values
 
-            # Apply top-k and top-p filtering
-            top_k_logits, top_k_indices = torch.topk(logits, top_k)
-            probs = torch.softmax(top_k_logits, dim=-1)
-            cumulative_probs = torch.cumsum(probs, dim=-1)
-            top_p_mask = cumulative_probs < top_p
-            top_p_mask[..., -1] = True
-            filtered_logits = top_k_logits * top_p_mask.float()
-            filtered_indices = top_k_indices * top_p_mask.long()
+            # Top-K filtering
+            if top_k > 0:
+                top_k = min(top_k, logits.size(-1))
+                values, indices = torch.topk(logits, top_k)
+                mask = torch.full_like(logits, float('-inf'))
+                mask.scatter_(1, indices, values)
+                logits = mask
 
-            # Sample from the filtered distribution
-            next_token = torch.multinomial(torch.softmax(filtered_logits, dim=-1), num_samples=1)
-            next_token = filtered_indices.gather(-1, next_token)
+            # Top-P (nucleus) filtering
+            if top_p < 1.0:
+                sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+                cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
 
-            output_ids[:, i] = next_token.squeeze()
-            input_ids = next_token
+                # Remove tokens with cumulative probability above the threshold
+                sorted_indices_to_remove = cumulative_probs > top_p
+                # Shift the mask to the right to keep the first token above the threshold
+                sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+                sorted_indices_to_remove[..., 0] = False
 
-            if next_token.item() == 128258:
+                # Scatter the mask back to the original ordering
+                indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+                logits = logits.masked_fill(indices_to_remove, float('-inf'))
+
+            # Sample the next token
+            probs = F.softmax(logits, dim=-1)
+            next_token = torch.multinomial(probs, num_samples=1)
+            
+            # Check if the next token is the target token
+            if next_token.item() == target_token_id:
+                # Exclude the target token from the generated sequence
+                trimmed_generated = generated[:, :-1]
+                print(f"Shape after token {target_token_id}: {trimmed_generated.shape}")
+                # Optionally, you can break the loop here if you want to stop generation
+                # break
+            
+            generated = torch.cat([generated, next_token], dim=-1)
+            
+            if next_token.item() == eos_token_id:
                 break
+    
+    return generated
 
-    return output_ids
+# Example usage:
+# generated_ids = custom_generate(model, input_ids)
 
 def remove_zeros_from_end(tensor):
     flat_tensor = tensor.flatten()

@@ -75,6 +75,7 @@ def decode_tensor(tensor_input):
 
 
 def convert_to_wav(generated_ids, tokenizer):
+    print(generated_ids[0].tolist())
     sos_indices = (generated_ids[0] == 128000).nonzero(as_tuple=True)[0]
     second_sos_index = sos_indices[-1].item()
 

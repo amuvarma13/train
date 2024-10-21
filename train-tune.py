@@ -3,33 +3,29 @@ from datasets import load_dataset
 from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoTokenizer
 import numpy as np
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
-from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
+from torch.distributed.fsdp import (FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 import os
 import wandb
 from huggingface_hub import HfApi, create_repo
 
-
 base_repo_id = "models"
 project_name = "luna-tune"
 dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad"
 
-model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+model_name = "amuvarma/llama-2.3m-full"
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 3
 batch_size = 4
 pad_token = 128263
 save_steps = 3000
-
+validation_split = 0.05  # 5% validation set
 
 wandb.init(
     project=project_name,
-    name = "run-3b-2.6k-"
-    )
- 
- 
- 
+    name="run-3b-2.6k-"
+)
 
 number_add_tokens = 6 * 1024 + 10
 
@@ -42,65 +38,58 @@ class FSDPTrainer(Trainer):
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:
             output_dir = self.args.output_dir
-
         self.save_and_push_model(output_dir)
 
     def save_and_push_model(self, output_dir):
         save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-        
         with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
             cpu_state_dict = self.model.state_dict()
-        
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
-
-
-
-
+# Load and tokenize
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
-# model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
-
-
 
 tokenizer_length = len(tokenizer)
 tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
-
 
 new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
 tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
+# Load and split dataset
 dataset = load_dataset(dsn, split="train")
+dataset = dataset.shuffle(seed=42)  # Shuffle before splitting
+split_size = int(len(dataset) * (1 - validation_split))
+train_dataset = dataset.select(range(split_size))
+eval_dataset = dataset.select(range(split_size, len(dataset)))
 
-print("Dataset loaded")
-
-
+print(f"Train size: {len(train_dataset)}, Validation size: {len(eval_dataset)}")
 
 def compute_metrics(eval_pred):
     predictions, labels = eval_pred
     predictions = np.argmax(predictions, axis=1)
     accuracy = (predictions == labels).mean()
-    return {"accuracy": accuracy} 
+    return {"accuracy": accuracy}
 
-train_dataset = dataset
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
-    per_device_train_batch_size=batch_size, 
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size,  # Added eval batch size
     logging_steps=12,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    report_to="wandb", 
+    report_to="wandb",
     save_steps=save_steps,
-    remove_unused_columns=True, 
-    # warmup_steps=100,
-    # gradient_accumulation_steps=16,  # Adjust this value as needed
-    # learning_rate=,
-
-
+    remove_unused_columns=True,
+    evaluation_strategy="steps",  # Evaluate during training
+    eval_steps=save_steps,  # Evaluate at same frequency as saving
+    save_total_limit=2,  # Keep only the last 2 checkpoints
+    load_best_model_at_end=True,  # Load the best model when training ends
+    metric_for_best_model="eval_loss"  # Use eval loss to determine best model
 )
 
 print("Training arguments set")
@@ -109,19 +98,15 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    compute_metrics=compute_metrics,  
+    eval_dataset=eval_dataset,  # Added eval dataset
+    compute_metrics=compute_metrics,
 )
 
-# print("Trainer created")
 trainer.train()
-# trainer.train(resume_from_checkpoint="./mymodel")
 
-
+# Save the final model
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-
 with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
     state_dict = trainer.model.state_dict()
 
 trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
-
-

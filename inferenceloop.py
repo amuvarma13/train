@@ -70,4 +70,5 @@ def custom_generate(model, input_ids, max_length=4000, temperature=0.2, top_k=50
 
 generated_ids = custom_generate(model, input_ids)
 print(f"time taken {time.time()-start}")
+print(generated_ids)
 print(generated_ids.shape)

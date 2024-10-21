@@ -4,7 +4,6 @@ import torchaudio
 import torchaudio.transforms as T
 import torch.nn.functional as F
 import numpy as np
-import matplotlib.pyplot as plt
 import IPython.display as ipd
 import librosa
 import soundfile as sf

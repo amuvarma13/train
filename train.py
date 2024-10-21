@@ -18,7 +18,7 @@ dsn = "amuvarma/conversation-tune-13k-contentonly"
 model_name = "amuvarma/750k-content-only" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.1-8B"
 epochs = 1
-batch_size = 4
+batch_size = 1
 pad_token = 128263
 save_steps = 3000
 

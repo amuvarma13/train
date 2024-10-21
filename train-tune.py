@@ -61,6 +61,7 @@ model.resize_token_embeddings(len(tokenizer))
 # Load and split dataset
 dataset = load_dataset(dsn, split="train")
 dataset = dataset.shuffle(seed=42)
+dataset = dataset.sekect(range(200))
 split_size = int(len(dataset) * (1 - validation_split))
 train_dataset = dataset.select(range(split_size))
 eval_dataset = dataset.select(range(split_size, len(dataset)))
@@ -108,10 +109,13 @@ eval_args = TrainingArguments(
     per_device_eval_batch_size=1,  # Small batch size for evaluation
     remove_unused_columns=True,
     fp16=True,
-    fsdp="auto_wrap"
+    fsdp="auto_wrap", 
+    learning_rate=0,
 )
 
 # Create separate evaluation trainer
+print("Creating evaluation trainer")
+
 eval_trainer = FSDPTrainer(
     model=model,
     args=eval_args,
@@ -119,7 +123,8 @@ eval_trainer = FSDPTrainer(
 )
 
 # Run evaluation
-eval_results = eval_trainer.evaluate(eval_dataset=eval_dataset)
+print("Running evaluation")
+eval_results = eval_trainer.train(eval_dataset=eval_dataset)
 print("Validation Results:", eval_results)
 wandb.log({"final_evaluation": eval_results})
 

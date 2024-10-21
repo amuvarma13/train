@@ -11,26 +11,6 @@ import soundfile as sf
 from naturalspeech3_facodec.ns3_codec import FACodecEncoder, FACodecDecoder
 from huggingface_hub import hf_hub_download
 
-def process_audio_and_get_vq_id():
-
-    test_wav_path = "spks.wav"
-    test_wav = librosa.load(test_wav_path, sr=16000)[0]
-    test_wav = torch.from_numpy(test_wav).float()
-    test_wav = test_wav.unsqueeze(0).unsqueeze(0)
-
-    with torch.no_grad():
-
-        # encode
-        enc_out = fa_encoder(test_wav)
-        print(enc_out.device)
-        print(enc_out.shape)
-
-        # quantize
-        _, _, _, _, spk_embs = fa_decoder(enc_out, eval_vq=False, vq=True)
-
-        return spk_embs
-
-spk_embs = process_audio_and_get_vq_id()
 
 
 
@@ -64,6 +44,28 @@ decoder_ckpt = hf_hub_download(repo_id="amphion/naturalspeech3_facodec", filenam
 
 fa_encoder.load_state_dict(torch.load(encoder_ckpt))
 fa_decoder.load_state_dict(torch.load(decoder_ckpt))
+
+def process_audio_and_get_vq_id():
+
+    test_wav_path = "spks.wav"
+    test_wav = librosa.load(test_wav_path, sr=16000)[0]
+    test_wav = torch.from_numpy(test_wav).float()
+    test_wav = test_wav.unsqueeze(0).unsqueeze(0)
+
+    with torch.no_grad():
+
+        # encode
+        enc_out = fa_encoder(test_wav)
+        print(enc_out.device)
+        print(enc_out.shape)
+
+        # quantize
+        _, _, _, _, spk_embs = fa_decoder(enc_out, eval_vq=False, vq=True)
+
+        return spk_embs
+
+spk_embs = process_audio_and_get_vq_id()
+
 
 def decode_tensor(tensor_input):
   tensor_input.to("cpu")

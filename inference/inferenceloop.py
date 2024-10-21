@@ -11,7 +11,7 @@ model_name = "amuvarma/luna-trejo-1300-vad-no-tags-3dups"
 model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=torch.float16, attn_implementation="flash_attention_2")
 model.cuda()
 
-prompt = '''That's horrible, I'm so upset that happened to you!'''
+prompt = '''I'm so upset that happened to you!'''
 input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 attention_mask = torch.ones_like(input_ids)
 start_token = torch.tensor([[ 128259]], dtype=torch.int64)

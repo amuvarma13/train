@@ -1,6 +1,7 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import time
+from convert_to_wav import convert_to_wav
 
 
 tokeniser_name = "meta-llama/Llama-3.2-3B-Instruct"
@@ -83,3 +84,5 @@ generated_ids = custom_generate(model, input_ids)
 print(f"time taken {time.time()-start}")
 result = remove_zeros_from_end(generated_ids)
 print(result.shape)
+
+convert_to_wav(result, tokenizer)

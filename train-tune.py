@@ -101,6 +101,15 @@ trainer = FSDPTrainer(
 # Perform training
 trainer.train()
 
+
+
+# Save the final model
+full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
+    state_dict = trainer.model.state_dict()
+
+trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
+
 print("Training completed. Starting validation...")
 
 # Create separate evaluation args
@@ -117,7 +126,7 @@ eval_args = TrainingArguments(
 # Create separate evaluation trainer
 print("Creating evaluation trainer")
 
-eval_trainer = Trainer(
+eval_trainer = FSDPTrainer(
     model=model,
     args=eval_args,
     compute_metrics=compute_metrics,
@@ -129,10 +138,3 @@ print("Running evaluation")
 eval_results = eval_trainer.train()
 print("Validation Results:", eval_results)
 wandb.log({"final_evaluation": eval_results})
-
-# Save the final model
-full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
-    state_dict = trainer.model.state_dict()
-
-trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)

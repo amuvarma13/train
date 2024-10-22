@@ -17,7 +17,7 @@ dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad-weval"
 
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
-epochs = 1
+epochs = 2
 batch_size = 4
 pad_token = 128263
 save_steps = 3000

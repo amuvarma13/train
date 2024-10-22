@@ -117,7 +117,7 @@ eval_args = TrainingArguments(
 # Create separate evaluation trainer
 print("Creating evaluation trainer")
 
-eval_trainer = FSDPTrainer(
+eval_trainer = Trainer(
     model=model,
     args=eval_args,
     compute_metrics=compute_metrics,

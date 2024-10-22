@@ -27,9 +27,7 @@ wandb.init(
     project=project_name,
     name = "run-3b-2.6k-"
     )
- 
- 
- 
+
 
 number_add_tokens = 6 * 1024 + 10
 

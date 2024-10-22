@@ -12,12 +12,12 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "luna-tune"
-dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad"
+dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad-weval"
 
 model_name = "amuvarma/llama-2.3m-full"
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 2
+batch_size = 4
 pad_token = 128263
 save_steps = 3000
 validation_split = 0.05
@@ -61,7 +61,6 @@ model.resize_token_embeddings(len(tokenizer))
 # Load and split dataset
 dataset = load_dataset(dsn, split="train")
 dataset = dataset.shuffle(seed=42)
-dataset = dataset.select(range(200))
 split_size = int(len(dataset) * (1 - validation_split))
 train_dataset = dataset.select(range(split_size))
 eval_dataset = dataset.select(range(split_size, len(dataset)))
@@ -79,7 +78,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
-    logging_steps=24,
+    logging_steps=12,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
@@ -101,15 +100,6 @@ trainer = FSDPTrainer(
 # Perform training
 trainer.train()
 
-
-
-# Save the final model
-full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
-    state_dict = trainer.model.state_dict()
-
-trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
-
 print("Training completed. Starting validation...")
 
 # Create separate evaluation args
@@ -118,23 +108,24 @@ eval_args = TrainingArguments(
     per_device_eval_batch_size=1,  # Small batch size for evaluation
     remove_unused_columns=True,
     fp16=True,
-    fsdp="auto_wrap", 
-    learning_rate=0,
-    
+    fsdp="auto_wrap"
 )
 
 # Create separate evaluation trainer
-print("Creating evaluation trainer")
-
 eval_trainer = FSDPTrainer(
     model=model,
     args=eval_args,
     compute_metrics=compute_metrics,
-    train_dataset=train_dataset,
 )
 
 # Run evaluation
-print("Running evaluation")
-eval_results = eval_trainer.train()
+eval_results = eval_trainer.evaluate(eval_dataset=eval_dataset)
 print("Validation Results:", eval_results)
 wandb.log({"final_evaluation": eval_results})
+
+# Save the final model
+full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
+    state_dict = trainer.model.state_dict()
+
+trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)

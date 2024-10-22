@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "luna-tune"
 dsn = "amuvarma/luna-2.6k-tts-1-wtags-vad-weval"
 
-model_name = "models/checkpoint-78" # Replace with your model
+model_name = "models/checkpoint-156" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 2

@@ -73,6 +73,7 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
+dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")
 

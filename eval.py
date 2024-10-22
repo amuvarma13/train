@@ -70,7 +70,7 @@ new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
 tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
-dataset = load_dataset(dsn, split="train")
+dataset = load_dataset(dsn, split="test")
 
 print("Dataset loaded")
 

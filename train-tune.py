@@ -111,6 +111,7 @@ eval_args = TrainingArguments(
     fp16=True,
     fsdp="auto_wrap", 
     learning_rate=0,
+    
 )
 
 # Create separate evaluation trainer
@@ -120,11 +121,12 @@ eval_trainer = FSDPTrainer(
     model=model,
     args=eval_args,
     compute_metrics=compute_metrics,
+    train_dataset=train_dataset,
 )
 
 # Run evaluation
 print("Running evaluation")
-eval_results = eval_trainer.train(eval_dataset=eval_dataset)
+eval_results = eval_trainer.train()
 print("Validation Results:", eval_results)
 wandb.log({"final_evaluation": eval_results})
 

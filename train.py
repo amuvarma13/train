@@ -20,7 +20,7 @@ tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 12
 pad_token = 128263
-save_steps = 3000
+save_steps = 12000
 
 
 wandb.init(

@@ -25,7 +25,7 @@ save_steps = 3000
 
 wandb.init(
     project=project_name,
-    name = "run-8b-0"
+    name = "run-3b-shuffled"
     )
  
  
@@ -124,5 +124,6 @@ with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_sta
     state_dict = trainer.model.state_dict()
 
 trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
+
 
 

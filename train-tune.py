@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "luna-tune"
+project_name = "contentonly-tune"
 dsn = "amuvarma/conversation-tune-13k-contentonly"
 
 model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
@@ -25,7 +25,7 @@ save_steps = 3000
 
 wandb.init(
     project=project_name,
-    name = "run-3b-2.6k-"
+    name = "13k-25-10-0"
     )
 
 

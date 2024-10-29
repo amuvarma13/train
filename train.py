@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "content-only"
-dsn = "amuvarma/750k-content-only"
+dsn = "amuvarma/750-5cols-stttts"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "run-3b-shuffled"
+    name = "run-8b-shuffled-5col"
     )
  
  

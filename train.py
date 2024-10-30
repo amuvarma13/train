@@ -13,10 +13,10 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "content-only"
-dsn = "amuvarma/750-5cols-stttts"
+dsn = "amuvarma/750-2cols-stttts"
 
-model_name = "meta-llama/Llama-3.1-8B" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.1-8B"
+model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
+tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
 pad_token = 128263

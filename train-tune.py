@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "contentonly-tune"
 dsn = "amuvarma/conversation-tune-13k-contentonly"
 
-model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
+model_name = "models/checkpoint-23377" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 4

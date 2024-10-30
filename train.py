@@ -12,20 +12,20 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "2layer-only"
-dsn = "amuvarma/750-2cols-stttts"
+project_name = "6layer-only"
+dsn = "amuvarma/750-6cols-stttts"
 
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 4
+batch_size = 1
 pad_token = 128263
 save_steps = 12000
 
 
 wandb.init(
     project=project_name,
-    name = "run-8b-shuffled-5col"
+    name = "run-8b-6col"
     )
  
  
@@ -90,7 +90,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=12,
+    logging_steps=48,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",

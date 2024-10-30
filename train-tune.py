@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "contentonly-tune"
+project_name = "evals_text_conversational"
 dsn = "amuvarma/750k-shuffled-30-10-convo-tune-2layer"
 
 model_name = "models/checkpoint-23377" # Replace with your model
@@ -25,7 +25,7 @@ save_steps = 3000
 
 wandb.init(
     project=project_name,
-    name = "13k-25-10-0"
+    name = "13k-30-10-2layer-750k"
     )
 
 

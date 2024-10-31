@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
-model_name = "amuvarma/750k-shuffled-30-10-convo-tune-2layer"
+model_name = "models/checkpoint-23377"
 epochs = 1
 batch_size = 1
 pad_token = 128263
@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "13k-30-10-2layer-750k"
+    name = "3b-750k-contentonly"
     )
  
  

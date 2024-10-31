@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "3b-750k-contentonly"
+    name = "3b-750k-2layer"
     )
  
  

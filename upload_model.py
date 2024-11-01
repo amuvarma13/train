@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-24000"
+base_repo_id = "models/checkpoint-31169"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "evals_text_conversational"
 dsn = "amuvarma/750k-shuffled-30-10-convo-tune-2layer"
 
-model_name = "models/checkpoint-23377" # Replace with your model
+model_name = "amuvarma/750k-8b-0" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 4

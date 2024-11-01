@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "6layer-only"
+project_name = "contentonly-stt-tune"
 dsn = "amuvarma/750-6cols-stttts"
 
 model_name = "meta-llama/Llama-3.1-8B" # Replace with your model
@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "run-8b-6col"
+    name = "run-3b-contentonlystt-tune"
     )
  
  

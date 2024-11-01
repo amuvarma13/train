@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
-model_name = "models/checkpoint-23377"
+model_name = "amuvarma/750k-8b-0"
 epochs = 1
 batch_size = 1
 pad_token = 128263

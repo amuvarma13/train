@@ -2,7 +2,8 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-31169"
+base_repo_id = "models/checkpoint-4167"
+upload_name = "amuvarma/contentonly-stt-tune-3b-1epoch-1cols-100k"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
@@ -37,4 +38,4 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):
         return None
 
 
-push_folder_to_hub(f"./{base_repo_id}", f"amuvarma/750k-8b-full", "Update model")
+push_folder_to_hub(f"./{base_repo_id}", upload_name, "Update model")

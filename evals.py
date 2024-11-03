@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
-model_name = "models/checkpoint-4167" # Replace with your model
+model_name = "models/checkpoint-12500" # Replace with your model
 epochs = 1
 batch_size = 1
 pad_token = 128263
@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "3b-750k-contentonly-stt-tune"
+    name = "3b-300k-contentonly-stt-tune"
     )
  
  

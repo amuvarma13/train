@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "run-3b-contentonlystt-tune"
+    name = "run-3b-contentonlystt-tune-300k"
     )
  
  

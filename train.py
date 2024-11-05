@@ -18,7 +18,7 @@ dsn = "amuvarma/750k-contentonly-1dup"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 3
+batch_size = 6
 pad_token = 128263
 save_steps = 12000
 

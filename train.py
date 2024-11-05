@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "1dups-singletoken"
+    name = "mix-loss"
     )
  
  

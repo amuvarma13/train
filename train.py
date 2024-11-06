@@ -12,20 +12,20 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "contentonly-1dups"
-dsn = "amuvarma/750-contentonly-stttts-1dups"
+project_name = "ratio-tune-stt"
+dsn = "amuvarma/350k-contentonly-stttts-tune"
 
-model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
+model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 15
+batch_size = 8
 pad_token = 128263
 save_steps = 12000
 # torch.set_default_dtype(torch.float16)
 
 wandb.init(
     project=project_name,
-    name = "stt-tts-6-11"
+    name = "p0-6-11"
     )
  
  

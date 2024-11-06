@@ -58,7 +58,7 @@ class FSDPTrainer(Trainer):
 
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2", dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 

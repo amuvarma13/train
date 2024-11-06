@@ -21,7 +21,7 @@ epochs = 1
 batch_size = 10
 pad_token = 128263
 save_steps = 12000
-torch.set_default_device("cuda")
+torch.set_default_dtype(torch.float16)
 
 wandb.init(
     project=project_name,

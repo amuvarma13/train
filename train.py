@@ -18,7 +18,7 @@ dsn = "amuvarma/750-contentonly-stttts-1dups"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 10
+batch_size = 12
 pad_token = 128263
 save_steps = 12000
 # torch.set_default_dtype(torch.float16)
@@ -58,7 +58,7 @@ class FSDPTrainer(Trainer):
 
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2", dtype=torch.float16)
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 

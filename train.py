@@ -21,7 +21,7 @@ epochs = 1
 batch_size = 3
 pad_token = 128263
 save_steps = 12000
-torch.set_default_dtype(torch.float16)
+# torch.set_default_dtype(torch.float16)
 
 wandb.init(
     project=project_name,
@@ -93,7 +93,8 @@ training_args = TrainingArguments(
     logging_steps=16,
     fp16=True,
     output_dir=f"./{base_repo_id}",
-    fsdp="full_shard",
+    # fsdp="full_shard",
+    fsdp = "auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 

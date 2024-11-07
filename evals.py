@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "text-evals"
 dsn = "amuvarma/conversation_text_only"
 
-model_name = "models/checkpoint-12500" # Replace with your model
+model_name = "models/checkpoint-2084" # Replace with your model
 epochs = 1
 batch_size = 1
 pad_token = 128263

@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project=project_name, 
-    name = "3b-1dup-750k_pretrain_100k_tune-7-11"
+    name = "3b-1dup-750k_pretrain_300k_50k_tune-7-11"
     )
  
  

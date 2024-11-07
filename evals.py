@@ -24,7 +24,7 @@ save_steps = 10000
 
 wandb.init(
     project="evals_text_conversational", 
-    name = "3b-300k-contentonly-stt-tune"
+    name = "3b-1dup-750k_pretrain_100k_tune"
     )
  
  

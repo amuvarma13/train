@@ -13,9 +13,9 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "ratio-tune-stt"
-dsn = "amuvarma/stt-tts-600-100-contentonly"
+dsn = "amuvarma/stt-tts-luna-tune"
 
-model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
+model_name = "amuvarma/contentonly-stt-tts-300k-5k-7-11" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 8

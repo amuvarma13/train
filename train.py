@@ -13,12 +13,12 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "ratio-tune-stt"
-dsn = "amuvarma/300-5-contentonly-stt_tts-tune"
+dsn = "amuvarma/stt-contentonly-textloss-100k-1dups"
 
-model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
+model_name = "amuvarma/contentonly-1dups-stt-tts-6-11" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 8
+batch_size = 6
 pad_token = 128263
 save_steps = 12000
 # torch.set_default_dtype(torch.float16)
@@ -90,7 +90,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=16,
+    logging_steps=8,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     # fsdp="full_shard",

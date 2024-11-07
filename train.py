@@ -100,7 +100,7 @@ training_args = TrainingArguments(
     remove_unused_columns=True, 
     # warmup_steps=100,
     # gradient_accumulation_steps=16,  # Adjust this value as needed
-    learning_rate=5e-8,
+    learning_rate=5e-6,
 
 
 )

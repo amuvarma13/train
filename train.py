@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "ratio-tune-stt"
-dsn = "amuvarma/stt-contentonly-textloss-100k-400k-1dups""
+dsn = "amuvarma/stt-contentonly-textloss-100k-400k-1dups"
 
 model_name = "models/checkpoint-2084" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"

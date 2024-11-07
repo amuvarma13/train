@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "ratio-tune-stt"
-dsn = "amuvarma/350k-contentonly-stttts-tune"
+dsn = "amuvarma/300-10-contentonly-stt_tts-tune"
 
 model_name = "amuvarma/750k-shuffled-25-10" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "p0-6-11"
+    name = "p0-7-11"
     )
  
  

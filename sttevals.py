@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "2.3m-test-0"
-project_name = "text-evals"
+project_name = "stt-evals"
 dsn = "amuvarma/stt-contentonly-evalset-10k"
 
 model_name = "models/checkpoint-4766" # Replace with your model

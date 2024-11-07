@@ -23,7 +23,7 @@ save_steps = 10000
 
 
 wandb.init(
-    project="evals_text_stt", 
+    project=project_name, 
     name = "3b-1dup-750k_pretrain_100k_tune-7-11"
     )
  

@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-4688"
+base_repo_id = "models/checkpoint-3207"
 upload_name = "amuvarma/contentonly-stt-tts-1dups-300k-7-11"
 
 

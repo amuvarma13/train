@@ -15,7 +15,7 @@ base_repo_id = "2.3m-test-0"
 project_name = "stt-evals"
 dsn = "amuvarma/stt-contentonly-evalset-10k"
 
-model_name = "amuvarma/contentonly-stt-tts-300-50-tune-6-11" # Replace with your model
+model_name = "amuvarma/checkpoint-10938" # Replace with your model
 epochs = 1
 batch_size = 1
 pad_token = 128263

@@ -13,9 +13,9 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "ratio-tune-stt"
-dsn = "amuvarma/stt-tts-luna-tune"
+dsn = "amuvarma/luna-full-finetune"
 
-model_name = "amuvarma/contentonly-stt-tts-300k-5k-7-11" # Replace with your model
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 8
@@ -73,7 +73,7 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
-dataset = dataset.shuffle(seed=42)
+# dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")
 

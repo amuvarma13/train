@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "ratio-tune-stt"
+project_name = "luna-tune-tts"
 dsn = "amuvarma/luna-full-finetune"
 
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model

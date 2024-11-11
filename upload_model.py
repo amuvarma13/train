@@ -3,7 +3,7 @@ import os
 
 
 base_repo_id = "models/checkpoint-826"
-upload_name = "amuvarma/luna-3days-tagged-amufac-1"
+upload_name = "amuvarma/luna-3days-tagged-amufac-2"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

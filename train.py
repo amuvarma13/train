@@ -12,10 +12,10 @@ from huggingface_hub import HfApi, create_repo
 
 
 base_repo_id = "models"
-project_name = "luna-tune-tts"
-dsn = "amuvarma/luna-full-finetune-tagged"
+project_name = "luna-tune-2stagetts"
+dsn = "amuvarma/paired-ds-luna-3-train-tagged-processed-1"
 
-model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+model_name = "amuvarma/luna-3days-tagged-amufac-2" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
@@ -25,7 +25,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "p0-10-11-tags"
+    name = "p0-11-11-tags"
     )
  
  

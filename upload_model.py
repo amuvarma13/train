@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-492"
+base_repo_id = "models/checkpoint-984"
 upload_name = "amuvarma/luna-3days-tagged-noreps"
 
 

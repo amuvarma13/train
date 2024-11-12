@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "luna-tune-tts"
 dsn = "amuvarma/luna-3days-capped"
 
-model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+model_name = "amuvarma/convo-fpsft-13k" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1

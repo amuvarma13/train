@@ -27,6 +27,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_steps=0,
     evaluation_strategy="no",
+    fp16=True,
 )
 
 # Initialize Trainer
@@ -34,6 +35,7 @@ trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=ds["train"],
+
 )
 
 # Train the model

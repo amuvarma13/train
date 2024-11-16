@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-984"
+base_repo_id = "models/checkpoint-453"
 upload_name = "amuvarma/luna-emo-classification"
 
 

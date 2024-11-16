@@ -14,7 +14,7 @@ tokenizer.add_special_tokens(
     {'additional_special_tokens': [f"[T{i}]" for i in range(9000)]})
 model = AutoModelForSequenceClassification.from_pretrained(
     model_name,
-    attn_implementation="flash_attention_2",
+    # attn_implementation="flash_attention_2",
     num_labels=8,
 )
 
@@ -28,6 +28,7 @@ training_args = TrainingArguments(
     save_steps=0,
     evaluation_strategy="no",
     fp16=True,
+    fsdp = "auto_wrap",
 )
 
 # Initialize Trainer

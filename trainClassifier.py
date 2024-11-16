@@ -24,8 +24,9 @@ ds = ds.shuffle(seed=42)
 training_args = TrainingArguments(
     output_dir="./results",
     per_device_train_batch_size=1,
-    logging_steps=1,
+    logging_steps=10,
     save_steps=0,
+    report_to="wandb",
     evaluation_strategy="no",
     fp16=True,
     fsdp = "auto_wrap",

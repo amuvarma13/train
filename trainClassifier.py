@@ -1,7 +1,7 @@
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
 from datasets import load_dataset
-
+import wandb
 
 # load model, tokeniser?, and dataset
 
@@ -19,6 +19,12 @@ model = AutoModelForSequenceClassification.from_pretrained(
 )
 
 ds = ds.shuffle(seed=42)
+
+wandb.init(
+    project="emotion-classification",
+    name = "p0-15-11"
+    )
+ 
 
 
 training_args = TrainingArguments(

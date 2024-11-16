@@ -15,7 +15,7 @@ tokenizer.add_special_tokens(
 model = AutoModelForSequenceClassification.from_pretrained(
     model_name,
     num_labels=8,
-    attn_implementation="flash_attn_2",
+    attn_implementation="flash_attention_2",
 )
 
 ds = ds.shuffle(seed=42)

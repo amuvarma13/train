@@ -11,7 +11,7 @@ model_name = "amuvarma/llama-2.3m-full"
 ds = load_dataset(dsn)
 ds = ds['train']
 tokenizer = AutoTokenizer.from_pretrained(tkn)
-model = AutoModelForSequenceClassification.from_pretrained(tkn)
+model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 ds = ds.shuffle(seed=42)   
 

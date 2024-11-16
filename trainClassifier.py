@@ -11,8 +11,6 @@ model_name = "amuvarma/llama-2.3m-full"
 ds = load_dataset(dsn)
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 tokenizer.add_special_tokens({'additional_special_tokens': [f"[T{i}]" for i in range(9000)]})
-pad_token = tokenizer.convert_ids_to_tokens(128263)
-tokenizer.pad_token = pad_token
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 ds = ds.shuffle(seed=42)   
@@ -32,7 +30,6 @@ trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=ds["train"],
-    tokenizer=tokenizer,
 )
 
 # Train the model

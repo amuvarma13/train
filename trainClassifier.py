@@ -9,7 +9,6 @@ dsn  = "amuvarma/luna-day3-classification"
 tkn = "meta-llama/Llama-3.2-3B"
 model_name = "amuvarma/llama-2.3m-full"
 ds = load_dataset(dsn)
-ds = ds['train']
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 

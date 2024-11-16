@@ -55,7 +55,6 @@ wandb.init(
 
 
 training_args = TrainingArguments(
-    output_dir="./results",
     per_device_train_batch_size=1,
     logging_steps=10,
     save_steps=0,

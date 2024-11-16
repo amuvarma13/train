@@ -2,6 +2,10 @@ import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
 from datasets import load_dataset
 import wandb
+from huggingface_hub import HfApi, create_repo
+from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
+from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
+base_repo_id = "models"
 
 # load model, tokeniser?, and dataset
 
@@ -20,6 +24,29 @@ model = AutoModelForSequenceClassification.from_pretrained(
 
 ds = ds.shuffle(seed=42)
 
+class FSDPTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.repo_id = base_repo_id
+        self.api = HfApi()
+
+    def save_model(self, output_dir=None, _internal_call=False):
+        if output_dir is None:
+            output_dir = self.args.output_dir
+
+        self.save_and_push_model(output_dir)
+
+    def save_and_push_model(self, output_dir):
+        save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+        
+        with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
+            cpu_state_dict = self.model.state_dict()
+        
+        self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
+
+
+
+
 wandb.init(
     project="emotion-classification",
     name = "p0-15-11"
@@ -36,10 +63,11 @@ training_args = TrainingArguments(
     evaluation_strategy="no",
     fp16=True,
     fsdp = "auto_wrap",
+    output_dir=f"./{base_repo_id}",
 )
 
 # Initialize Trainer
-trainer = Trainer(
+trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=ds["train"],
@@ -49,3 +77,13 @@ trainer = Trainer(
 # Train the model
 print("Starting training...")
 trainer.train()
+
+full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+
+with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):
+    state_dict = trainer.model.state_dict()
+
+trainer.model.save_pretrained(f"./complete_{base_repo_id}", state_dict=state_dict)
+
+
+

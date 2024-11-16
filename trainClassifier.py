@@ -15,7 +15,7 @@ tokenizer.add_special_tokens(
 model = AutoModelForSequenceClassification.from_pretrained(
     model_name,
     num_labels=8,
-    attn_implementation="flash_attention_2",
+    # attn_implementation="flash_attention_2",
 )
 
 ds = ds.shuffle(seed=42)
@@ -27,7 +27,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_steps=0,
     evaluation_strategy="no",
-    fp16=True,
+    # fp16=True,
 )
 
 # Initialize Trainer

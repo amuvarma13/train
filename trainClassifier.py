@@ -11,14 +11,14 @@ model_name = "amuvarma/llama-2.3m-full"
 ds = load_dataset(dsn)
 tokenizer = AutoTokenizer.from_pretrained(tkn)
 tokenizer.add_special_tokens({'additional_special_tokens': [f"[T{i}]" for i in range(9000)]})
-model = AutoModelForSequenceClassification.from_pretrained(model_name)
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=8)
 
 ds = ds.shuffle(seed=42)   
 
 
+
 training_args = TrainingArguments(
     output_dir="./results",
-    num_train_epochs=3,
     per_device_train_batch_size=1,
     logging_steps=1,
     save_steps=0,

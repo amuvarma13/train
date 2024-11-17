@@ -4,6 +4,7 @@ from transformers import Wav2Vec2Processor, Wav2Vec2Model
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from transformers.modeling_outputs import CausalLMOutputWithPast
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
@@ -24,11 +25,6 @@ class SwiGLU(nn.Module):
     def forward(self, x):
         x, gate = x.chunk(2, dim=-1)
         return F.silu(gate) * x
-
-
-import torch
-import torch.nn as nn
-from transformers.modeling_outputs import CausalLMOutputWithPast
 
 class GazelleLlama(nn.Module):
     def __init__(self):

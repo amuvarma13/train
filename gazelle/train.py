@@ -2,7 +2,7 @@ from transformers import Trainer, TrainingArguments
 
 from model import GazelleLlama
 from datasets import load_dataset
-from gazelle.preprocess_dataset import preprocess_dataset
+from preprocess_dataset import preprocess_dataset
 
 dsn = "parler-tts/mls_eng_10k"
 gazelle_model = GazelleLlama()

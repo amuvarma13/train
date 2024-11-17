@@ -1,6 +1,6 @@
 from transformers import Trainer, TrainingArguments
 
-from gazelle.model import GazelleLlama
+from model import GazelleLlama
 from datasets import load_dataset
 from gazelle.preprocess_dataset import preprocess_dataset
 

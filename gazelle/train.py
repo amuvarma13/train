@@ -4,7 +4,7 @@ from gazelle.model import GazelleLlama
 from datasets import load_dataset
 from gazelle.preprocess_dataset import preprocess_dataset
 
-dsn = "amuvarma/luna-3days-capped"
+dsn = "parler-tts/mls_eng_10k"
 gazelle_model = GazelleLlama()
 
 ds = load_dataset(dsn)
@@ -27,7 +27,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=gazelle_model,
     args=training_args,
-    train_dataset=ds['train'],
+    train_dataset=dsp,
 )
 
 # Start training

@@ -32,7 +32,7 @@ training_args = TrainingArguments(
     learning_rate=4e-3,
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=False, 
-    logging_steps=13, 
+    logging_steps=12, 
     # bf16=True,
 )
 

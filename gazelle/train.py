@@ -12,7 +12,7 @@ gazelle_model = gazelle_model.cuda()
 ds = load_dataset(dsn)
 
 # dsp = preprocess_dataset(ds["dev"])
-dsp = ds
+dsp = ds["train"]
 
 project_name = "gazelle-projection"
 wandb.init(

@@ -12,7 +12,7 @@ def pad_or_crop_audio(audio_tensor, target_length=300000):
         return torch.cat([audio_tensor, torch.zeros(target_length - len(audio_tensor))])
     return audio_tensor
 
-def preprocess_dataset(ds, batch_size=64):
+def preprocess_dataset(ds, batch_size=32):
     ds = ds.remove_columns([col for col in ds.column_names if col not in ["transcript", "audio"]])
 
     instruction = "Read out this phrase back."

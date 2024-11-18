@@ -5,14 +5,14 @@ from datasets import load_dataset
 from preprocess_dataset import preprocess_dataset
 import wandb
 
-dsn = "parler-tts/mls_eng_10k"
+dsn = "amuvarma/mls-train-200"
 gazelle_model = GazelleLlama()
 gazelle_model = gazelle_model.cuda()
 
 ds = load_dataset(dsn)
 
-dsp = preprocess_dataset(ds["dev"])
-
+# dsp = preprocess_dataset(ds["dev"])
+dsp = ds
 
 project_name = "gazelle-projection"
 wandb.init(

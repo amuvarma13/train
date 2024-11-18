@@ -3,6 +3,7 @@ import torch
 from transformers import AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
+tokenizer.pad_token = tokenizer.eos_token
 
 def pad_or_crop_audio(audio_tensor, target_length=300000):
     if len(audio_tensor) > target_length:

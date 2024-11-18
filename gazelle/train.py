@@ -5,7 +5,7 @@ from datasets import load_dataset
 from preprocess_dataset import preprocess_dataset
 import wandb
 
-dsn = "amuvarma/mls-train-200"
+dsn = "amuvarma/mls-train-200-1000"
 gazelle_model = GazelleLlama()
 gazelle_model = gazelle_model.cuda()
 

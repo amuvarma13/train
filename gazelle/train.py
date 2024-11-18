@@ -33,7 +33,7 @@ training_args = TrainingArguments(
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=False, 
     logging_steps=100, 
-    bf16=True,
+    # bf16=True,
 )
 
 # Initialize trainer

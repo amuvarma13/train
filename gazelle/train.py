@@ -17,7 +17,7 @@ dsp = preprocess_dataset(ds["dev"])
 project_name = "gazelle-projection"
 wandb.init(
     project=project_name,
-    name = "p2-17-11-dev-b2-gpu2"
+    name = "p3-17-11-dev-b4-gpu2"
 )
  
  

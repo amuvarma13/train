@@ -108,7 +108,6 @@ class GazelleLlama(nn.Module):
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)
         audio_features = self.multimodal_projector(audio_embs_reshaped)
-        print(audio_features.shape, input_embeds.shape, transcript_embeds.shape)
         combined_features = torch.cat([audio_features, input_embeds, transcript_embeds], dim=1)
         transcript_length = transcript_ids.size(1)
 

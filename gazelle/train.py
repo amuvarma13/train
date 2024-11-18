@@ -11,7 +11,7 @@ gazelle_model = gazelle_model.cuda()
 
 ds = load_dataset(dsn)
 
-dsp = preprocess_dataset(ds["dev"])
+dsp = preprocess_dataset(ds["train"])
 
 
 project_name = "gazelle-projection"

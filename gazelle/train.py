@@ -17,7 +17,7 @@ dsp = preprocess_dataset(ds["dev"])
 project_name = "gazelle-projection"
 wandb.init(
     project=project_name,
-    name = "p5-17-11-dev-b4-gpu2"
+    name = "p6-17-11-dev-b4-gpu2"
 )
  
  
@@ -29,7 +29,7 @@ training_args = TrainingArguments(
     output_dir="./gazelle-llama-output",
     num_train_epochs=1,
     per_device_train_batch_size=2,
-    learning_rate=2e-5,
+    learning_rate=2,
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=False, 
     logging_steps=100, 

@@ -11,7 +11,7 @@ gazelle_model = gazelle_model.cuda()
 ds = load_dataset(dsn)
 print(ds)
 
-dsp = preprocess_dataset(ds)
+dsp = preprocess_dataset(ds["dev"])
 
 
 

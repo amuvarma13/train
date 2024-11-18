@@ -77,20 +77,13 @@ class GazelleLlama(nn.Module):
         else:
             attention_mask = torch.ones(b, self.pad_length, device=combined_features.device)
 
-        # If labels are provided, create a mask for transcript position
         if labels is not None and transcript_length is not None:
-            # Create a full tensor of -100 (ignore index for loss)
             full_labels = torch.full((b, self.pad_length), -100, 
                                   device=combined_features.device, 
                                   dtype=labels.dtype)
             
-            # Calculate where the transcript starts in the sequence
-            # audio_length = audio_features length
-            # input_length = input_embeds length
-            # transcript starts after audio + input
             transcript_start = n - transcript_length
             
-            # Only fill in the transcript portion with actual labels
             if transcript_start < self.pad_length:
                 end_idx = min(transcript_start + transcript_length, self.pad_length)
                 full_labels[:, transcript_start:end_idx] = labels[:, :end_idx-transcript_start]
@@ -103,8 +96,8 @@ class GazelleLlama(nn.Module):
     def forward(
         self,
         input_ids=None,
-        audio_values = None,
         transcript_ids = None,
+        audio_values = None,
         attention_mask=None,
         labels=None,
     ):
@@ -115,7 +108,7 @@ class GazelleLlama(nn.Module):
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)
         audio_features = self.multimodal_projector(audio_embs_reshaped)
-        
+        print(audio_features.shape, input_embeds.shape, transcript_embeds.shape)
         combined_features = torch.cat([audio_features, input_embeds, transcript_embeds], dim=1)
         transcript_length = transcript_ids.size(1)
 

@@ -17,7 +17,7 @@ dsp = ds["train"]
 project_name = "gazelle-projection"
 wandb.init(
     project=project_name,
-    name = "p6-18-11-dev-b4-gpu2"
+    name = "p6-18-11-dev-b4-gpu8"
 )
  
  

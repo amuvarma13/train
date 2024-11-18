@@ -11,7 +11,7 @@ gazelle_model = gazelle_model.cuda()
 
 ds = load_dataset(dsn)
 
-dsp = preprocess_dataset(ds["dev"])
+dsp = preprocess_dataset(ds["train"])
 
 
 project_name = "gazelle-projection"
@@ -28,8 +28,8 @@ wandb.init(
 training_args = TrainingArguments(
     output_dir="./gazelle-llama-output",
     num_train_epochs=1,
-    per_device_train_batch_size=2,
-    learning_rate=2e-5,
+    per_device_train_batch_size=4,
+    learning_rate=2e-3,
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=False, 
     logging_steps=100

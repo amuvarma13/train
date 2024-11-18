@@ -1,4 +1,7 @@
 import torch
+import os
+
+print(os.cpu_count())
 
 from transformers import AutoTokenizer
 
@@ -13,6 +16,7 @@ def pad_or_crop_audio(audio_tensor, target_length=300000):
     return audio_tensor
 
 def preprocess_dataset(ds):
+
     ds = ds.remove_columns([col for col in ds.column_names if col not in ["transcript", "audio"]])
 
     instruction = "Read out this phrase back."

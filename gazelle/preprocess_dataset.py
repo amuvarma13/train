@@ -1,7 +1,7 @@
 import torch
 import os
 
-print(os.cpu_count())
+print("cpu count",os.cpu_count())
 
 from transformers import AutoTokenizer
 

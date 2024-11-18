@@ -1,10 +1,11 @@
 import torch
 import os
 
-print("cpu count",os.cpu_count())
+
 
 from transformers import AutoTokenizer
 
+print("cpu count",os.cpu_count())
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
 tokenizer.pad_token = tokenizer.eos_token
 

@@ -1,4 +1,3 @@
-# Load model directly
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import Wav2Vec2Processor, Wav2Vec2Model
 import torch
@@ -6,16 +5,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
+super_model = "meta-llama/Llama-3.2-3B"
 
-super_model_name = "meta-llama/Llama-3.2-3B"
-hidden_size = 3072
-
-
-tokenizer = AutoTokenizer.from_pretrained(super_model_name)
-model = AutoModelForCausalLM.from_pretrained(super_model_name)
-
-processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
-w2vmodel = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base" )
 
 class RMSNorm(nn.Module):
     def __init__(self, eps=1e-6):
@@ -31,27 +22,34 @@ class SwiGLU(nn.Module):
         x, gate = x.chunk(2, dim=-1)
         return F.silu(gate) * x
 
-class GazelleLlama(nn.Module):
+class GazelleLlama(AutoModelForCausalLM.from_pretrained(super_model).__class__):
     def __init__(self):
-        super().__init__()
-        self.llm = model
+        super().__init__(config=AutoModelForCausalLM.from_pretrained().config)
+        
+        # Initialize the audio tower
+        self.audio_tower = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base")
+        
+        # Add the multimodal projector
         self.multimodal_projector = nn.Sequential(
             RMSNorm(),
-            nn.Linear(6144, hidden_size, bias=False),
+            nn.Linear(6144, 3072, bias=False),
             SwiGLU(),
-            nn.Linear(hidden_size//2, hidden_size, bias=False),
+            nn.Linear(1536, 3072, bias=False),
             RMSNorm()
         )
+        
         self.stack_factor = 8
-        self.audio_tower = w2vmodel
         self.pad_length = 128
 
-        for param in self.llm.parameters():
+        # Freeze the LLM and audio tower parameters
+        for param in self.parameters():
             param.requires_grad = False
+        
+        for param in self.multimodal_projector.parameters():
+            param.requires_grad = True
 
         for param in self.audio_tower.parameters():
             param.requires_grad = False
-        
 
     def _pad_and_stack(self, audio_embeds: torch.Tensor) -> torch.Tensor:
         B, T, C = audio_embeds.shape
@@ -67,7 +65,6 @@ class GazelleLlama(nn.Module):
     def _pad_and_crop(self, combined_features, labels=None, transcript_length=None):
         b, n, d = combined_features.shape
         
-        # First handle the features padding/cropping
         if n > self.pad_length:
             combined_features = combined_features[:, :self.pad_length, :]
             attention_mask = torch.ones(b, self.pad_length, device=combined_features.device)
@@ -97,17 +94,16 @@ class GazelleLlama(nn.Module):
             
         return combined_features, attention_mask
 
-      
     def forward(
         self,
         input_ids=None,
-        transcript_ids = None,
-        audio_values = None,
+        transcript_ids=None,
+        audio_values=None,
         attention_mask=None,
         labels=None,
     ):
-        input_embeds = self.llm.model.embed_tokens(input_ids)
-        transcript_embeds = self.llm.model.embed_tokens(transcript_ids)
+        input_embeds = self.model.embed_tokens(input_ids)
+        transcript_embeds = self.model.embed_tokens(transcript_ids)
 
         audio_embeds = self.audio_tower(audio_values)
         audio_embeds_lhs = audio_embeds.last_hidden_state
@@ -120,26 +116,24 @@ class GazelleLlama(nn.Module):
             combined_features, 
             labels=transcript_ids,
             transcript_length=transcript_length
-          )
+        )
 
-
-        output = self.llm(
+        output = super().forward(
             input_ids=None,
             inputs_embeds=combined_features_padded,
             attention_mask=attention_mask_padded
         )
 
         loss = None
-
         if labels is not None:
-              shift_logits = output.logits[..., :-1, :].contiguous()
-              shift_labels = full_labels[..., 1:].contiguous()
-              
-              shift_logits = shift_logits.view(-1, shift_logits.size(-1))
-              shift_labels = shift_labels.view(-1)
-              
-              loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
-              loss = loss_fct(shift_logits, shift_labels)
+            shift_logits = output.logits[..., :-1, :].contiguous()
+            shift_labels = full_labels[..., 1:].contiguous()
+            
+            shift_logits = shift_logits.view(-1, shift_logits.size(-1))
+            shift_labels = shift_labels.view(-1)
+            
+            loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
+            loss = loss_fct(shift_logits, shift_labels)
         
         return CausalLMOutputWithPast(
             loss=loss,

@@ -29,13 +29,12 @@ wandb.init(
 training_args = TrainingArguments(
     output_dir="./gazelle-llama-output",
     num_train_epochs=1,
-    per_device_train_batch_size=2,
+    per_device_train_batch_size=1,
     learning_rate=4e-3,
     report_to="wandb",  # Disables wandb and other reporting
-    save_safetensors=False, 
+    save_safetensors=True, 
     logging_steps=12,
     save_strategy="no",
-    bf16=True,
 )
 
 # Initialize trainer

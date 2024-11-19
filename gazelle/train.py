@@ -7,6 +7,7 @@ import wandb
 import torch
 
 dsn = "amuvarma/mls-train-200"
+
 gazelle_model = GazelleLlama()
 gazelle_model = gazelle_model.cuda()
 
@@ -33,6 +34,7 @@ training_args = TrainingArguments(
     learning_rate=4e-3,
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=True, 
+    fsdp = "auto_wrap",
     logging_steps=12,
     save_strategy="no",
 )

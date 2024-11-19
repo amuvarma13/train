@@ -6,7 +6,7 @@ from preprocess_dataset import preprocess_dataset
 import wandb
 import torch
 
-dsn = "amuvarma/mls-train-200"
+dsn = "amuvarma/mls-train-200-1000"
 
 gazelle_model = GazelleLlama()
 
@@ -34,7 +34,7 @@ training_args = TrainingArguments(
     report_to="wandb",  # Disables wandb and other reporting
     save_safetensors=True, 
     logging_steps=12,
-    save_strategy="no",
+    # save_strategy="no",
 )
 
 # Initialize trainer

@@ -32,9 +32,9 @@ class GazelleLlama(nn.Module):
         self.llm = model
         self.multimodal_projector = nn.Sequential(
             RMSNorm(),
-            nn.Linear(6144, 2048, bias=False),
+            nn.Linear(6144, 3072, bias=False),
             SwiGLU(),
-            nn.Linear(1024, 2048, bias=False),
+            nn.Linear(1536, 3072, bias=False),
             RMSNorm()
         )
         self.stack_factor = 8

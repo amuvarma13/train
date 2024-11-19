@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-3B")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B", torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B")
 
 processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
 w2vmodel = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base", torch_dtype=torch.float16 )

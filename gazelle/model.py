@@ -6,8 +6,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-3B")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.2-1B")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-1B")
 
 processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
 w2vmodel = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base" )
@@ -32,9 +32,9 @@ class GazelleLlama(nn.Module):
         self.llm = model
         self.multimodal_projector = nn.Sequential(
             RMSNorm(),
-            nn.Linear(6144, 3072, bias=False),
+            nn.Linear(6144, 2048, bias=False),
             SwiGLU(),
-            nn.Linear(1536, 3072, bias=False),
+            nn.Linear(1024, 2048, bias=False),
             RMSNorm()
         )
         self.stack_factor = 8

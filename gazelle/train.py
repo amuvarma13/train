@@ -4,6 +4,7 @@ from model import GazelleLlama
 from datasets import load_dataset
 from preprocess_dataset import preprocess_dataset
 import wandb
+import torch
 
 dsn = "amuvarma/mls-train-200-1000"
 gazelle_model = GazelleLlama()
@@ -47,5 +48,5 @@ trainer = Trainer(
 trainer.train() 
 
 # Save model
-gazelle_model.save_pretrained("gazelle-llama-output")
+torch.save(gazelle_model.state_dict(), "gazelle-llama-output/model.pt")
 

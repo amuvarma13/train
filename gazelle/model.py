@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
-model_pms = 1
+model_pms = 3
 
 model_name = f"meta-llama/Llama-3.2-{model_pms}B"
 if(model_pms == 3):

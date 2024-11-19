@@ -108,6 +108,8 @@ class GazelleLlama(AutoModelForCausalLM.from_pretrained(super_model).__class__):
         if len(audio_values.shape) == 1:
             audio_values = audio_values.unsqueeze(0)
 
+        print("audio_values.shape", audio_values.shape)
+
         audio_embeds = self.audio_tower(audio_values)
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)

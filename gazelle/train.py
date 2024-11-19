@@ -32,9 +32,9 @@ training_args = TrainingArguments(
     per_device_train_batch_size=2,
     learning_rate=4e-3,
     report_to="wandb",  # Disables wandb and other reporting
-    save_safetensors=True, 
+    save_safetensors=False, 
     logging_steps=12,
-    # save_strategy="no",
+    save_strategy="no",
 )
 
 # Initialize trainer

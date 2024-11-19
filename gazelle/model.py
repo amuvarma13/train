@@ -14,6 +14,8 @@ if(model_pms == 3):
 else:
     hidden_size = 2048
 
+print("the hidden size is", hidden_size)    
+
 
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)

@@ -9,7 +9,6 @@ import torch
 dsn = "amuvarma/mls-train-200"
 
 gazelle_model = GazelleLlama()
-gazelle_model = gazelle_model.cuda()
 
 ds = load_dataset(dsn)
 

@@ -5,6 +5,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
+super_model_name = "meta-llama/Llama-3.2-1B"
+hidden_size = 3072
+
 class RMSNorm(nn.Module):
     def __init__(self, eps=1e-6):
         super().__init__()
@@ -19,9 +22,9 @@ class SwiGLU(nn.Module):
         x, gate = x.chunk(2, dim=-1)
         return F.silu(gate) * x
 
-class GazelleLlama(AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B").__class__):
+class GazelleLlama(AutoModelForCausalLM.from_pretrained(super_model_name).__class__):
     def __init__(self):
-        super().__init__(config=AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B").config)
+        super().__init__(config=AutoModelForCausalLM.from_pretrained(super_model_name).config)
         
         # Initialize the audio tower
         self.audio_tower = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base")
@@ -29,9 +32,9 @@ class GazelleLlama(AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.2-3B
         # Add the multimodal projector
         self.multimodal_projector = nn.Sequential(
             RMSNorm(),
-            nn.Linear(6144, 3072, bias=False),
+            nn.Linear(6144, hidden_size, bias=False),
             SwiGLU(),
-            nn.Linear(1536, 3072, bias=False),
+            nn.Linear(hidden_size//2, hidden_size, bias=False),
             RMSNorm()
         )
         

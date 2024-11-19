@@ -44,7 +44,7 @@ trainer = Trainer(
 )
 
 # Start training
-trainer.train()
+trainer.train() 
 
 # Save model
 gazelle_model.save_pretrained("gazelle-llama-output")

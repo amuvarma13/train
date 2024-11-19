@@ -35,7 +35,7 @@ training_args = TrainingArguments(
     save_safetensors=False, 
     logging_steps=12,
     save_strategy="no",
-    # bf16=True,
+    bf16=True,
 )
 
 # Initialize trainer

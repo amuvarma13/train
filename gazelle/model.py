@@ -104,6 +104,9 @@ class GazelleLlama(AutoModelForCausalLM.from_pretrained(super_model).__class__):
     ):
         input_embeds = self.model.embed_tokens(input_ids)
         transcript_embeds = self.model.embed_tokens(transcript_ids)
+        print("audio_values.shape", audio_values.shape)
+        if len(audio_values.shape) == 1:
+            audio_values = audio_values.unsqueeze(0)
 
         audio_embeds = self.audio_tower(audio_values)
         audio_embeds_lhs = audio_embeds.last_hidden_state

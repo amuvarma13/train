@@ -129,15 +129,14 @@ class GazelleLlama(nn.Module):
             transcript_length=transcript_length
           )
         
-    
-        print("full_labels", full_labels)
-
 
         output = self.llm(
             input_ids=None,
             inputs_embeds=combined_features_padded,
             attention_mask=attention_mask_padded
         )
+
+        print("output", output.logits.shape)
 
         loss = None
 

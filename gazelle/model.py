@@ -113,42 +113,42 @@ class GazelleLlama(nn.Module):
         attention_mask=None,
         labels=None,
     ):
+        
+        clean_transcript_ids = transcript_ids[transcript_ids != 128009]
+        print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
         input_embeds = self.llm.model.embed_tokens(input_ids)
-        transcript_embeds = self.llm.model.embed_tokens(transcript_ids)
+        transcript_embeds = self.llm.model.embed_tokens(clean_transcript_ids)
 
         audio_embeds = self.audio_tower(audio_values)
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)
         audio_features = self.multimodal_projector(audio_embs_reshaped)
         combined_features = torch.cat([audio_features, input_embeds, transcript_embeds], dim=1)
-        transcript_length = transcript_ids.size(1)
-
-        combined_features_padded, attention_mask_padded, full_labels = self._pad_and_crop(
-            combined_features, 
-            labels=transcript_ids,
-            transcript_length=transcript_length
-          )
-        
+        attention_mask = torch.ones_like(combined_features[:, :, 0])
 
         output = self.llm(
             input_ids=None,
-            inputs_embeds=combined_features_padded,
-            attention_mask=attention_mask_padded
+            inputs_embeds=combined_features,
+            attention_mask=attention_mask
         )
 
-        print("output", output.logits.shape, transcript_ids.shape)
+        #now process output for sft loss calculation
+        
+        loss_rel_outputs  = output.logits[:, -clean_transcript_ids.shape[0]:, :]
 
-        loss = None
+        print("output", output.logits.shape, loss_rel_outputs.shape, clean_transcript_ids.shape)
 
-        if labels is not None:
-              shift_logits = output.logits[..., :-1, :].contiguous()
-              shift_labels = full_labels[..., 1:].contiguous()
+        loss = 1
+
+        # if labels is not None:
+        #       shift_logits = output.logits[..., :-1, :].contiguous()
+        #       shift_labels = full_labels[..., 1:].contiguous()
               
-              shift_logits = shift_logits.view(-1, shift_logits.size(-1))
-              shift_labels = shift_labels.view(-1)
+        #       shift_logits = shift_logits.view(-1, shift_logits.size(-1))
+        #       shift_labels = shift_labels.view(-1)
               
-              loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
-              loss = loss_fct(shift_logits, shift_labels)
+        #       loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
+        #       loss = loss_fct(shift_logits, shift_labels)
         
         return CausalLMOutputWithPast(
             loss=loss,

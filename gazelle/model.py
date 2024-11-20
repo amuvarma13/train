@@ -51,7 +51,7 @@ class GazelleLlama(nn.Module):
         )
         self.stack_factor = 8
         self.audio_tower = w2vmodel
-        self.pad_length = 128
+        self.pad_length = 256
 
         for param in self.llm.parameters():
             param.requires_grad = False

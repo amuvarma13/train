@@ -114,7 +114,7 @@ class GazelleLlama(nn.Module):
         labels=None,
     ):
         clean_transcript_ids = (transcript_ids[transcript_ids != 128001]).unsqueeze(0)
-        print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
+        # print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
         input_embeds = self.llm.model.embed_tokens(input_ids)
         transcript_embeds = self.llm.model.embed_tokens(clean_transcript_ids)
 
@@ -135,7 +135,7 @@ class GazelleLlama(nn.Module):
         
         loss_rel_outputs  = output.logits[:, -clean_transcript_ids.shape[1]:, :]
 
-        print("output", output.logits.shape, loss_rel_outputs.shape, clean_transcript_ids.shape)
+        # print("output", output.logits.shape, loss_rel_outputs.shape, clean_transcript_ids.shape)
 
 
 

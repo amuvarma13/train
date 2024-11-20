@@ -140,7 +140,7 @@ class GazelleLlama(nn.Module):
 
 
         if labels is not None:
-              shift_logits = loss_rel_outputs.logits[..., :-1, :].contiguous()
+              shift_logits = loss_rel_outputs[..., :-1, :].contiguous()
               shift_labels = clean_transcript_ids[..., 1:].contiguous()
               
               shift_logits = shift_logits.view(-1, shift_logits.size(-1))

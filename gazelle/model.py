@@ -113,8 +113,7 @@ class GazelleLlama(nn.Module):
         attention_mask=None,
         labels=None,
     ):
-        print(transcript_ids)
-        clean_transcript_ids = transcript_ids[transcript_ids != 128009]
+        clean_transcript_ids = transcript_ids[transcript_ids != 128001]
         print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
         input_embeds = self.llm.model.embed_tokens(input_ids)
         transcript_embeds = self.llm.model.embed_tokens(clean_transcript_ids)

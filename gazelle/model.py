@@ -137,17 +137,17 @@ class GazelleLlama(nn.Module):
 
         print("output", output.logits.shape, loss_rel_outputs.shape, clean_transcript_ids.shape)
 
-        loss = 1
 
-        # if labels is not None:
-        #       shift_logits = output.logits[..., :-1, :].contiguous()
-        #       shift_labels = full_labels[..., 1:].contiguous()
+
+        if labels is not None:
+              shift_logits = loss_rel_outputs.logits[..., :-1, :].contiguous()
+              shift_labels = clean_transcript_ids[..., 1:].contiguous()
               
-        #       shift_logits = shift_logits.view(-1, shift_logits.size(-1))
-        #       shift_labels = shift_labels.view(-1)
+              shift_logits = shift_logits.view(-1, shift_logits.size(-1))
+              shift_labels = shift_labels.view(-1)
               
-        #       loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
-        #       loss = loss_fct(shift_logits, shift_labels)
+              loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
+              loss = loss_fct(shift_logits, shift_labels)
         
         return CausalLMOutputWithPast(
             loss=loss,

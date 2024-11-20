@@ -133,7 +133,7 @@ class GazelleLlama(nn.Module):
 
         #now process output for sft loss calculation
         
-        loss_rel_outputs  = output.logits[:, -clean_transcript_ids.shape[0]:, :]
+        loss_rel_outputs  = output.logits[:, -clean_transcript_ids.shape[1]:, :]
 
         print("output", output.logits.shape, loss_rel_outputs.shape, clean_transcript_ids.shape)
 

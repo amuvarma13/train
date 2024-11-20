@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from transformers.modeling_outputs import CausalLMOutputWithPast
 
-model_pms = 8
+model_pms = 3
 
 model_name = f"meta-llama/Llama-3.1-{model_pms}B"
 if(model_pms == 3):
@@ -44,9 +44,9 @@ class GazelleLlama(nn.Module):
         self.llm = model
         self.multimodal_projector = nn.Sequential(
             RMSNorm(),
-            nn.Linear(6144, 4096, bias=False),
+            nn.Linear(6144, hidden_size, bias=False),
             SwiGLU(),
-            nn.Linear(2048, 4096, bias=False),
+            nn.Linear(hidden_size//2, hidden_size, bias=False),
             RMSNorm()
         )
         self.stack_factor = 8

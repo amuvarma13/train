@@ -11,6 +11,8 @@ model_pms = 3
 model_name = f"meta-llama/Llama-3.2-{model_pms}B"
 if(model_pms == 3):
     hidden_size = 3072
+elif model_pms == 8:
+    hidden_size = 4096
 else:
     hidden_size = 2048
 

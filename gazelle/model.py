@@ -14,6 +14,10 @@ if(model_pms == 3):
 else:
     hidden_size = 2048
 
+print("the hidden size is", hidden_size)    
+
+
+
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(model_name)
 
@@ -54,6 +58,7 @@ class GazelleLlama(nn.Module):
 
         for param in self.audio_tower.parameters():
             param.requires_grad = False
+        
 
     def _pad_and_stack(self, audio_embeds: torch.Tensor) -> torch.Tensor:
         B, T, C = audio_embeds.shape
@@ -95,15 +100,16 @@ class GazelleLlama(nn.Module):
                 end_idx = min(transcript_start + transcript_length, self.pad_length)
                 full_labels[:, transcript_start:end_idx] = labels[:, :end_idx-transcript_start]
                 
-            return combined_features, attention_mask, full_labels, n
+            return combined_features, attention_mask, full_labels
             
         return combined_features, attention_mask
 
+      
     def forward(
         self,
         input_ids=None,
-        transcript_ids=None,
-        audio_values=None,
+        transcript_ids = None,
+        audio_values = None,
         attention_mask=None,
         labels=None,
     ):
@@ -117,11 +123,15 @@ class GazelleLlama(nn.Module):
         combined_features = torch.cat([audio_features, input_embeds, transcript_embeds], dim=1)
         transcript_length = transcript_ids.size(1)
 
-        combined_features_padded, attention_mask_padded, full_labels, sequence_length = self._pad_and_crop(
+        combined_features_padded, attention_mask_padded, full_labels = self._pad_and_crop(
             combined_features, 
             labels=transcript_ids,
             transcript_length=transcript_length
-        )
+          )
+        
+    
+        print("full_labels", full_labels)
+
 
         output = self.llm(
             input_ids=None,
@@ -132,16 +142,14 @@ class GazelleLlama(nn.Module):
         loss = None
 
         if labels is not None:
-            # Only take logits and labels up to the actual sequence length
-            actual_length = min(sequence_length, self.pad_length)
-            relevant_logits = output.logits[:, :actual_length-1, :].contiguous()
-            relevant_labels = full_labels[:, 1:actual_length].contiguous()
-            
-            relevant_logits = relevant_logits.view(-1, relevant_logits.size(-1))
-            relevant_labels = relevant_labels.view(-1)
-            
-            loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
-            loss = loss_fct(relevant_logits, relevant_labels)
+              shift_logits = output.logits[..., :-1, :].contiguous()
+              shift_labels = full_labels[..., 1:].contiguous()
+              
+              shift_logits = shift_logits.view(-1, shift_logits.size(-1))
+              shift_labels = shift_labels.view(-1)
+              
+              loss_fct = nn.CrossEntropyLoss(ignore_index=-100)
+              loss = loss_fct(shift_logits, shift_labels)
         
         return CausalLMOutputWithPast(
             loss=loss,

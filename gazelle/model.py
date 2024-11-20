@@ -136,7 +136,7 @@ class GazelleLlama(nn.Module):
             attention_mask=attention_mask_padded
         )
 
-        print("output", output.logits.shape)
+        print("output", output.logits.shape, transcript_ids.shape)
 
         loss = None
 

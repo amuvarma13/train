@@ -20,6 +20,8 @@ ds = load_dataset(dsn)
 # Replace this line:
 dsp = preprocess_dataset(ds["train"])
 
+print("dsp" , dsp)
+
 # dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 
 project_name = "gazelle-projection"

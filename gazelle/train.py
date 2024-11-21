@@ -3,6 +3,7 @@ from transformers import Trainer, TrainingArguments
 from model import GazelleLlama
 from datasets import load_dataset
 from eff_pp import preprocess_dataset
+from parallel_preprocess_wrapper import parallel_preprocess_wrapper
 import wandb
 import torch
 import os
@@ -16,9 +17,10 @@ gazelle_model = GazelleLlama()
 ds = load_dataset(dsn)
 
 
+# Replace this line:
 dsp = preprocess_dataset(ds["train"])
 
-print(dsp)
+dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 
 project_name = "gazelle-projection"
 wandb.init(

@@ -3,7 +3,7 @@ import os
 
 
 base_repo_id = "gazelle/gazelle-llama-output"
-upload_name = "amuvarma/200k-3b-adapter-more-params"
+upload_name = "amuvarma/200k-8b-adapter-loss-fix"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

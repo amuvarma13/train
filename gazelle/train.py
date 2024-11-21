@@ -18,9 +18,8 @@ ds = load_dataset(dsn)
 
 print("dsp" , ds)
 # Replace this line:
-dsp = preprocess_dataset(ds["train"])
 
-
+dsp = ds["train"]
 
 # dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 

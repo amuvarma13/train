@@ -3,7 +3,6 @@ from transformers import Trainer, TrainingArguments
 from model import GazelleLlama
 from datasets import load_dataset
 from preprocess_dataset import preprocess_dataset
-from quick_load import load_dataset_parallel
 import wandb
 import torch
 import os
@@ -14,7 +13,7 @@ dsn = "amuvarma/mls-eng-10k-200k"
 
 gazelle_model = GazelleLlama()
 
-ds = load_dataset_parallel(dsn, num_proc=(os.cpu_count() - 1))
+ds = load_dataset(dsn)
 
 print(ds)
 

@@ -2,7 +2,7 @@ from transformers import Trainer, TrainingArguments
 
 from model import GazelleLlama
 from datasets import load_dataset
-from preprocess_dataset import preprocess_dataset
+from eff_pp import preprocess_dataset
 import wandb
 import torch
 import os

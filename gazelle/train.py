@@ -6,14 +6,16 @@ from preprocess_dataset import preprocess_dataset
 import wandb
 import torch
 
-dsn = "amuvarma/mls-train-dev-1000-nopad"
+# dsn = "amuvarma/mls-train-dev-1000-nopad"
+
+dsn = "amuvarma/mls-eng-10k-200k"
 
 gazelle_model = GazelleLlama()
 
 ds = load_dataset(dsn)
 
 # dsp = preprocess_dataset(ds["dev"])
-dsp = ds["dev"]
+dsp = preprocess_dataset(ds["train"])
 
 project_name = "gazelle-projection"
 wandb.init(

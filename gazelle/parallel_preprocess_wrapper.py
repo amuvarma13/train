@@ -24,16 +24,9 @@ def parallel_preprocess_wrapper(dataset, preprocess_fn):
     dist.all_gather_object(gathered_chunks, processed_chunk)
     
     if accelerator.is_main_process:
-        print("Main process concatenating chunks...")
+        print("Main process concatenating datasets...")
     
-    # All processes concatenate the chunks
-    final_data = processed_chunk  # Initialize with local chunk
-    for i, chunk in enumerate(gathered_chunks):
-        if i != accelerator.process_index:  # Skip own chunk as it's already included
-            if chunk is not None:
-                if isinstance(chunk, (list, tuple)):
-                    final_data.extend(chunk)
-                else:
-                    final_data.append(chunk)
+    # Concatenate all datasets
+    final_data = concatenate_datasets([chunk for chunk in gathered_chunks if chunk is not None])
     
     return final_data

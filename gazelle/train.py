@@ -10,7 +10,7 @@ import os
 
 # dsn = "amuvarma/mls-train-dev-1000-nopad"
 
-dsn = "amuvarma/mls-eng-10k-200k"
+dsn = "amuvarma/mls-train-200k-1-nopad-pinput"
 
 gazelle_model = GazelleLlama()
 
@@ -20,7 +20,7 @@ ds = load_dataset(dsn)
 # Replace this line:
 # dsp = preprocess_dataset(ds["train"])
 
-dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
+# dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 
 project_name = "gazelle-projection"
 wandb.init(

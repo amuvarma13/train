@@ -26,7 +26,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name)
 processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-base")
 w2vmodel = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-base")
 
-resp_toks = torch.tensor([[128000, 578, 17571, 358, 1120, 1071, 574, 25, 220]])
+
 
 class RMSNorm(nn.Module):
     def __init__(self, eps=1e-6):
@@ -53,6 +53,8 @@ class GazelleLlama(nn.Module):
             nn.Linear(hidden_size//2, hidden_size, bias=False),
             RMSNorm()
         )
+        resp_toks = torch.tensor([[128000, 578, 17571, 358, 1120, 1071, 574, 25, 220]])
+        self.resp_toks = resp_toks
         self.stack_factor = 8
         self.audio_tower = w2vmodel
         self.pad_length = 1000
@@ -126,7 +128,7 @@ class GazelleLlama(nn.Module):
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)
         audio_features = self.multimodal_projector(audio_embs_reshaped)
-        combined_features = torch.cat([audio_features, input_embeds, resp_toks, transcript_embeds], dim=1)
+        combined_features = torch.cat([audio_features, input_embeds, self.resp_toks, transcript_embeds], dim=1)
         attention_mask = torch.ones_like(combined_features[:, :, 0])
 
         output = self.llm(

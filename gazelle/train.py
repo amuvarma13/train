@@ -17,7 +17,7 @@ ds = load_dataset(dsn)
 project_name = "gazelle-projection"
 wandb.init(
     project=project_name,
-    name = "21-11-p8-8gpu-3b-effpreproc",
+    name = "21-11-p8-8gpu-1b-effpreproc",
 )
  
  

@@ -121,7 +121,7 @@ class GazelleLlama(nn.Module):
         clean_transcript_ids = (transcript_ids[transcript_ids != 128001]).unsqueeze(0)
         # print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
 
-        resp_toks = torch.tensor([[128000, 578, 17571, 358, 1120, 1071, 574, 25, 220]])
+        resp_toks = torch.tensor([[578, 17571, 358, 1120, 1071, 574, 25, 220]])
         resp_toks = resp_toks.to(audio_values.device)
 
 

@@ -11,10 +11,10 @@ def preprocess_dataset(ds):
     ds = ds.remove_columns([col for col in ds.column_names if col not in ["transcript", "audio"]])
 
     # Pre-compute instruction tokens once
-    instruction = "Tell me the exact phrase I say, back to me. My phrase is: "
+    instruction = "Tell me the exact phrase I say, back to me. The phrase I say is: "
     instruction_input_ids = tokenizer(instruction)["input_ids"]
 
-    post_instruction = "The exact phrase I said was: "
+    post_instruction = "The exact phrase I just said was: "
     post_instruction_input_ids = tokenizer(post_instruction)["input_ids"]
     
     def process_batch(examples):

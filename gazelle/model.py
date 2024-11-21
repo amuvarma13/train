@@ -121,7 +121,7 @@ class GazelleLlama(nn.Module):
         clean_transcript_ids = (transcript_ids[transcript_ids != 128001]).unsqueeze(0)
         # print("shapes", clean_transcript_ids.shape, transcript_ids.shape)
 
-        resp_toks = torch.tensor([[128000, 578, 17571, 358, 1120, 1071, 574, 25, 220]])
+
         input_embeds = self.llm.model.embed_tokens(input_ids)
         transcript_embeds = self.llm.model.embed_tokens(clean_transcript_ids)
 
@@ -129,6 +129,8 @@ class GazelleLlama(nn.Module):
         audio_embeds_lhs = audio_embeds.last_hidden_state
         audio_embs_reshaped = self._pad_and_stack(audio_embeds_lhs)
         audio_features = self.multimodal_projector(audio_embs_reshaped)
+        resp_toks = torch.tensor([[128000, 578, 17571, 358, 1120, 1071, 574, 25, 220]])
+        resp_toks = resp_toks.to(audio_values.device)
         combined_features = torch.cat([audio_features, input_embeds, resp_toks, transcript_embeds], dim=1)
         attention_mask = torch.ones_like(combined_features[:, :, 0])
 

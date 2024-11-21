@@ -6,7 +6,7 @@ from preprocess_dataset import preprocess_dataset
 import wandb
 import torch
 
-dsn = "amuvarma/mls-train-200"
+dsn = "amuvarma/mls-train-dev-1000-nopad"
 
 gazelle_model = GazelleLlama()
 

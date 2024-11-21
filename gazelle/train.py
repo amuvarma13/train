@@ -1,12 +1,8 @@
 from transformers import Trainer, TrainingArguments
-
 from model import GazelleLlama
 from datasets import load_dataset
-from eff_pp import preprocess_dataset
-from parallel_preprocess_wrapper import parallel_preprocess_wrapper
 import wandb
 import torch
-import os
 
 # dsn = "amuvarma/mls-train-dev-1000-nopad"
 
@@ -15,11 +11,6 @@ dsn = "amuvarma/mls-train-200k-1-nopad-pinput-effpreproc"
 gazelle_model = GazelleLlama()
 
 ds = load_dataset(dsn)
-
-print("dsp" , ds)
-# Replace this line:
-
-dsp = ds["train"]
 
 # dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 
@@ -49,7 +40,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=gazelle_model,
     args=training_args,
-    train_dataset=dsp,
+    train_dataset=ds["train"],
 )
 
 # Start training

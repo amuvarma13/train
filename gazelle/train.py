@@ -13,7 +13,7 @@ gazelle_model = GazelleLlama()
 ds = load_dataset(dsn)
 
 # dsp = preprocess_dataset(ds["dev"])
-dsp = ds["train"]
+dsp = ds["dev"]
 
 project_name = "gazelle-projection"
 wandb.init(

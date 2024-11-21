@@ -1,5 +1,6 @@
 from accelerate import Accelerator
 import torch.distributed as dist
+from datasets import concatenate_datasets
 
 def parallel_preprocess_wrapper(dataset, preprocess_fn):
     """
@@ -18,24 +19,21 @@ def parallel_preprocess_wrapper(dataset, preprocess_fn):
     local_chunk = dataset.select(range(start_idx, end_idx))
     processed_chunk = preprocess_fn(local_chunk)
     
-    # Gather all processed chunks
-    all_chunks = accelerator.gather(processed_chunk)
+    # We need to gather the processed chunks using dist.all_gather_object
+    gathered_chunks = [None] * accelerator.num_processes
+    dist.all_gather_object(gathered_chunks, processed_chunk)
     
     if accelerator.is_main_process:
-        # Flatten the gathered chunks if needed
-        if isinstance(all_chunks, (list, tuple)):
-            final_data = []
-            for chunk in all_chunks:
+        print("Main process concatenating chunks...")
+    
+    # All processes concatenate the chunks
+    final_data = processed_chunk  # Initialize with local chunk
+    for i, chunk in enumerate(gathered_chunks):
+        if i != accelerator.process_index:  # Skip own chunk as it's already included
+            if chunk is not None:
                 if isinstance(chunk, (list, tuple)):
                     final_data.extend(chunk)
                 else:
                     final_data.append(chunk)
-        else:
-            final_data = all_chunks
-    else:
-        final_data = None
-        
-    # Broadcast final data to all processes
-    final_data = accelerator.broadcast(final_data)
     
     return final_data

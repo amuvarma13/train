@@ -6,7 +6,7 @@ import torch
 
 # dsn = "amuvarma/mls-train-dev-1000-nopad"
 
-dsn = "amuvarma/mls-train-200k-1-nopad-pinput-effpreproc"
+dsn = "amuvarma/mls-train-200k-1-nopad-pinput"
 
 gazelle_model = GazelleLlama()
 

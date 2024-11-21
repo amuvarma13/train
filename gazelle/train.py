@@ -16,11 +16,11 @@ gazelle_model = GazelleLlama()
 
 ds = load_dataset(dsn)
 
-
+print("dsp" , ds)
 # Replace this line:
 dsp = preprocess_dataset(ds["train"])
 
-print("dsp" , dsp)
+
 
 # dsp = parallel_preprocess_wrapper(ds["train"], preprocess_dataset)
 

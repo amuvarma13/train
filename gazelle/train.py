@@ -10,7 +10,7 @@ import os
 
 # dsn = "amuvarma/mls-train-dev-1000-nopad"
 
-dsn = "amuvarma/mls-train-200k-1-nopad-pinput"
+dsn = "amuvarma/mls-train-200k-1-nopad-pinput-effpreproc"
 
 gazelle_model = GazelleLlama()
 

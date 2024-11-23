@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "luna-tune-tts"
+project_name = "instructify"
 dsn = "amuvarma/l12k-dev-test"
 
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model
@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "p0-11-11-tags"
+    name = "p0-23-11"
     )
  
  

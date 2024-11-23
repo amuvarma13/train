@@ -56,7 +56,7 @@ class FSDPTrainer(Trainer):
 
 
 
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+model = AutoModelForCausalLM.from_pretrained("amuvarma/llama-checkpoint-204000", attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
 
 

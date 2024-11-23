@@ -122,6 +122,7 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=False, 
+    learning_rate=5e-6,
 )
 
 print("Training arguments set")

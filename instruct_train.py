@@ -15,8 +15,9 @@ base_repo_id = "models"
 project_name = "luna-tune-tts"
 dsn = "amuvarma/l12k-dev-test"
 
-model_name = "amuvarma/convo-fpsft-13k" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.2-3B"
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+tokenizer_name = "amuvarma/llama-2.3m-full"
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 epochs = 1
 batch_size = 1
 pad_token = 128263
@@ -64,6 +65,43 @@ dataset = load_dataset(dsn, split="train")
 
 print("Dataset loaded")
 
+def inference_collator(user_message, assistant_message):
+
+
+    msgs = [
+        {"role": "user", "content": user_message},
+        {"role": "assistant", "content": assistant_message}
+    ]
+
+    labels = tokenizer.apply_chat_template(
+        msgs, return_tensors="pt", add_generation_prompt=True
+    )
+
+    attention_mask = torch.ones_like(labels)
+
+
+    return {
+        "input_ids": labels.to(model.device),
+        "labels": labels.to(model.device),
+        "attention_mask": attention_mask.to(model.device)
+    }
+
+
+class AudioChatDataCollator:
+    def __init__(self):
+        pass
+    def __call__(self, features):
+        user_message = features[0]["user_message"]
+        assistant_message = features[0]["assistant_message"]
+
+        batch = inference_collator(user_message, assistant_message)
+
+        return {
+            "input_ids": batch["input_ids"].cpu(),
+            "labels": batch["labels"].cpu(),
+            "attention_mask": batch["attention_mask"].cpu()
+        }
+    
 
 
 def compute_metrics(eval_pred):
@@ -81,7 +119,6 @@ training_args = TrainingArguments(
     fp16=True,
     output_dir=f"./{base_repo_id}",
     fsdp = "auto_wrap",
-    fp16 = True,
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 

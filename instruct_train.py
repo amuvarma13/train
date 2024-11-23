@@ -121,7 +121,6 @@ training_args = TrainingArguments(
     fsdp = "auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
-    remove_unused_columns=True, 
 )
 
 print("Training arguments set")

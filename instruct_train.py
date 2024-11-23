@@ -131,6 +131,7 @@ trainer = FSDPTrainer(
     args=training_args,
     train_dataset=train_dataset,
     compute_metrics=compute_metrics,  
+    data_collator=AudioChatDataCollator(),
 )
 
 trainer.train()

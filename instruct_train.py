@@ -13,7 +13,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "instructify"
-dsn = "amuvarma/l12k-dev-test-instruct"
+dsn = "amuvarma/luna-4days-instruct"
 
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 tokenizer_name = "amuvarma/llama-2.3m-full"

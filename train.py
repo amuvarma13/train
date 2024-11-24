@@ -55,6 +55,7 @@ class FSDPTrainer(Trainer):
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
     def get_train_dataloader(self):
+        print("self.args.train_batch_size", self.args.train_batch_size)
         return DataLoader(
             self.train_dataset,
             batch_size=self.args.train_batch_size,

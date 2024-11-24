@@ -62,6 +62,18 @@ class FSDPTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()
+    
+    def get_train_dataloader(self):
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.per_device_train_batch_size,
+            sampler=None,  # No shuffling or distributed sampling
+            shuffle=False,  # Ensure ordered sampling
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=0,  # Disable parallelism to ensure order
+            pin_memory=self.args.dataloader_pin_memory,
+        )
 
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:

@@ -119,7 +119,7 @@ if resize_dataset:
 
 dataset = load_dataset(dsn, split="train")
 
-dataset = TestAlternatingDataset(dataset)
+# dataset = TestAlternatingDataset(dataset)
 
 # dataset = dataset.shuffle(seed=42)
 

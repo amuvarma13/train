@@ -5,6 +5,7 @@ import numpy as np
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
 from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
 from torch.utils.data import DataLoader
+from torch.utils.data import Dataset
 from tqdm import tqdm
 import os
 import wandb
@@ -34,6 +35,27 @@ wandb.init(
 
 number_add_tokens = 6 * 1024 + 10
 
+
+
+
+
+class TestAlternatingDataset(Dataset):
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.length = len(dataset) * 2  # Alternate sampling, so effectively twice the dataset size
+
+    def __len__(self):
+        return self.length
+
+    def __getitem__(self, index):
+        # Alternate sampling: even indices repeat the same dataset
+        if index % 2 == 0:
+            return self.dataset[index // 2]
+        else:
+            return self.dataset[index // 2]
+
+
+
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -54,18 +76,7 @@ class FSDPTrainer(Trainer):
         
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
-    def get_train_dataloader(self):
-        print("self.args.train_batch_size", self.args.train_batch_size)
-        return DataLoader(
-            self.train_dataset,
-            batch_size=self.args.train_batch_size,
-            sampler=None,  # Ensure no shuffling
-            shuffle=False,
-            collate_fn=self.data_collator,
-            drop_last=self.args.dataloader_drop_last,
-            num_workers=self.args.dataloader_num_workers,
-            pin_memory=self.args.dataloader_pin_memory,
-        )
+
 
 
 
@@ -87,6 +98,9 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
+
+dataset = TestAlternatingDataset(dataset)
+
 # dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")
@@ -99,7 +113,7 @@ def compute_metrics(eval_pred):
     accuracy = (predictions == labels).mean()
     return {"accuracy": accuracy} 
 
-train_dataset = dataset
+train_dataset = dataset["train"]
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,

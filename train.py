@@ -68,12 +68,6 @@ class AlternatingDistributedSampler(DistributedSampler):
         # Determine the subset of indices for this GPU
         indices = list(range(len(self.dataset)))
 
-        # Optionally shuffle (not required here)
-        if self.shuffle:
-            g = torch.Generator()
-            g.manual_seed(self.seed)
-            indices = torch.randperm(len(indices), generator=g).tolist()
-
         # Split indices for distributed training
         indices = indices[self.rank:self.total_size:self.num_replicas]
         return iter(indices)

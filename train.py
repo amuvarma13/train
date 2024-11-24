@@ -48,7 +48,7 @@ class TestAlternatingDataset(Dataset):
         return self.length
 
     def __getitem__(self, index):
-        print("sampling item", index)
+        print("sampling item", index,"//")
         # Alternate sampling: even indices repeat the same dataset
         if index % 2 == 0:
             return self.dataset[index // 2]
@@ -119,7 +119,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=1,
+    logging_steps=100,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     # fsdp="full_shard",

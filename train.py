@@ -6,6 +6,7 @@ from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConf
 from torch.distributed.fsdp import ( FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
 from torch.utils.data import DataLoader
 from torch.utils.data import Dataset
+from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
 import os
 import wandb
@@ -57,6 +58,27 @@ class TestAlternatingDataset(Dataset):
 
 
 
+
+class AlternatingDistributedSampler(DistributedSampler):
+    def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):
+        super().__init__(dataset, num_replicas=num_replicas, rank=rank, shuffle=shuffle)
+        self.shuffle = shuffle
+
+    def __iter__(self):
+        # Determine the subset of indices for this GPU
+        indices = list(range(len(self.dataset)))
+
+        # Optionally shuffle (not required here)
+        if self.shuffle:
+            g = torch.Generator()
+            g.manual_seed(self.seed)
+            indices = torch.randperm(len(indices), generator=g).tolist()
+
+        # Split indices for distributed training
+        indices = indices[self.rank:self.total_size:self.num_replicas]
+        return iter(indices)
+
+
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -64,14 +86,20 @@ class FSDPTrainer(Trainer):
         self.api = HfApi()
     
     def get_train_dataloader(self):
+        sampler = AlternatingDistributedSampler(
+            self.train_dataset,
+            num_replicas=torch.distributed.get_world_size(),
+            rank=torch.distributed.get_rank(),
+            shuffle=False,  # No shuffling to maintain order
+        )
+
         return DataLoader(
             self.train_dataset,
             batch_size=self.args.per_device_train_batch_size,
-            sampler=None,  # No shuffling or distributed sampling
-            shuffle=False,  # Ensure ordered sampling
+            sampler=sampler,
             collate_fn=self.data_collator,
             drop_last=self.args.dataloader_drop_last,
-            num_workers=0,  # Disable parallelism to ensure order
+            num_workers=0,  # Reduce workers for simplicity and order
             pin_memory=self.args.dataloader_pin_memory,
         )
 

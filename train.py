@@ -12,10 +12,11 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "luna-tune-tts"
-dsn = "amuvarma/luna-3days-capped"
+project_name = "instructify"
 
-model_name = "amuvarma/convo-fpsft-13k" # Replace with your model
+dsn = "amuvarma/100k-instruction-tuned"
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
@@ -25,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "p0-11-11-tags"
+    name = "p0-23-11"
     )
  
  
@@ -94,8 +95,8 @@ training_args = TrainingArguments(
     fp16=True,
     output_dir=f"./{base_repo_id}",
     # fsdp="full_shard",
-    # fsdp = "full_shard",
-    # fp16 = True,
+    fsdp = "auto_wrap",
+    fp16 = True,
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 

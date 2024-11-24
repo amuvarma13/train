@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "instructify"
 
 dsn = "amuvarma/5k-instruction-tuned-v3"
-model_name = "amuvarma/convo-tts-tune-4" # Replace with your model
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -102,7 +102,7 @@ training_args = TrainingArguments(
     remove_unused_columns=True, 
     # warmup_steps=100,
     # gradient_accumulation_steps=16,  # Adjust this value as needed
-    learning_rate=5e-6,
+    # learning_rate=0,
 
 
 )

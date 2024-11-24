@@ -48,6 +48,7 @@ class TestAlternatingDataset(Dataset):
         return self.length
 
     def __getitem__(self, index):
+        print("sampling item", index)
         # Alternate sampling: even indices repeat the same dataset
         if index % 2 == 0:
             return self.dataset[index // 2]

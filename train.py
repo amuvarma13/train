@@ -96,7 +96,7 @@ training_args = TrainingArguments(
     output_dir=f"./{base_repo_id}",
     # fsdp="full_shard",
     fsdp = "auto_wrap",
-    fp16 = True,
+
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 

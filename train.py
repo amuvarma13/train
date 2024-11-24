@@ -54,6 +54,18 @@ class FSDPTrainer(Trainer):
         
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
+    def get_train_dataloader(self):
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.train_batch_size,
+            sampler=None,  # Ensure no shuffling
+            shuffle=False,
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=self.args.dataloader_num_workers,
+            pin_memory=self.args.dataloader_pin_memory,
+        )
+
 
 
 

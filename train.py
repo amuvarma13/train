@@ -113,7 +113,7 @@ def compute_metrics(eval_pred):
     accuracy = (predictions == labels).mean()
     return {"accuracy": accuracy} 
 
-train_dataset = dataset["train"]
+train_dataset = dataset
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,

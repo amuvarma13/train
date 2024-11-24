@@ -17,7 +17,7 @@ base_repo_id = "models"
 project_name = "instructify"
 resize_dataset = False
 
-dsn = "amuvarma/interleaved_20k"
+dsn = "amuvarma/interleaved_25k"
 model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"

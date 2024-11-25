@@ -3,7 +3,7 @@ import os
 
 
 base_repo_id = "models/checkpoint-544"
-upload_name = "amuvarma/convo-tts-tune-7contentonly"
+upload_name = "amuvarma/convo-tts-tune-76layer"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

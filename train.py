@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "instructify"
 
 dsn = "amuvarma/5k-luna-tune-instruct-6layer"
-model_name = "amuvarma/convo-fpsft-13k" # Replace with your model
+model_name = "amuvarma/llama-2.3m-full" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1

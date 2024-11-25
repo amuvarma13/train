@@ -14,8 +14,8 @@ from huggingface_hub import HfApi, create_repo
 base_repo_id = "models"
 project_name = "instructify"
 
-dsn = "amuvarma/interleaved_20k"
-model_name = "amuvarma/llama-2.3m-full" # Replace with your model
+dsn = "amuvarma/5k-luna-tune-instruct-contentonly"
+model_name = "amuvarma/750k-shuffled-25-10-convo-tune-contentonly" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1

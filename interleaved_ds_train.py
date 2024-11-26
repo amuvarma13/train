@@ -34,7 +34,6 @@ wandb.init(project=project_name, name = "p0-23-11")
 #     def __init__(self, dataset):
 #         self.dataset = dataset
 #         self.length = len(dataset) * 2
-
 #     def __len__(self):
 #         return self.length
 

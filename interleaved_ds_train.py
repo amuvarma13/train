@@ -100,6 +100,8 @@ class FSDPTrainer(Trainer):
         else:
             wandb.log({"dataset2_loss": logs["loss"], "step": global_step})
 
+        print(f"Step: {global_step}, Loss: {logs['loss']}")
+
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:
             output_dir = self.args.output_dir

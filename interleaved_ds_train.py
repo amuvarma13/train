@@ -51,11 +51,11 @@ class BatchedAlternatingDataset(Dataset):
         
         if position_in_super_batch < self.batch_total:
             dataset_index = super_batch * self.batch_total + position_in_super_batch
-            print(f"returning from dataset1: {dataset_index}")
+            # print(f"returning from dataset1: {dataset_index}")
             return self.dataset1[dataset_index]
         else:
             dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
-            print(f"returning from dataset2: {dataset_index}")
+            # print(f"returning from dataset2: {dataset_index}")
             return self.dataset2[dataset_index]
 
 class AlternatingDistributedSampler(DistributedSampler):
@@ -160,7 +160,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
-    logging_steps=10,
+    logging_steps=1,
     fp16=True,
     output_dir=f"./{base_repo_id}",
     # fsdp="full_shard",

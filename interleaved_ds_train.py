@@ -24,27 +24,36 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
+number_processes = 2
 pad_token = 128263
 save_steps = 12000
 
 # torch.set_default_dtype(torch.float16)
 
 wandb.init(project=project_name, name = "p0-23-11")
- 
 
-class AlternatingDataset(Dataset):
-    def __init__(self, dataset):
-        self.dataset = dataset
-        self.length = len(dataset) * 2
+batch_total = number_processes * batch_size
+class BatchedAlternatingDataset(Dataset):
+    def __init__(self, dataset1, dataset2, batch_total):
+        self.dataset1 = dataset1
+        self.dataset2 = dataset2
+        self.batch_total = batch_total
+        self.length = 2 * min(len(dataset1), len(dataset2))
+        
     def __len__(self):
         return self.length
-
+    
     def __getitem__(self, index):
-        print("requesting data item", index)
-        if index % 2 == 0:
-            return self.dataset[index // 2]
+        super_batch = index // (2 * self.batch_total)
+        
+        position_in_super_batch = index % (2 * self.batch_total)
+        
+        if position_in_super_batch < self.batch_total:
+            dataset_index = super_batch * self.batch_total + position_in_super_batch
+            return self.dataset1[dataset_index]
         else:
-            return self.dataset[index // 2]
+            dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
+            return self.dataset2[dataset_index]
 
 class AlternatingDistributedSampler(DistributedSampler):
     def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):

@@ -107,7 +107,7 @@ class FSDPTrainer(Trainer):
             output_dir = self.args.output_dir
 
         self.save_and_push_model(output_dir)
-
+ 
     def save_and_push_model(self, output_dir):
         save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
         

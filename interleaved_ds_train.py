@@ -23,7 +23,7 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 2
+batch_size = 1
 number_processes = 8
 pad_token = 128263
 save_steps = 12000
@@ -143,10 +143,10 @@ if resize_dataset:
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-# train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
+train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 
 # dataset = dataset.shuffle(seed=42)
-train_dataset = ds1
+# train_dataset = ds1
 
 print("Dataset loaded")
 

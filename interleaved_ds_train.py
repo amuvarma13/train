@@ -32,18 +32,19 @@ save_steps = 12000
 wandb.init(project=project_name, name = "p0-23-11")
  
 
-# class AlternatingDataset(Dataset):
-#     def __init__(self, dataset):
-#         self.dataset = dataset
-#         self.length = len(dataset) * 2
-#     def __len__(self):
-#         return self.length
+class AlternatingDataset(Dataset):
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self.length = len(dataset) * 2
+    def __len__(self):
+        return self.length
 
-#     def __getitem__(self, index):
-#         if index % 2 == 0:
-#             return self.dataset[index // 2]
-#         else:
-#             return self.dataset[index // 2]
+    def __getitem__(self, index):
+        print("requesting data item", index)
+        if index % 2 == 0:
+            return self.dataset[index // 2]
+        else:
+            return self.dataset[index // 2]
 
 class AlternatingDistributedSampler(DistributedSampler):
     def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):
@@ -121,7 +122,7 @@ if resize_dataset:
 dataset = load_dataset(dsn, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-# dataset = TestAlternatingDataset(dataset)
+train_dataset = AlternatingDataset(ds2)
 
 # dataset = dataset.shuffle(seed=42)
 
@@ -135,7 +136,7 @@ def compute_metrics(eval_pred):
     accuracy = (predictions == labels).mean()
     return {"accuracy": accuracy} 
 
-train_dataset = ds2
+
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,

@@ -146,7 +146,7 @@ ds2 = load_dataset(dsn2, split="train")
 # train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 
 # dataset = dataset.shuffle(seed=42)
-train_dataset = ds2
+train_dataset = ds1
 
 print("Dataset loaded")
 

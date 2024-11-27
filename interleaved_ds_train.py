@@ -18,6 +18,7 @@ project_name = "instructify"
 resize_dataset = False
 
 dsn = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
+dsn2 = "amuvarma/orcatext-200k-processed-1"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -117,6 +118,7 @@ if resize_dataset:
     model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
+ds2 = load_dataset(dsn2, split="train")
 
 # dataset = TestAlternatingDataset(dataset)
 

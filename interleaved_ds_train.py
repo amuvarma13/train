@@ -51,9 +51,11 @@ class BatchedAlternatingDataset(Dataset):
         
         if position_in_super_batch < self.batch_total:
             dataset_index = super_batch * self.batch_total + position_in_super_batch
+            print(f"returning from dataset1: {dataset_index}")
             return self.dataset1[dataset_index]
         else:
             dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
+            print(f"returning from dataset2: {dataset_index}")
             return self.dataset2[dataset_index]
 
 class AlternatingDistributedSampler(DistributedSampler):

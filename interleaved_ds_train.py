@@ -15,7 +15,7 @@ from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "models"
 project_name = "instructify"
-resize_dataset = False
+resize_dataset = True
 
 dsn = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
 dsn2 = "amuvarma/orcatext-200k-processed-1"
@@ -26,6 +26,7 @@ epochs = 1
 batch_size = 1
 pad_token = 128263
 save_steps = 12000
+
 # torch.set_default_dtype(torch.float16)
 
 wandb.init(project=project_name, name = "p0-23-11")

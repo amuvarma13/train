@@ -17,7 +17,7 @@ base_repo_id = "models"
 project_name = "instructify"
 resize_dataset = True
 
-dsn = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
+dsn1 = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
 dsn2 = "amuvarma/orcatext-200k-processed-1"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
@@ -33,6 +33,7 @@ save_steps = 12000
 wandb.init(project=project_name, name = "p0-23-11")
 
 batch_total = number_processes * batch_size
+
 class BatchedAlternatingDataset(Dataset):
     def __init__(self, dataset1, dataset2, batch_total):
         self.dataset1 = dataset1
@@ -128,10 +129,10 @@ if resize_dataset:
     tokenizer.add_tokens(new_tokens)
     model.resize_token_embeddings(len(tokenizer))
 
-dataset = load_dataset(dsn, split="train")
+ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-train_dataset = AlternatingDataset(ds2)
+train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 
 # dataset = dataset.shuffle(seed=42)
 

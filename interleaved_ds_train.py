@@ -24,7 +24,7 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
-number_processes = 2
+number_processes = 8
 pad_token = 128263
 save_steps = 12000
 
@@ -92,6 +92,13 @@ class FSDPTrainer(Trainer):
             num_workers=0,
             pin_memory=self.args.dataloader_pin_memory,
         )
+    
+    def log(self, logs):
+        if self.step % 2 == 0:
+            wandb.log({"dataset1_loss": logs["loss"], "step": self.step})
+        else:
+            wandb.log({"dataset2_loss": logs["loss"], "step": self.step})
+        self.step += 1
 
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:

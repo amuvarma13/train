@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 base_repo_id = "models"
 project_name = "instructify"
 
-dsn = "amuvarma/instruction_tune-contentonly-proc"
+dsn = "amuvarma/finetune-2.7k"
 model_name = "amuvarma/1-1-interleaved-text-content-tokens-1mn-samples" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"

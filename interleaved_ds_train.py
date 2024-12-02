@@ -141,6 +141,40 @@ if resize_dataset:
     model.resize_token_embeddings(len(tokenizer))
 
 ds1 = load_dataset(dsn1, split="train")
+
+from datasets import Dataset
+import numpy as np
+
+def add_columns_to_dataset(dataset):
+    """
+    Add labels and attention_mask columns to the dataset.
+    - labels: copy of input_ids
+    - attention_mask: array of 1s matching input_ids length
+    """
+    def add_columns(example):
+        # Get the input_ids
+        input_ids = example['input_ids']
+        
+        # Create labels (same as input_ids)
+        labels = input_ids
+        
+        # Create attention_mask (all 1s with same length as input_ids)
+        attention_mask = [1] * len(input_ids)
+        
+        return {
+            'labels': labels,
+            'attention_mask': attention_mask
+        }
+    
+    # Add the new columns
+    return dataset.map(
+        add_columns,
+        remove_columns=dataset.column_names,
+        keep_in_memory=True
+    )
+
+ds1 = add_columns_to_dataset(ds1)
+
 ds2 = load_dataset(dsn2, split="train")
 
 print(ds1, ds2)

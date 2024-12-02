@@ -145,35 +145,45 @@ ds1 = load_dataset(dsn1, split="train")
 from datasets import Dataset
 import numpy as np
 
-def add_columns_to_dataset(dataset):
+from datasets import Dataset
+import numpy as np
+import os
+
+def add_columns_to_dataset_fast(dataset):
     """
-    Add labels and attention_mask columns to the dataset.
-    - labels: copy of input_ids
-    - attention_mask: array of 1s matching input_ids length
+    Efficiently add labels and attention_mask columns to the dataset using batch processing
+    and optimal number of CPU cores.
     """
-    def add_columns(example):
-        # Get the input_ids
-        input_ids = example['input_ids']
+    def add_columns_batch(examples):
+        batch_size = len(examples['input_ids'])
         
         # Create labels (same as input_ids)
-        labels = input_ids
+        labels = examples['input_ids']
         
-        # Create attention_mask (all 1s with same length as input_ids)
-        attention_mask = [1] * len(input_ids)
+        # Create attention_masks using list comprehension
+        attention_mask = [
+            [1] * len(input_ids)
+            for input_ids in examples['input_ids']
+        ]
         
         return {
+            'input_ids': examples['input_ids'],
             'labels': labels,
             'attention_mask': attention_mask
         }
     
-    # Add the new columns
+    # Use all available CPU cores minus 1
+    num_cpu = max(1, os.cpu_count() - 1)
+    
+    # Process in larger batches
     return dataset.map(
-        add_columns,
+        add_columns_batch,
+        batched=True,
+        batch_size=1000,
         remove_columns=dataset.column_names,
-        keep_in_memory=True
+        num_proc=num_cpu  # Dynamically set based on available cores
     )
-
-ds1 = add_columns_to_dataset(ds1)
+ds1 =add_columns_to_dataset_fast(ds1)
 
 ds2 = load_dataset(dsn2, split="train")
 

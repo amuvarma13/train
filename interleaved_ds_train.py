@@ -17,8 +17,8 @@ base_repo_id = "models"
 project_name = "instructify"
 resize_dataset = True
 
-dsn1 = "amuvarma/contentonly-proc-train-125k-1dups-concat-pad"
-dsn2 = "amuvarma/orcatext-200k-processed-1"
+dsn1 = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
+dsn2 = "amuvarma/orcatext-dev-processed-1"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -143,6 +143,10 @@ if resize_dataset:
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
+print(ds1, ds2)
+
+
+break;
 train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 
 # dataset = dataset.shuffle(seed=42)

@@ -237,7 +237,7 @@ trainer = FSDPTrainer(
 )
 
 # print("Trainer created")
-trainer.train()
+trainer.train(resume_from_checkpoint="./models/checkpoint-156000")
 # trainer.train(resume_from_checkpoint="./mymodel")
 
 

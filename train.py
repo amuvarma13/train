@@ -76,6 +76,41 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
+def add_columns_to_dataset_fast(dataset):
+    """
+    Efficiently add labels and attention_mask columns to the dataset using batch processing
+    and optimal number of CPU cores.
+    """
+    def add_columns_batch(examples):
+        batch_size = len(examples['input_ids'])
+        
+        # Create labels (same as input_ids)
+        labels = examples['input_ids']
+        
+        # Create attention_masks using list comprehension
+        attention_mask = [
+            [1] * len(input_ids)
+            for input_ids in examples['input_ids']
+        ]
+        
+        return {
+            'input_ids': examples['input_ids'],
+            'labels': labels,
+            'attention_mask': attention_mask
+        }
+    
+    # Use all available CPU cores minus 1
+    num_cpu = max(1, os.cpu_count() - 1)
+    
+    # Process in larger batches
+    return dataset.map(
+        add_columns_batch,
+        batched=True,
+        batch_size=1000,
+        remove_columns=dataset.column_names,
+        num_proc=num_cpu  # Dynamically set based on available cores
+    )
+dataset =add_columns_to_dataset_fast(dataset)
 # dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")

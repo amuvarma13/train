@@ -111,6 +111,7 @@ def add_columns_to_dataset_fast(dataset):
         num_proc=num_cpu  # Dynamically set based on available cores
     )
 dataset =add_columns_to_dataset_fast(dataset)
+dataset = dataset.select(range(0, 1000000))
 # dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")

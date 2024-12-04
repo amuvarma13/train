@@ -12,10 +12,10 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "pretrain-2"
+project_name = "tts-ify"
 
-dsn = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
-model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
+dsn = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows-proc"
+model_name = "amuvarma/text-speech-1m-checkpoint-250000-of-250000" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "no-text-samples"
+    name = "4-12-6layer-0"
     )
  
  
@@ -111,7 +111,7 @@ def add_columns_to_dataset_fast(dataset):
         num_proc=num_cpu  # Dynamically set based on available cores
     )
 dataset =add_columns_to_dataset_fast(dataset)
-dataset = dataset.select(range(0, 1000000))
+# dataset = dataset.select(range(0, 1000000))
 # dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")

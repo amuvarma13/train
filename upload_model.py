@@ -2,8 +2,8 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-125000"
-upload_name = "amuvarma/text-speech-1m-tts"
+base_repo_id = "models/checkpoint-1130"
+upload_name = "amuvarma/text-speech-1m-tune"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

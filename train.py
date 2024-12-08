@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "tts-ify"
+project_name = "tts-stts-tune"
 
 dsn = "amuvarma/smoltalk-audio-speech-raw-1dups-6rows-proc"
 model_name = "amuvarma/text-speech-1m-checkpoint-250000-of-250000" # Replace with your model
@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "4-12-6layer-0"
+    name = "8-12-6layer-0"
     )
  
  

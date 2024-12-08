@@ -19,7 +19,7 @@ resize_dataset = True
 
 dsn1 = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
 dsn2 = "amuvarma/orcatext-dev-processed-1"
-model_name = "amuvarma/text-speech-1m-stts-tune"
+model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -120,10 +120,10 @@ class FSDPTrainer(Trainer):
 
 
 
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 

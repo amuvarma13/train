@@ -19,7 +19,7 @@ resize_dataset = True
 
 dsn1 = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
 dsn2 = "amuvarma/orcatext-dev-processed-1"
-model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
+model_name = "amuvarma/text-speech-1m-stts-tune"
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1

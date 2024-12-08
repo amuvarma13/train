@@ -15,7 +15,7 @@ base_repo_id = "models"
 project_name = "tts-stts-tune"
 
 dsn = "amuvarma/26k-stts-duplex-convos-raw-fac-1dups-proc-train-col-clean"
-model_name = "amuvarma/text-speech-1m-checkpoint-250000-of-250000" # Replace with your model
+model_name = "amuvarma/text-speech-1m-tttts" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -141,7 +141,7 @@ training_args = TrainingArguments(
 
     # warmup_steps=100,
     # gradient_accumulation_steps=16,  # Adjust this value as needed
-    # learning_rate=0,
+    learning_rate=5e-6,
 
 
 )

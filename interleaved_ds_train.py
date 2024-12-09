@@ -24,7 +24,7 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
-number_processes = 8
+number_processes = 16
 pad_token = 128263
 save_steps = 12000
 
@@ -124,7 +124,7 @@ class FSDPTrainer(Trainer):
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
-model.gradient_checkpointing_enable()
+# model.gradient_checkpointing_enable()
 # model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
 
 

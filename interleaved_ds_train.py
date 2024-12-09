@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "instructify"
+project_name = "interleaving-datasets"
 resize_dataset = True
 
 dsn1 = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"

@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "8-12-6layer-0"
+    name = "8-12-6layer-usual-lr"
     )
  
  

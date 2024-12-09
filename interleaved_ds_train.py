@@ -97,9 +97,6 @@ class FSDPTrainer(Trainer):
         super().log(logs, start_time)
 
         if self.is_world_process_zero():
-            print("I am rank 0")
-        else:
-            print("I am not rank 0")
             global_step = self.state.global_step
             if global_step % 2 == 0:
                 wandb.log({"text_loss": logs["loss"], "step": global_step})

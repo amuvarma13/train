@@ -95,11 +95,16 @@ class FSDPTrainer(Trainer):
     
     def log(self, logs, start_time=None):
         super().log(logs, start_time)
-        global_step = self.state.global_step
-        if global_step % 2 == 0:
-            wandb.log({"text_loss": logs["loss"], "step": global_step})
+
+        if self.is_world_process_zero():
+            print("I am rank 0")
         else:
-            wandb.log({"audio_loss": logs["loss"], "step": global_step})
+            print("I am not rank 0")
+            global_step = self.state.global_step
+            if global_step % 2 == 0:
+                wandb.log({"text_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"audio_loss": logs["loss"], "step": global_step})
 
 
     def save_model(self, output_dir=None, _internal_call=False):

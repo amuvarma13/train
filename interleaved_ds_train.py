@@ -30,7 +30,7 @@ save_steps = 12000
 
 # torch.set_default_dtype(torch.float16)
 
-wandb.init(project=project_name, name = "26-11-batched-alternating-r0")
+wandb.init(project=project_name, name = "8-12-batched-alternating-r0")
 
 batch_total = number_processes * batch_size
 

@@ -185,7 +185,7 @@ training_args = TrainingArguments(
     remove_unused_columns=True, 
     # learning_rate=1e-4,
     learning_rate=8e-5,  # 8e-4 is the learning rate used in the original Llama paper
-    # warmup_ratio=0.03,  # 3% of total steps
+    warmup_ratio=0.03,  # 3% of total steps
     lr_scheduler_type="cosine"  # Cosine decay scheduler
 )
 

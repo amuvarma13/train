@@ -1,5 +1,5 @@
 import torch
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoTokenizer
 import numpy as np
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
@@ -17,8 +17,21 @@ base_repo_id = "models"
 project_name = "interleaving-datasets-tune"
 resize_dataset = True
 
-dsn1 = "amuvarma/1m-fac-raw-1dups-proc-train-col-clean"
-dsn2 = "amuvarma/orcatext-dev-processed-1"
+dsn1_1 = "amuvarma/CanopyLabs-audio_pretrain_10m-facodec-1dups-proc"
+dsn1_2 = "amuvarma/CanopyElias-audio_pretrain_10m-facodec-1dups-proc"
+dsn1_3 = "amuvarma/eliasfiz-audio_pretrain_10m-facodec-1dups-proc"
+
+ds1_1 = load_dataset(dsn1_1, split="train")
+ds1_2 = load_dataset(dsn1_2, split="train")
+ds1_3 = load_dataset(dsn1_3, split="train")
+
+
+dsn2_0 = "amuvarma/text-messages-6m-processed-1"
+ds2_0 = load_dataset(dsn2_0, split="train")
+ds2_1 = ds2_0.shuffle(seed=42)
+
+ds2 = concatenate_datasets([ds2_0, ds2_1])
+
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
@@ -142,7 +155,8 @@ if resize_dataset:
     tokenizer.add_tokens(new_tokens)
     model.resize_token_embeddings(len(tokenizer))
 
-ds1 = load_dataset(dsn1, split="train")
+ds1 = concatenate_datasets([ds1_1, ds1_2, ds1_3])
+ds1 = ds1.shuffle(seed=42)
 
 from datasets import Dataset
 import numpy as np
@@ -152,10 +166,6 @@ import numpy as np
 import os
 
 def add_columns_to_dataset_fast(dataset):
-    """
-    Efficiently add labels and attention_mask columns to the dataset using batch processing
-    and optimal number of CPU cores.
-    """
     def add_columns_batch(examples):
         batch_size = len(examples['input_ids'])
         
@@ -187,7 +197,7 @@ def add_columns_to_dataset_fast(dataset):
     )
 ds1 =add_columns_to_dataset_fast(ds1)
 
-ds2 = load_dataset(dsn2, split="train")
+
 
 print(ds1, ds2)
 

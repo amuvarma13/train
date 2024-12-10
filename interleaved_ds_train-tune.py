@@ -37,7 +37,7 @@ number_processes = 24
 pad_token = 128263
 save_steps = 12000
 
-wandb.init(project=project_name, name = "9-12-batched-alternating-r0")
+wandb.init(project=project_name, name = "9-12-batched-alternating-r1")
 
 batch_total = number_processes * batch_size
 

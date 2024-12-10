@@ -184,6 +184,8 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True, 
     learning_rate=1e-4,
+    warmup_ratio=0.03,  # 3% of total steps
+    lr_scheduler_type="cosine"  # Cosine decay scheduler
 )
 
 print("Training arguments set")

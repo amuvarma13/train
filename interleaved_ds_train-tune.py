@@ -1,5 +1,5 @@
 import torch
-from datasets import load_dataset, concatenate_datasets
+from datasets import load_dataset, concatenate_datasets, Dataset
 from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoTokenizer
 import numpy as np
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "interleaving-datasets-tune"
+project_name = "interleaving-datasets-pretrain"
 resize_dataset = True
 
 dsn1_1 = "amuvarma/CanopyLabs-audio_pretrain_10m-facodec-1dups-proc"
@@ -37,13 +37,13 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
-number_processes = 16
+number_processes = 24
 pad_token = 128263
 save_steps = 12000
 
 # torch.set_default_dtype(torch.float16)
 
-wandb.init(project=project_name, name = "8-12-batched-alternating-r0")
+wandb.init(project=project_name, name = "9-12-batched-alternating-r0")
 
 batch_total = number_processes * batch_size
 
@@ -158,12 +158,7 @@ if resize_dataset:
 ds1 = concatenate_datasets([ds1_1, ds1_2, ds1_3])
 ds1 = ds1.shuffle(seed=42)
 
-from datasets import Dataset
-import numpy as np
 
-from datasets import Dataset
-import numpy as np
-import os
 
 def add_columns_to_dataset_fast(dataset):
     def add_columns_batch(examples):
@@ -235,7 +230,7 @@ training_args = TrainingArguments(
 
     # warmup_steps=100,
     # gradient_accumulation_steps=16,  # Adjust this value as needed
-    learning_rate=3e-5,
+    # learning_rate=3e-5,
 
 
 )

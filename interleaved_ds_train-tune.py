@@ -37,7 +37,7 @@ number_processes = 24
 pad_token = 128263
 save_steps = 12000
 
-wandb.init(project=project_name, name = "9-12-batched-alternating-r1")
+wandb.init(project=project_name, name = "9-12-batched-alternating-r2")
 
 batch_total = number_processes * batch_size
 
@@ -183,6 +183,7 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
+    learning_rate=1e-4,
 )
 
 print("Training arguments set")

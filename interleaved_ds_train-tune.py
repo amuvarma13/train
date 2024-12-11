@@ -199,7 +199,7 @@ trainer = FSDPTrainer(
     data_collator=data_collator,  # <-- Add this line
 )
 
-trainer.train()
+trainer.train(resume_from_checkpoint="amuvarma/pretrain-132000")
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
 with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):

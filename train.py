@@ -19,7 +19,7 @@ model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 6
+batch_size = 12
 pad_token = 128263
 save_steps = 12000
 # torch.set_default_dtype(torch.float16)

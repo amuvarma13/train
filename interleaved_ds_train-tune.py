@@ -11,7 +11,7 @@ import os
 import wandb
 from huggingface_hub import HfApi, create_repo
 
-base_repo_id = "models"
+base_repo_id = "checkpoints"
 project_name = "interleaving-datasets-pretrain"
 resize_dataset = True
 
@@ -37,7 +37,7 @@ number_processes = 24
 pad_token = 128263
 save_steps = 12000
 
-wandb.init(project=project_name, name = "9-12-batched-alternating-r3")
+wandb.init(project=project_name, name = "9-12-batched-alternating-r3", resume="allow", id="arsleac7")
 
 batch_total = number_processes * batch_size
 
@@ -199,7 +199,7 @@ trainer = FSDPTrainer(
     data_collator=data_collator,  # <-- Add this line
 )
 
-trainer.train(resume_from_checkpoint="amuvarma/pretrain-132000")
+trainer.train(resume_from_checkpoint="./models")
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
 with FSDP.state_dict_type(trainer.model, StateDictType.FULL_STATE_DICT, full_state_dict_config):

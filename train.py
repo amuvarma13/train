@@ -12,10 +12,10 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "tts-stts-tune"
+project_name = "snac-tts-pretrain"
 
-dsn = "amuvarma/26k-stts-duplex-convos-raw-fac-1dups-proc-train-col-clean"
-model_name = "amuvarma/text-speech-1m-tttts" # Replace with your model
+dsn = "amuvarma/amuvarma/snac-2m-tts"
+model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -26,13 +26,13 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "8-12-6layer-usual-lr"
+    name = "11-12-r0"
     )
  
  
  
 
-number_add_tokens = 6 * 1024 + 10
+number_add_tokens = 7 * 4096 + 10
 
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
@@ -76,43 +76,6 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 dataset = load_dataset(dsn, split="train")
-def add_columns_to_dataset_fast(dataset):
-    """
-    Efficiently add labels and attention_mask columns to the dataset using batch processing
-    and optimal number of CPU cores.
-    """
-    def add_columns_batch(examples):
-        batch_size = len(examples['input_ids'])
-        
-        # Create labels (same as input_ids)
-        labels = examples['input_ids']
-        
-        # Create attention_masks using list comprehension
-        attention_mask = [
-            [1] * len(input_ids)
-            for input_ids in examples['input_ids']
-        ]
-        
-        return {
-            'input_ids': examples['input_ids'],
-            'labels': labels,
-            'attention_mask': attention_mask
-        }
-    
-    # Use all available CPU cores minus 1
-    num_cpu = max(1, os.cpu_count() - 1)
-    
-    # Process in larger batches
-    return dataset.map(
-        add_columns_batch,
-        batched=True,
-        batch_size=1000,
-        remove_columns=dataset.column_names,
-        num_proc=num_cpu  # Dynamically set based on available cores
-    )
-dataset =add_columns_to_dataset_fast(dataset)
-# dataset = dataset.select(range(0, 1000000))
-# dataset = dataset.shuffle(seed=42)
 
 print("Dataset loaded")
 

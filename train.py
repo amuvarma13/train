@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 base_repo_id = "models"
 project_name = "snac-tts-pretrain"
 
-dsn = "amuvarma/amuvarma/snac-2m-tts"
+dsn = "amuvarma/snac-2m-tts"
 model_name = "meta-llama/Llama-3.2-3B" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"

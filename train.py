@@ -118,9 +118,9 @@ trainer = FSDPTrainer(
     compute_metrics=compute_metrics,  
 )
 
-# print("Trainer created")
-trainer.train()
-# trainer.train(resume_from_checkpoint="./mymodel")
+# # print("Trainer created")
+# trainer.train()
+trainer.train(resume_from_checkpoint="amuvarma/pretrain-132000")
 
 
 full_state_dict_config = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)

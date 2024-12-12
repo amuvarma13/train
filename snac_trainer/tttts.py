@@ -12,7 +12,7 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "tttts-instruct"
+project_name = "tttts-instruct-snac"
 
 dsn = "amuvarma/va-0-10k-snac-tttts""
 model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model

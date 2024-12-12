@@ -118,7 +118,7 @@ tokenizer_length = len(tokenizer)
 tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
 
 if resize_dataset:
-    number_add_tokens = 6 * 1024 + 10
+    number_add_tokens = 4 * 4096 + 10
     new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
     tokenizer.add_tokens(new_tokens)
     model.resize_token_embeddings(len(tokenizer))

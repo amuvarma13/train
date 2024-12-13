@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "checkpoints/checkpoint-5000"
+base_repo_id = "models/checkpoint-5000"
 upload_name = "amuvarma/snac-tttts-2m-5000"
 
 

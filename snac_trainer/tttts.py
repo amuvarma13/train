@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "12-12-r0"
+    name = "12-12-r1"
     )
  
  
@@ -57,6 +57,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 
 
 dataset = load_dataset(dsn, split="train")
+dataset = dataset.select(range(2500))
 
 
 def compute_metrics(eval_pred):

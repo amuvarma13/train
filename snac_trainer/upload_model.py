@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "models/checkpoint-360000"
+base_repo_id = "checkpoints/checkpoint-360000"
 upload_name = "amuvarma/pretrain-360000"
 
 

@@ -7,7 +7,7 @@ def download_model_to_local():
     os.makedirs(local_dir, exist_ok=True)
     
     # Repository ID
-    repo_id = "amuvarma/pretrain-132000"
+    repo_id = "amuvarma/pretrain-360000"
     
     try:
         # Download the repository

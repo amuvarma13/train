@@ -19,14 +19,14 @@ model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
-batch_size = 12
+batch_size = 1
 pad_token = 128263
 save_steps = 12000
 # torch.set_default_dtype(torch.float16)
 
 wandb.init(
     project=project_name,
-    name = "11-12-r0"
+    name = "12-12-r0"
     )
  
  

@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "12-12-r1"
+    name = "14-12-decap"
     )
  
  

@@ -2,8 +2,8 @@ from huggingface_hub import HfApi
 import os
 
 
-base_repo_id = "checkpoints/checkpoint-360000"
-upload_name = "amuvarma/pretrain-360000"
+base_repo_id = "models/checkpoint-486"
+upload_name = "amuvarma/zuck-tts-tune"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

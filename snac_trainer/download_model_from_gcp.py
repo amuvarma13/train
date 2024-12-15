@@ -5,7 +5,7 @@ from tqdm import tqdm
 def download_folder(bucket_name, output_dir='./mymodel'):
     client = storage.Client.from_service_account_json('service.json')
     bucket = client.bucket(bucket_name)
-    blobs = list(bucket.list_blobs(prefix='models/checkpoint-5000'))
+    blobs = list(bucket.list_blobs(prefix='/models/zuck-tune'))
     for blob in tqdm(blobs, desc="Downloading files"):
         local_path = os.path.join(output_dir, os.path.relpath(blob.name, 'models/checkpoint-5000'))
         os.makedirs(os.path.dirname(local_path), exist_ok=True)

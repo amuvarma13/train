@@ -12,9 +12,9 @@ from huggingface_hub import HfApi, create_repo
  
 
 base_repo_id = "models"
-project_name = "tttts-instruct-snac"
+project_name = "snac-zuck-tune"
 
-dsn = "amuvarma/va-0-10k-snac-tttts"
+dsn = "amuvarma/zuck-3-snacced-tts-combined"
 model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"

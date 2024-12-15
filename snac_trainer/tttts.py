@@ -57,7 +57,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 
 
 dataset = load_dataset(dsn, split="train")
-dataset = dataset.select(range(2500))
+
 
 
 def compute_metrics(eval_pred):

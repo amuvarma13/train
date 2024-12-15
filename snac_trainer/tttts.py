@@ -14,7 +14,7 @@ from huggingface_hub import HfApi, create_repo
 base_repo_id = "luna_models"
 project_name = "snac-zuck-tune"
 
-dsn = "amuvarma/zuck-3-snacced-ds-tts-combined"
+dsn = "amuvarma/luna-snacced-ds-StTtS-combined"
 model_name = "./mymodel"
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"

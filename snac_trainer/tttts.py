@@ -11,11 +11,11 @@ import wandb
 from huggingface_hub import HfApi, create_repo
  
 
-base_repo_id = "models"
+base_repo_id = "luna_models"
 project_name = "snac-zuck-tune"
 
 dsn = "amuvarma/zuck-3-snacced-ds-tts-combined"
-model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
+model_name = "./mymodel"
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
@@ -26,7 +26,7 @@ save_steps = 12000
 
 wandb.init(
     project=project_name,
-    name = "14-12-decap-dsus-5e-6-2"
+    name = "14-12-luna-emo"
     )
  
  

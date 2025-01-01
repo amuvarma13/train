@@ -28,7 +28,7 @@ epochs = 1
 batch_size = 1
 number_processes = 8
 pad_token = 128263
-save_steps = 12000
+save_steps = 1430
 
 wandb.init(project=project_name, name = "r0-5e5")
 
@@ -160,7 +160,7 @@ training_args = TrainingArguments(
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
     logging_steps=1,
-    fp16=True,
+    bf16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     report_to="wandb", 

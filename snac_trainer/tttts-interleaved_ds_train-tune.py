@@ -90,7 +90,7 @@ class FSDPTrainer(Trainer):
             pin_memory=self.args.dataloader_pin_memory,
         )
     
-    def log(self, logs):
+    def log(self, logs, callback=None):
         super().log(logs)
         if self.is_world_process_zero():
             global_step = self.state.global_step

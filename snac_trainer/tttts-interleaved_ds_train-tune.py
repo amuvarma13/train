@@ -28,7 +28,7 @@ epochs = 1
 batch_size = 1
 number_processes = 8
 pad_token = 128263
-save_steps = 1430
+save_steps = 1675
 
 wandb.init(project=project_name, name = "r0-5e5")
 

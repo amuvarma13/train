@@ -15,8 +15,8 @@ base_repo_id = "checkpoints"
 project_name = "zuck-tune"
 resize_dataset = False
 
-dsn1 = "amuvarma/orcatext-dev-processed-1"
-dsn2 = "amuvarma/snac-2m-tts-combined"
+dsn1 = "amuvarma/va-320k-330k-snac-QA_TTTTS"
+dsn2 = "amuvarma/zuck-qa-ds-snac-StTtS"
 
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")

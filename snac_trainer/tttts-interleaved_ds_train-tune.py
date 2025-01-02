@@ -21,7 +21,7 @@ dsn2 = "amuvarma/snacced-flat-zuck-convo-StTtS"
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
+model_name = "amuvarma/zuck-tttts-qa-checkpoint-1675" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1

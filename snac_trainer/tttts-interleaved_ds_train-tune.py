@@ -26,7 +26,7 @@ model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1
 batch_size = 1
-number_processes = 8
+number_processes = 2
 pad_token = 128263
 save_steps = 1675
 

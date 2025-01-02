@@ -18,6 +18,8 @@ resize_dataset = False
 dsn1 = "amuvarma/qa_pairs_regular-QA_TTTTS"
 dsn2 = "amuvarma/snacced-flat-zuck-convo-StTtS"
 
+learning_rate = 5e-6
+
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
@@ -30,7 +32,7 @@ number_processes = 2
 pad_token = 128263
 save_steps = 1675
 
-wandb.init(project=project_name, name = "r0-5e5")
+wandb.init(project=project_name, name = f"r0-{learning_rate}")
 
 batch_total = number_processes * batch_size
 
@@ -166,7 +168,7 @@ training_args = TrainingArguments(
     report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
-    # learning_rate=1e-4,
+    learning_rate=learning_rate,
     # learning_rate=7e-5,  # 8e-4 is the learning rate used in the original Llama paper
     # warmup_ratio=0.03,  # 3% of total steps
     lr_scheduler_type="cosine"  # Cosine decay scheduler

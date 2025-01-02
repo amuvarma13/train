@@ -30,7 +30,7 @@ epochs = 1
 batch_size = 1
 number_processes = 2
 pad_token = 128263
-save_steps = 1675
+save_steps = 500
 
 wandb.init(project=project_name, name = f"r0-{learning_rate}")
 

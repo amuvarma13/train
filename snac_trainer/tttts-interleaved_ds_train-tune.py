@@ -15,15 +15,15 @@ base_repo_id = "checkpoints"
 project_name = "zuck-tune"
 resize_dataset = False
 
-dsn1 = "amuvarma/qa_pairs_regular-QA_TTTTS"
-dsn2 = "amuvarma/snacced-flat-zuck-convo-StTtS"
+dsn1 = "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
+dsn2 = "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 learning_rate = 5e-6
 
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-model_name = "amuvarma/zuck-tttts-qa-checkpoint-1675" # Replace with your model
+model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 
 tokenizer_name = "meta-llama/Llama-3.2-3B"
 epochs = 1

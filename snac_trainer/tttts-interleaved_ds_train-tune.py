@@ -12,7 +12,7 @@ import wandb
 from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "checkpoints"
-project_name = "zuck-tune"
+project_name = "zuck-tune-2"
 resize_dataset = False
 
 dsn1 = "amuvarma/4batch-zuck-all-TTT-proc"
@@ -21,7 +21,7 @@ dsn2 = "amuvarma/4batch-zuck-all-TTTTS-proc"
 learning_rate = 5e-6
 
 ds1 = load_dataset(dsn1, split="train")
-ds2 = load_dataset(dsn1, split="train")
+ds2 = load_dataset(dsn2, split="train")
 
 model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 

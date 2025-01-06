@@ -12,11 +12,11 @@ import wandb
 from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "checkpoints"
-project_name = "zuck-tune-2"
+project_name = "zuck-tune-3"
 resize_dataset = False
 
-dsn1 = "amuvarma/4batch-zuck-all-TTT-proc"
-dsn2 = "amuvarma/4batch-zuck-all-TTTTS-proc"
+dsn1 = "amuvarma/zuck-nopunc-wcodes-TTTTS-merged"
+dsn2 = "amuvarma/zuck-nopunc-text-TTT"
 
 learning_rate = 5e-6
 

@@ -1,8 +1,8 @@
 from huggingface_hub import HfApi
 import os
 
-base_repo_id = "checkpoints/checkpoint-500"
-upload_name = "amuvarma/zuck-tttts-convo-checkpoint-500-noidentity"
+base_repo_id = "checkpoints/checkpoint-2261"
+upload_name = "amuvarma/zuck-tttts-noid-multiqa"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

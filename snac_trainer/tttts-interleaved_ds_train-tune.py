@@ -20,8 +20,8 @@ dsn2 = "amuvarma/4batch-zuck-all-TTTTS-proc"
 
 learning_rate = 5e-6
 
-ds1 = load_dataset(dsn1, split="train")
-ds2 = load_dataset(dsn1, split="train")
+ds1 = load_dataset(dsn2, split="train")
+ds2 = load_dataset(dsn2, split="train")
 
 model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
 

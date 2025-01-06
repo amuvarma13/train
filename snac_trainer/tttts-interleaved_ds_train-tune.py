@@ -15,8 +15,8 @@ base_repo_id = "checkpoints"
 project_name = "zuck-tune-3"
 resize_dataset = False
 
-dsn1 = "amuvarma/zuck-nopunc-wcodes-TTTTS-merged"
-dsn2 = "amuvarma/zuck-nopunc-text-TTT"
+dsn1 = "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
+dsn2 = "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 learning_rate = 5e-6
 

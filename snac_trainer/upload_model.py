@@ -2,7 +2,7 @@ from huggingface_hub import HfApi
 import os
 
 base_repo_id = "checkpoints/checkpoint-2261"
-upload_name = "amuvarma/zuck-tttts-noid-multiqa"
+upload_name = "amuvarma/zuck-tttts-noid-multiqa-nopunc"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

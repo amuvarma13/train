@@ -1,7 +1,7 @@
 from huggingface_hub import HfApi
 import os
 
-base_repo_id = "checkpoints/checkpoint-2261"
+base_repo_id = "checkpoints/checkpoint-2000"
 upload_name = "amuvarma/zuck-tttts-noid-multiqa-nopunc"
 
 

@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
 import os
-import wandb
+# import wandb
 from huggingface_hub import HfApi, create_repo
 
 base_repo_id = "checkpoints"
@@ -32,7 +32,7 @@ number_processes = 8
 pad_token = 128263
 save_steps = 500
 
-wandb.init(project=project_name, name = f"r0-{learning_rate}")
+# wandb.init(project=project_name, name = f"r0-{learning_rate}")
 
 batch_total = number_processes * batch_size
 
@@ -165,7 +165,7 @@ training_args = TrainingArguments(
     bf16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    report_to="wandb", 
+    # report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
     learning_rate=learning_rate,

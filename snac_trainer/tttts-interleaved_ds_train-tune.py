@@ -96,10 +96,10 @@ class FSDPTrainer(Trainer):
         super().log(logs)
         if self.is_world_process_zero():
             global_step = self.state.global_step
-            if global_step % 2 == 0:
-                wandb.log({"text_loss": logs["loss"], "step": global_step})
-            else:
-                wandb.log({"audio_loss": logs["loss"], "step": global_step})
+            # if global_step % 2 == 0:
+            #     # wandb.log({"text_loss": logs["loss"], "step": global_step})
+            # else:
+            #     wandb.log({"audio_loss": logs["loss"], "step": global_step})
 
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:
@@ -165,7 +165,7 @@ training_args = TrainingArguments(
     bf16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    report_to=False, 
+    # report_to=False, 
     save_steps=save_steps,
     remove_unused_columns=True, 
     learning_rate=learning_rate,

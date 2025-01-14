@@ -5,7 +5,7 @@ tokenizer_name: "meta-llama/Llama-3.1-8B"
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 24
+number_processes: 8
 pad_token: 128263
 save_steps: 12000
 learning_rate: 5e-5

@@ -13,7 +13,7 @@ from huggingface_hub import HfApi
 
 config_file = "PRETRAIN_ARGS-8b-2m.yaml"
 
-with open("config.yaml", "r") as file:
+with open(config_file, "r") as file:
     config = yaml.safe_load(file)
 
 dsn1 = config["text_QA_dataset"]

@@ -1,6 +1,6 @@
 # Model
-model_name: "meta-llama/Llama-3.2-3B"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B"
+model_name: "meta-llama/Llama-3.1-8B"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.1-8B"
 
 # Training Args
 epochs: 1
@@ -11,8 +11,8 @@ save_steps: 12000
 learning_rate: 5e-5
 
 # Datasets
-text_QA_dataset: "interleaving-datasets"
-TTS_dataset: "amuvarma/snac-10m-tts-combined"
+text_QA_dataset: "amuvarma/text-messages-6m-processed-combined-trunc"
+TTS_dataset: "amuvarma/snac-2m-tts-combined"
 
 # Naming and paths
 save_folder: "checkpoints"

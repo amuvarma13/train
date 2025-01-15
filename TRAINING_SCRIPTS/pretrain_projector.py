@@ -36,6 +36,7 @@ audio_model_id = config["audio_model_id"]
 audio_processor_id = config["audio_processor_id"]
 save_folder = config["save_folder"]
 batch_size = config["batch_size"]
+gradient_accumulation_steps = config["gradient_accumulation_steps"]
 
 
 MODEL_FOR_CAUSAL_LM_MAPPING.register(
@@ -144,7 +145,7 @@ class AudioChatDataCollator:
 training_args = TrainingArguments(
     output_dir=save_folder,
     per_device_train_batch_size=batch_size,
-    gradient_accumulation_steps=2,
+    gradient_accumulation_steps=gradient_accumulation_steps,
     num_train_epochs=1,
     learning_rate=learning_rate,  # Changed to 2*10^-3
     logging_steps=1,

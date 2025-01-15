@@ -8,7 +8,7 @@ vocab_size: 156939
 
 # Training Args
 epochs: 1
-batch_size: 16
+batch_size: 8
 pad_token: 128263
 save_steps: 10000
 learning_rate: 2.0e-3
@@ -21,6 +21,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zuck-convo-tune-3b"
-run_name: "15-1-3b-2m-r1"
+run_name: "15-1-3b-2m-r2"
 
 resize_dataset: false

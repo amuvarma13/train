@@ -17,10 +17,11 @@ gradient_accumulation_steps: 1
 # Datasets
 dataset_names: 
   - "amuvarma/proj-train-qa-and-speechqa"
+  - "amuvarma/all_qas-audio"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-convo-tune-3b"
-run_name: "15-1-3b-2m-r2"
+project_name: "projector-3b"
+run_name: "15-1-3b-2m-r3"
 
 resize_dataset: false

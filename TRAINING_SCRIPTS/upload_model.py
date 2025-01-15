@@ -68,5 +68,5 @@ push_folder_to_hub(
     f"./{base_repo_id}", 
     upload_name, 
     commit_message="Update model",
-    max_workers=8  # Adjust this number based on your needs
+    max_workers=4  # Adjust this number based on your needs
 )

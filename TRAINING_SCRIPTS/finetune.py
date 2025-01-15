@@ -10,7 +10,7 @@ from tqdm import tqdm
 import os
 import yaml
 import wandb
-# from huggingface_hub import HfApi, snapshot_download
+from huggingface_hub import HfApi, snapshot_download
 
 
 # snapshot_download(

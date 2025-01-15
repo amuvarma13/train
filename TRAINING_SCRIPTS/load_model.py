@@ -5,7 +5,8 @@ model_path = snapshot_download(
     repo_id="amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000",
     allow_patterns=[
         "config.json",
-        "*.safetensors"
+        "*.safetensors",
+        "model.safetensors.index.json",
     ],
     ignore_patterns=[
         "optimizer.pt",

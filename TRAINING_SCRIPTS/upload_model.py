@@ -1,8 +1,8 @@
 from huggingface_hub import HfApi
 import os
 
-base_repo_id = "checkpoints/checkpoint-60000"
-upload_name = "amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000"
+base_repo_id = "checkpoints/checkpoint-1646"
+upload_name = "amuvarma/zucktune-8b-2m-checkpoint-1646-qa"
 
 
 def push_folder_to_hub(local_folder, repo_id, commit_message="Update model"):

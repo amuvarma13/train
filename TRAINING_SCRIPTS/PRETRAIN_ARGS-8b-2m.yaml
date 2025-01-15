@@ -11,8 +11,8 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-text_QA_dataset: "amuvarma/snac-2m-tts-combined"
-TTS_dataset: "amuvarma/snac-2m-tts-combined"
+text_QA_dataset: "amuvarma/text-messages-6m-processed-1-4g-3328l"
+TTS_dataset: "amuvarma/snac-2m-tts-2g-3328l"
 
 # Naming and paths
 save_folder: "checkpoints"

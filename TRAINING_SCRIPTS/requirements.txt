@@ -5,3 +5,6 @@ flash-attn
 wandb
 datasets
 pyyaml
+librosa
+soundfile
+torchaudio==2.5.1

@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/snac-10m-tts-combined"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "interleaving-datasets-pretrain"
-run_name: "10-12-batched-alternating-r3"
+project_name: "batched_interleaving-datasets-pretrain"
+run_name: "14-1-3b-10m-r0"

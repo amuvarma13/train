@@ -16,7 +16,7 @@ TTS_dataset: "amuvarma/snacced-flat-zuck-convo-StTtS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-convo-tune-8b"
-run_name: "15-1-8b-2m-r0"
+project_name: "zuck-convo-tune-3b"
+run_name: "15-1-3b-2m-r0"
 
 resize_dataset: false

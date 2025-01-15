@@ -12,7 +12,7 @@ learning_rate: 5.0e-6
 
 # Datasets
 text_QA_dataset: "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
-TTS_dataset: "amuvarma/zuck-qa-ds-no-identity-TTTTS "
+TTS_dataset: "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 # Naming and paths
 save_folder: "checkpoints"

@@ -123,6 +123,7 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
+    max_length = 8192
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -134,6 +135,11 @@ def data_collator(features):
         labels = input_ids
     else:
         labels = [f["labels"] for f in features]
+
+
+    input_ids = [ids[:max_length] for ids in input_ids]
+    attention_mask = [m[:max_length] for m in attention_mask]
+    labels = [l[:max_length] for l in labels]
 
     # Convert all lists to tensors and pad
     input_ids = torch.nn.utils.rnn.pad_sequence([torch.tensor(

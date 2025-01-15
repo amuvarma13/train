@@ -1,6 +1,8 @@
 # Model
 model_name: "amuvarma/zuckconvotune-3b-2m-checkpoint-124"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.2-3B"
+audio_token_index: "audio_token_index"
+vocab_size: "vocab_size"
 
 # Training Args
 epochs: 1

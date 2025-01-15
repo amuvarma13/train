@@ -29,6 +29,8 @@ batch_size = config["batch_size"]
 save_steps = config["save_steps"]
 pad_token = config["pad_token"]
 learning_rate = config["learning_rate"]
+vocab_size = config["vocab_size"]
+audio_token_index = config["audio_token_index"]
 gradient_accumulation_steps = config["gradient_accumulation_steps"]
 
 
@@ -48,12 +50,11 @@ elif torch.backends.mps.is_available():
     print(f"Using {device} device")
 
 
-model_id = "./mymodel"
 config = GazelleConfig(
     audio_model_id="facebook/wav2vec2-base-960h",
-    text_model_id=model_id,
-    audio_token_index=156939,
-    vocab_size=156939,
+    text_model_id=model_name,
+    audio_token_index=audio_token_index,
+    vocab_size=vocab_size,
 
 )
 

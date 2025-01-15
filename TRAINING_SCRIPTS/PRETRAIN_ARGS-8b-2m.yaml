@@ -11,7 +11,7 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-text_QA_dataset: "amuvarma/text-messages-6m-processed-combined-trunc"
+text_QA_dataset: "amuvarma/snac-2m-tts-combined"
 TTS_dataset: "amuvarma/snac-2m-tts-combined"
 
 # Naming and paths

@@ -21,6 +21,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zuck-convo-tune-3b"
-run_name: "15-1-3b-2m-r0"
+run_name: "15-1-3b-2m-r1"
 
 resize_dataset: false

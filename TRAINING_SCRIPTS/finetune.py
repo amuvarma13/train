@@ -9,18 +9,36 @@ from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
 import os
 import yaml
-# import wandb
+import wandb
 from huggingface_hub import HfApi, snapshot_download
 
 
-model_path = snapshot_download("amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000") 
-
+snapshot_download(
+    repo_id="amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000",
+    allow_patterns=[
+        "config.json",
+        "*.safetensors",
+        "model.safetensors.index.json",
+    ],
+    ignore_patterns=[
+        "optimizer.pt",
+        "pytorch_model.bin",
+        "training_args.bin",
+        "scheduler.pt",
+        "tokenizer.json",
+        "tokenizer_config.json",
+        "special_tokens_map.json",
+        "vocab.json",
+        "merges.txt",
+        "tokenizer.*"
+    ]
+)
 
 base_repo_id = "checkpoints"
 project_name = "zuck-tune-3"
 
 
-config_file = "PRETRAIN_ARGS-3b-10m.yaml"
+config_file = "FINETUNE_ARGS-8b-zuckqa.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)
@@ -47,11 +65,9 @@ learning_rate = config["learning_rate"]
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
-tokenizer_name = "meta-llama/Llama-3.2-3B"
 
 
-# wandb.init(project=project_name, name = f"r0-{learning_rate}")
+wandb.init(project=project_name, name = run_name)
 
 batch_total = number_processes * batch_size
 
@@ -115,10 +131,10 @@ class FSDPTrainer(Trainer):
         super().log(logs)
         if self.is_world_process_zero():
             global_step = self.state.global_step
-            # if global_step % 2 == 0:
-            #     # wandb.log({"text_loss": logs["loss"], "step": global_step})
-            # else:
-            #     wandb.log({"audio_loss": logs["loss"], "step": global_step})
+            if global_step % 2 == 0:
+                wandb.log({"text_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"audio_loss": logs["loss"], "step": global_step})
 
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:

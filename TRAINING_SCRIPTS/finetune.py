@@ -10,29 +10,29 @@ from tqdm import tqdm
 import os
 import yaml
 import wandb
-from huggingface_hub import HfApi, snapshot_download
+# from huggingface_hub import HfApi, snapshot_download
 
 
-snapshot_download(
-    repo_id="amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000",
-    allow_patterns=[
-        "config.json",
-        "*.safetensors",
-        "model.safetensors.index.json",
-    ],
-    ignore_patterns=[
-        "optimizer.pt",
-        "pytorch_model.bin",
-        "training_args.bin",
-        "scheduler.pt",
-        "tokenizer.json",
-        "tokenizer_config.json",
-        "special_tokens_map.json",
-        "vocab.json",
-        "merges.txt",
-        "tokenizer.*"
-    ]
-)
+# snapshot_download(
+#     repo_id="amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000",
+#     allow_patterns=[
+#         "config.json",
+#         "*.safetensors",
+#         "model.safetensors.index.json",
+#     ],
+#     ignore_patterns=[
+#         "optimizer.pt",
+#         "pytorch_model.bin",
+#         "training_args.bin",
+#         "scheduler.pt",
+#         "tokenizer.json",
+#         "tokenizer_config.json",
+#         "special_tokens_map.json",
+#         "vocab.json",
+#         "merges.txt",
+#         "tokenizer.*"
+#     ]
+# )
 
 base_repo_id = "checkpoints"
 project_name = "zuck-tune-3"

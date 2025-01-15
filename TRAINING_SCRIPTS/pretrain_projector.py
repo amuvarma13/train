@@ -164,6 +164,5 @@ trainer = Trainer(
     data_collator=AudioChatDataCollator(),
 )
 
-print("training")
 
 trainer.train()

@@ -3,6 +3,10 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
+base_repo_id = "checkpoints/checkpoint-125"
+upload_name = "amuvarma/zuckconvotune-8b-2m-checkpoint-125"
+
+
 def upload_single_file(args):
     api, file_path, rel_path, repo_id, commit_message = args
     try:
@@ -60,8 +64,6 @@ def push_folder_to_hub(local_folder, repo_id, commit_message="Update model", max
         return None
 
 # Usage
-base_repo_id = "checkpoints/checkpoint-1646"
-upload_name = "amuvarma/zucktune-8b-2m-checkpoint-1646-qa"
 
 # You can adjust max_workers based on your needs
 push_folder_to_hub(

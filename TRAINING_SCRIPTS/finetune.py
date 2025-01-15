@@ -13,29 +13,6 @@ import wandb
 from huggingface_hub import HfApi, snapshot_download
 
 
-snapshot_download(
-    repo_id="amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000",
-    allow_patterns=[
-        "config.json",
-        "*.safetensors",
-        "model.safetensors.index.json",
-    ],
-    ignore_patterns=[
-        "optimizer.pt",
-        "pytorch_model.bin",
-        "training_args.bin",
-        "scheduler.pt",
-        "tokenizer.json",
-        "tokenizer_config.json",
-        "special_tokens_map.json",
-        "vocab.json",
-        "merges.txt",
-        "tokenizer.*"
-    ]
-)
-
-base_repo_id = "checkpoints"
-project_name = "zuck-tune-3"
 
 
 config_file = "FINETUNE_ARGS-8b-zuckqa.yaml"
@@ -60,6 +37,9 @@ save_steps = config["save_steps"]
 pad_token = config["pad_token"]
 number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
+
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
 
 ds1 = load_dataset(dsn1, split="train")
@@ -148,8 +128,6 @@ class FSDPTrainer(Trainer):
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 
-tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
 tokenizer_length = len(tokenizer)
 tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))

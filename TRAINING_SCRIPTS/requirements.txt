@@ -1,7 +1,7 @@
 torch==2.5.1
 transformers==4.47.0
 trl==0.11.3
-flash-attn==2.7.2.post1
+flash-attn
 wandb
 datasets
 pyyaml

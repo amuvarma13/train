@@ -8,29 +8,48 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
 import os
+import yaml
 # import wandb
-from huggingface_hub import HfApi, create_repo
+from huggingface_hub import HfApi, snapshot_download
+
+
+model_path = snapshot_download("amuvarma/pretrain-snac-8b-2m-checkpoint-60000-of-299000") 
+
 
 base_repo_id = "checkpoints"
 project_name = "zuck-tune-3"
-resize_dataset = False
 
-dsn1 = "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
-dsn2 = "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
-learning_rate = 5e-6
+config_file = "PRETRAIN_ARGS-3b-10m.yaml"
+
+with open(config_file, "r") as file:
+    config = yaml.safe_load(file)
+
+dsn1 = config["text_QA_dataset"]
+dsn2 = config["TTS_dataset"]
+resize_dataset = config["resize_dataset"]
+
+model_name = config["model_name"]
+tokenizer_name = config["tokenizer_name"]
+
+run_name = config["run_name"]
+project_name = config["project_name"]
+base_repo_id = config["save_folder"]
+
+epochs = config["epochs"]
+batch_size = config["batch_size"]
+save_steps = config["save_steps"]
+pad_token = config["pad_token"]
+number_processes = config["number_processes"]
+learning_rate = config["learning_rate"]
+
 
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
 model_name = "amuvarma/snac-pretrain-2m-96000" # Replace with your model
-
 tokenizer_name = "meta-llama/Llama-3.2-3B"
-epochs = 1
-batch_size = 1
-number_processes = 8
-pad_token = 128263
-save_steps = 500
+
 
 # wandb.init(project=project_name, name = f"r0-{learning_rate}")
 
@@ -165,12 +184,10 @@ training_args = TrainingArguments(
     bf16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
-    # report_to=False, 
+    report_to="wandb", 
     save_steps=save_steps,
     remove_unused_columns=True, 
     learning_rate=learning_rate,
-    # learning_rate=7e-5,  # 8e-4 is the learning rate used in the original Llama paper
-    # warmup_ratio=0.03,  # 3% of total steps
     lr_scheduler_type="cosine"  # Cosine decay scheduler
 )
 

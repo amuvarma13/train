@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 
 # Replace "username/dataset_name" with the actual repo ID
-repo_id = "amuvarma/proj-train-qa-and-speechqa"  # e.g., "huggingface/poems_dataset"
+repo_id = "amuvarma/all_qas-audio" # e.g., "huggingface/poems_dataset"
 
 # Download the entire dataset repository
 snapshot_download(

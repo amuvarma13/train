@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 # Datasets
 dataset_names: 
   - "amuvarma/proj-train-qa-and-speechqa"
-  - "amuvarma/all_qas-audio"
+
 
 # Naming and paths
 save_folder: "checkpoints"

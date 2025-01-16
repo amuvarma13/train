@@ -21,4 +21,4 @@ def upload_folder(bucket_name, folder_path, prefix=''):
         blob.upload_from_filename(local_path)
 
 
-upload_folder('snac-projtttts-2m-5000-1',"checkpoints/checkpoint-14375", "models/3b-10m-checkpoint-14375" )
+upload_folder('snac-tttts-2m-5000-1',"checkpoints/checkpoint-14375", "models/3b-10m-checkpoint-14375" )

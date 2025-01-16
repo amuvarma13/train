@@ -132,13 +132,14 @@ class AudioChatDataCollator:
         assistant_response = features[0]["assistant"]
         user_response = features[0]["user"]
 
-        if(user_response.contains("<|audio|>")):
+        # Simple contains check
+        if "<|audio|>" in user_response:
             user_response = features[0]["user"]
         else:
             user_response = "<|audio|>"
             
         
-        
+
         batch = inference_collator(audio, user_response, assistant_response)
 
         return {

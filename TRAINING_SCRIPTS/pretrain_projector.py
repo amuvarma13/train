@@ -134,10 +134,8 @@ class AudioChatDataCollator:
 
         # Simple contains check
         if "<|audio|>" in user_response:
-            print("special token found")
             user_response = features[0]["user"]
         else:
-            print("special token not found")
             user_response = "<|audio|>"
             
         

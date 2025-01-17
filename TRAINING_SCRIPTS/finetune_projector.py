@@ -98,7 +98,7 @@ def remove_short_audio(dataset, min_seconds=1.0):
     indices_to_keep = []
 
     for i, example in tqdm(enumerate(dataset), total=len(dataset)):
-        audio = example['audio']
+        audio = example['question_audio']
         duration = len(audio['array']) / audio['sampling_rate']
         if duration >= min_seconds:
             indices_to_keep.append(i)

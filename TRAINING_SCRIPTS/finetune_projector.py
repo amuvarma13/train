@@ -82,9 +82,9 @@ for param in model.parameters():
 for name, param in model.named_parameters():
     if "multi_modal_projector" in name:
         param.requires_grad = True
-for name, param in model.named_parameters():
-    if "language_model" in name:
-        param.requires_grad = True
+# for name, param in model.named_parameters():
+#     if "language_model" in name:
+#         param.requires_grad = True
 
 
 wandb.init(project=project_name, name=run_name)

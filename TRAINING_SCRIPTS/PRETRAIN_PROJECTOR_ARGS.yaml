@@ -22,7 +22,7 @@ dataset_names:
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "projector-3b"
-run_name: "15-1-3b-2m-r5"
+project_name: "pretrain_projector-3b"
+run_name: "16-1-w2v-normal"
 
 resize_dataset: false

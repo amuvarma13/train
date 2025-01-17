@@ -364,9 +364,10 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         # if config.audio_model_id is not None:
         #     self.audio_tower = AutoModel.from_pretrained(config.audio_model_id)
         # else:
-        #     self.audio_tower = AutoModel.from_config(config.audio_config)
+        #     
+        self.audio_tower = AutoModel.from_config(config.audio_config)
 
-        self.audio_tower = whispermodel
+        # self.audio_tower = whispermodel
 
         # if (
         #     "bert" in self.audio_tower.config.model_type.lower()

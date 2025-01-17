@@ -101,7 +101,7 @@ def remove_short_audio(dataset, min_seconds=1.0):
     indices_to_keep = []
 
     for i, example in tqdm(enumerate(dataset), total=len(dataset)):
-        audio = example['question_audio']
+        audio = example['audio']
         duration = len(audio['array']) / audio['sampling_rate']
         if duration >= min_seconds:
             indices_to_keep.append(i)
@@ -150,13 +150,13 @@ class AudioChatDataCollator:
         self.greeting = "Hello world."
 
     def __call__(self, features):
-        audio = torch.tensor([features[0]["question_audio"]["array"]])
-        assistant_response = features[0]["answer"]
-        user_response = features[0]["question"]
+        audio = torch.tensor([features[0]["audio"]["array"]])
+        assistant_response = features[0]["assistant"]
+        user_response = features[0]["user"]
 
         # Simple contains check
         if "<|audio|>" in user_response:
-            user_response = features[0]["question"]
+            user_response = features[0]["user"]
         else:
             user_response = "<|audio|>"
             

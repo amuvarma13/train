@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "TRAINING_SCRIPTS/FINETUNE_PROJECTOR_ARGS.yaml"
+repo_id = "amuvarma/va-310k-320k-snac-StTtS"
 
 snapshot_download(
     repo_id=repo_id,

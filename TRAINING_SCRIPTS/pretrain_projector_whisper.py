@@ -123,10 +123,11 @@ def inference_collator(audio_input, user_res, ass_res):
     true_labels[:, user_tokens.shape[1]:] = labels[:, user_tokens.shape[1]:]
 
     attention_mask = torch.ones_like(labels)
-    print("audio input shape", audio_input.shape)
+
+    audio_input = audio_input.squeeze(0)
     mel, length = process_audio_tensor(audio_input)
     mel = mel.to(whisper_model.device)
-    audio_feature = whisper_model.embed_audio(mel)
+    audio_feature = whisper_model.embed_audio(mel)[0][:length]
     print("embedded audio feeatures shape", audio_feature.shape)
 
 

@@ -83,7 +83,7 @@ base_model = GazelleForConditionalGeneration(config).to(dtype=torch.bfloat16)
 base_model.resize_token_embeddings(len(tokenizer))
 special_config =  base_model.config
 
-model = GazelleForConditionalGeneration.from_pretrained(model_name, config=special_config, new_vocab_size=False)
+model = GazelleForConditionalGeneration.from_pretrained(model_name, config=special_config, new_vocab_size=True)
 model = model.to("cuda").to(torch.bfloat16)
 
 for param in model.parameters():

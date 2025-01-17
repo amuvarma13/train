@@ -11,12 +11,13 @@ epochs: 1
 batch_size: 8
 pad_token: 128263
 save_steps: 10000
-learning_rate: 0.0e-3
+learning_rate: 2.0e-3
 gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/50k-proj-qa"
+  - "amuvarma/proj-train-qa-and-speechqa"
+  - "amuvarma/all_qas-audio"
 
 
 # Naming and paths

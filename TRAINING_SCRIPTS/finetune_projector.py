@@ -44,17 +44,6 @@ MODEL_FOR_CAUSAL_LM_MAPPING.register(
     "gazelle", GazelleForConditionalGeneration)
 
 
-device = "cpu"
-dtype = torch.float32
-if torch.cuda.is_available():
-    device = "cuda"
-    dtype = torch.bfloat16
-    print(f"Using {device} device")
-elif torch.backends.mps.is_available():
-    device = "mps"
-    dtype = torch.float16
-    print(f"Using {device} device")
-
 
 config = GazelleConfig(
     audio_model_id=audio_model_id,
@@ -79,14 +68,13 @@ config = GazelleConfig(
     vocab_size=vocab_size,
 )
 
-base_model = GazelleForConditionalGeneration(config).to(dtype=torch.bfloat16)
+base_model = GazelleForConditionalGeneration(config)
 
 base_model.resize_token_embeddings(len(tokenizer))
 special_config =  base_model.config
 print("3")
 
 model = GazelleForConditionalGeneration.from_pretrained(model_name, config=special_config, new_vocab_size=True)
-model = model.to("cuda").to(torch.bfloat16)
 print("4")
 for param in model.parameters():
     param.requires_grad = False

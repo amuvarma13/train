@@ -16,7 +16,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/all_qas-audio"
+  - "gpt-omni/VoiceAssistant-400K"
   # - "amuvarma/proj-train-qa-and-speechqa"
 
 

@@ -8,7 +8,7 @@ vocab_size: 156939
 
 # Training Args
 epochs: 1
-batch_size: 16
+batch_size: 8
 pad_token: 128263
 save_steps: 10000
 learning_rate: 2.0e-3
@@ -16,14 +16,13 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  # - "amuvarma/mls-eng-10k-500k-projection_prep"
+  - "amuvarma/mls-eng-10k-500k-projection_prep"
   # - "amuvarma/proj-train-qa-and-speechqa"
-  - "amuvarma/va-310k-320k-snac-StTtS"
 
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "pretrain_projector-3b-deb"
-run_name: "16-1-whisper-omni-debug"
+project_name: "pretrain_projector-3b"
+run_name: "16-1-w2v-normal"
 
 resize_dataset: false

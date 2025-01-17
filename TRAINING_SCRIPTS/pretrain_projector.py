@@ -176,10 +176,6 @@ def analyze_model_tensors(model):
     print("Analyzing model parameters:")
     for name, param in model.named_parameters():
         is_sparse = param.is_sparse
-        print(f"Layer: {name}")
-        print(f"  - Type: {'Sparse' if is_sparse else 'Dense'}")
-        print(f"  - Shape: {param.shape}")
-        
         has_sparse = has_sparse or is_sparse
         has_dense = has_dense or not is_sparse
         

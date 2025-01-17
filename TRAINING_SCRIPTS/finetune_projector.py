@@ -63,13 +63,14 @@ config = GazelleConfig(
     vocab_size=vocab_size,
 
 )
-
+print("1")
 tokenizer = transformers.AutoTokenizer.from_pretrained(tokenizer_name)
 number_add_tokens = 7 * 4096 + 10
 new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
 tokenizer.add_tokens(new_tokens)
 tokenizer.add_special_tokens({'additional_special_tokens': ['<|audio|>']})
 
+print("2")
 
 config = GazelleConfig(
     audio_model_id="facebook/wav2vec2-base-960h",
@@ -82,10 +83,11 @@ base_model = GazelleForConditionalGeneration(config).to(dtype=torch.bfloat16)
 
 base_model.resize_token_embeddings(len(tokenizer))
 special_config =  base_model.config
+print("3")
 
 model = GazelleForConditionalGeneration.from_pretrained(model_name, config=special_config, new_vocab_size=True)
 model = model.to("cuda").to(torch.bfloat16)
-
+print("4")
 for param in model.parameters():
     param.requires_grad = False
 for name, param in model.named_parameters():
@@ -102,7 +104,7 @@ for dsn in dsns:
 
 dataset = concatenate_datasets(all_datasets)
 dataset = dataset.shuffle(seed=42)
-
+print("5")
 def remove_long_audio(dataset, max_seconds=60.0):
     indices_to_keep = []
 
@@ -121,6 +123,7 @@ def remove_long_audio(dataset, max_seconds=60.0):
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)
 
+print("6")
 
 def inference_collator(audio_input, user_res, ass_res):
 
@@ -193,6 +196,8 @@ training_args = TrainingArguments(
     bf16=True,
     save_steps=15000
 )
+
+print("7")
 
 trainer = Trainer(
     model=model,

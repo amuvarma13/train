@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="amuvarma/snac-e2e-projonly-3",
+    repo_id="amuvarma/3b-2m-proj-checkpoint-14375-0",
     allow_patterns=[
         "config.json",
         "*.safetensors",

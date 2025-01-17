@@ -10,7 +10,7 @@ from gzf import (
     GazelleForConditionalGeneration,
 )
 
-config_file = "PRETRAIN_PROJECTOR_ARGS.yaml"
+config_file = "FINETUNE_PROJECTOR_ARGS.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)

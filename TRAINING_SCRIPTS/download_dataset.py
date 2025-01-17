@@ -1,6 +1,6 @@
 from huggingface_hub import snapshot_download
 
-repo_id = "amuvarma/all_qas-audio"
+repo_id = "amuvarma/va-310k-320k-snac-StTtS"
 
 snapshot_download(
     repo_id=repo_id,

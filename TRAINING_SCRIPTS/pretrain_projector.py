@@ -169,22 +169,6 @@ training_args = TrainingArguments(
 )
 
 
-def analyze_model_tensors(model):
-    has_sparse = False
-    has_dense = False
-    
-    print("Analyzing model parameters:")
-    for name, param in model.named_parameters():
-        is_sparse = param.is_sparse
-        has_sparse = has_sparse or is_sparse
-        has_dense = has_dense or not is_sparse
-        
-    print("\nSummary:")
-    print(f"Model contains sparse tensors: {has_sparse}")
-    print(f"Model contains dense tensors: {has_dense}")
-
-# Usage
-analyze_model_tensors(model)
 
 trainer = Trainer(
     model=model,

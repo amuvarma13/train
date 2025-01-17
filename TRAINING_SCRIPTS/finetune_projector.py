@@ -116,7 +116,7 @@ def remove_long_audio(dataset, max_seconds=60.0):
 
     return filtered_dataset
 
-dataset = remove_long_audio(dataset)
+# dataset = remove_long_audio(dataset)
 
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)

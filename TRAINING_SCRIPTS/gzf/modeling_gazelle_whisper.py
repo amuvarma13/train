@@ -529,7 +529,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
         return final_embedding, final_attention_mask, final_labels, position_ids
 
-    @replace_return_docstrings(output_type=GazelleCausalLMOutputWithPast)
     def forward(
         self,
         input_ids: torch.LongTensor = None,

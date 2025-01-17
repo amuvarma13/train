@@ -9,6 +9,12 @@ from gzf import (
     GazelleConfig,
     GazelleForConditionalGeneration,
 )
+import whisper
+from transformers import WhisperProcessor, WhisperModel
+
+model_id = "openai/whisper-small"
+processor = WhisperProcessor.from_pretrained(model_id)
+whisper_model = WhisperModel.from_pretrained(model_id)
 
 config_file = "PRETRAIN_PROJECTOR_ARGS.yaml"
 
@@ -94,6 +100,11 @@ dataset = dataset.shuffle(seed=42)
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)
 
+def process_audio_tensor(audio, sample_rate=16000):
+    duration_ms = (len(audio) / sample_rate) * 1000
+    audio = whisper.pad_or_trim(audio)
+    mel = whisper.log_mel_spectrogram(audio)
+    return mel, int(duration_ms / 20) + 1
 
 def inference_collator(audio_input, user_res, ass_res):
 
@@ -115,6 +126,9 @@ def inference_collator(audio_input, user_res, ass_res):
 
     attention_mask = torch.ones_like(labels)
 
+    mel, length = process_audio_tensor(audio_input)
+    audio_feature = whisper_model.embed_audio(mel)[0][:length]
+    audio_feature.shape
 
 
     return {

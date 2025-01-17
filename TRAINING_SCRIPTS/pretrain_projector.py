@@ -171,7 +171,7 @@ training_args = TrainingArguments(
 )
 
 
-
+print("about to initiate trainer")
 trainer = Trainer(
     model=model,
     args=training_args,

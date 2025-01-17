@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 
 # Replace "username/dataset_name" with the actual repo ID
-repo_id = "gpt-omni/VoiceAssistant-400K" # e.g., "huggingface/poems_dataset"
+repo_id = "amuvarma/mls-eng-10k-500k-projection_prep" # e.g., "huggingface/poems_dataset"
 
 # Download the entire dataset repository
 snapshot_download(

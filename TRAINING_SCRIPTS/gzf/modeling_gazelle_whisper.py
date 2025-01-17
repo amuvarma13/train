@@ -529,7 +529,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
         return final_embedding, final_attention_mask, final_labels, position_ids
 
-    @add_start_docstrings_to_model_forward(GAZELLE_INPUTS_DOCSTRING)
     @replace_return_docstrings(output_type=GazelleCausalLMOutputWithPast)
     def forward(
         self,

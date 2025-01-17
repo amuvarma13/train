@@ -572,6 +572,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 and audio_values.shape[1] > 1
                 and input_ids.shape[1] != 1
             ):
+                
+                print("audio_values", audio_values.shape)
                 audio_tower_outputs = self.audio_tower(audio_values).last_hidden_state
 
                 audio_features = self.multi_modal_projector(audio_tower_outputs)

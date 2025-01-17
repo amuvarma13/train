@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/all_qas-audio"
+  - "amuvarma/va-310k-320k-snac-StTtS"
 
 
 # Naming and paths

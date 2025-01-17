@@ -77,11 +77,14 @@ print("3")
 
 model = GazelleForConditionalGeneration.from_pretrained(model_name, config=special_config, new_vocab_size=True)
 print("4")
-# for param in model.parameters():
-#     param.requires_grad = False
-# for name, param in model.named_parameters():
-#     if "multi_modal_projector" in name:
-#         param.requires_grad = True
+for param in model.parameters():
+    param.requires_grad = False
+for name, param in model.named_parameters():
+    if "multi_modal_projector" in name:
+        param.requires_grad = True
+for name, param in model.named_parameters():
+    if "language_model" in name:
+        param.requires_grad = True
 
 
 wandb.init(project=project_name, name=run_name)

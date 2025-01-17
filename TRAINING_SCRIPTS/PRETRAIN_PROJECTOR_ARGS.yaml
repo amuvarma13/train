@@ -24,6 +24,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "pretrain_projector-3b"
-run_name: "16-1-whisper-omni"
+run_name: "16-1-whisper-omni-debug"
 
 resize_dataset: false

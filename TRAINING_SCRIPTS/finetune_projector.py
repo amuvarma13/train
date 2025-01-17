@@ -74,8 +74,8 @@ tokenizer.add_special_tokens({'additional_special_tokens': ['<|audio|>']})
 config = GazelleConfig(
     audio_model_id="facebook/wav2vec2-base-960h",
     text_model_id=base_model_name,
-    audio_token_index=156939,
-    vocab_size=156939,
+    audio_token_index=audio_token_index,
+    vocab_size=vocab_size,
 )
 
 base_model = GazelleForConditionalGeneration(config).to(dtype=torch.bfloat16)

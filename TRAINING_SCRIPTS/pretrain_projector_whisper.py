@@ -10,11 +10,8 @@ from gzf import (
     GazelleForConditionalGeneration,
 )
 import whisper
-from transformers import WhisperProcessor, WhisperModel
 
-model_id = "openai/whisper-small"
-processor = WhisperProcessor.from_pretrained(model_id)
-whisper_model = WhisperModel.from_pretrained(model_id)
+whisper_model = whisper.load_model("small")
 
 config_file = "PRETRAIN_PROJECTOR_ARGS.yaml"
 

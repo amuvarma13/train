@@ -93,20 +93,20 @@ for dsn in dsns:
 dataset = concatenate_datasets(all_datasets)
 dataset = dataset.shuffle(seed=42)
 print("5")
-def remove_long_audio(dataset, max_seconds=60.0):
+def remove_short_audio(dataset, min_seconds=1.0):
     indices_to_keep = []
 
     for i, example in tqdm(enumerate(dataset), total=len(dataset)):
         audio = example['question_audio']
         duration = len(audio['array']) / audio['sampling_rate']
-        if max_seconds >= duration:
+        if duration >= min_seconds:
             indices_to_keep.append(i)
 
     filtered_dataset = dataset.select(indices_to_keep)
 
     return filtered_dataset
 
-# dataset = remove_long_audio(dataset)
+dataset = remove_short_audio(dataset)
 
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)

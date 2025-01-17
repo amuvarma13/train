@@ -284,6 +284,7 @@ class GazelleHierarchalProjector(ProjectionLayer):
 
     def __init__(self, config: GazelleConfig):
         self.hidden_dim = 3072
+        config.text_config.hidden_size = 3072
         super().__init__(config.stack_factor)
         self.ln_pre = RMSNorm(config.audio_config.hidden_size * self.stack_factor // 2)
 

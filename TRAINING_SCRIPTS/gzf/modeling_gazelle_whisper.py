@@ -545,8 +545,10 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         output_hidden_states: Optional[bool] = None,
         return_dict: Optional[bool] = None,
     ) -> Union[Tuple, GazelleCausalLMOutputWithPast]:
+        
+
    
-        # print("in forward pass")
+        print("in forward pass")
         output_attentions = (
             output_attentions
             if output_attentions is not None

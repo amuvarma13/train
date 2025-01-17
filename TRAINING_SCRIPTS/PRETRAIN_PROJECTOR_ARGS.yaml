@@ -16,8 +16,8 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/proj-train-qa-and-speechqa"
-  # - "amuvarma/all_qas-audio"
+  - "amuvarma/all_qas-audio"
+  # - "amuvarma/proj-train-qa-and-speechqa"
 
 
 # Naming and paths

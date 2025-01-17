@@ -23,6 +23,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "pretrain_projector-3b"
-run_name: "16-1-w2v-normal"
+run_name: "16-1-w2v-hierachacal"
 
 resize_dataset: false

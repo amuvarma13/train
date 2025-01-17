@@ -1,6 +1,6 @@
 from huggingface_hub import snapshot_download
 
-repo_id = "amuvarma/proj-train-qa-and-speechqa"
+repo_id = "amuvarma/all_qas-audio"
 
 snapshot_download(
     repo_id=repo_id,

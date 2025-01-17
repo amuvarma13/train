@@ -1,5 +1,5 @@
 # Model
-model_name: "amuvarma/3b-2m-checkpoint-proj3-310"
+model_name: "amuvarma/3b-2m-checkpoint-proj2-3281"
 base_model_name: "amuvarma/snac-pretrain-2m-96000"
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 audio_model_id: "facebook/wav2vec2-base-960h"
@@ -23,6 +23,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "eval-projector-3b"
-run_name: "eval-proj-3b-2m-checkpoint-proj3-310"
+run_name: "eval-proj-3b-2m-checkpoint-proj2-3281"
 
 resize_dataset: false

@@ -1,6 +1,6 @@
 from huggingface_hub import snapshot_download
 
-repo_id = "gpt-omni/VoiceAssistant-400K"
+repo_id = "amuvarma/mls-eng-10k-500k-projection_prep"
 
 snapshot_download(
     repo_id=repo_id,

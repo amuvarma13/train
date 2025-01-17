@@ -1,5 +1,5 @@
 # Model
-model_name: "checkpoints/checkpoint-14375"
+model_name: "checkpoints/checkpoint-6562"
 base_model_name: "amuvarma/snac-pretrain-2m-96000"
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 audio_model_id: "facebook/wav2vec2-base-960h"
@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/all_qas-audio"
+  - "amuvarma/va-310k-320k-snac-StTtS"
 
 
 # Naming and paths

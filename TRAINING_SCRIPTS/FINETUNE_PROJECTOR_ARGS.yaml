@@ -23,6 +23,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "eval-projector-3b"
-run_name: "16-1-3b-2m-50kqa-eval-r1"
+run_name: "eval-proj-snac-e2e-projonly-3"
 
 resize_dataset: false

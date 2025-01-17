@@ -127,7 +127,7 @@ def inference_collator(audio_input, user_res, ass_res):
     mel, length = process_audio_tensor(audio_input)
     mel = mel.to(whisper_model.device)
     audio_feature = whisper_model.embed_audio(mel)[0][:length]
-    print("embedded audio feeatures shape", audio_feature)
+    print("embedded audio feeatures shape", audio_feature.shape)
 
 
     return {

@@ -1,0 +1,29 @@
+# Model
+model_name: "amuvarma/3b-2m-proj-checkpoint-20936-0"
+base_model_name: "amuvarma/snac-pretrain-2m-96000"
+tokenizer_name: "meta-llama/Llama-3.2-3B"
+audio_model_id: "facebook/wav2vec2-base-960h"
+audio_processor_id: "facebook/wav2vec2-base-960h"
+audio_token_index: 156939
+vocab_size: 156939
+
+# Training Args
+epochs: 1
+batch_size: 8
+pad_token: 128263
+save_steps: 10000
+learning_rate: 2.0e-3
+gradient_accumulation_steps: 1
+
+# Datasets
+dataset_names: 
+  - "amuvarma/proj-train-qa-and-speechqa"
+  - "amuvarma/all_qas-audio"
+
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "projector-3b"
+run_name: "15-1-3b-2m-r5"
+
+resize_dataset: false

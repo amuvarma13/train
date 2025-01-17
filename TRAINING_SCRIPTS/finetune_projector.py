@@ -88,9 +88,9 @@ model = model.to("cuda").to(torch.bfloat16)
 
 for param in model.parameters():
     param.requires_grad = False
-for name, param in model.named_parameters():
-    if "multi_modal_projector" in name:
-        param.requires_grad = True
+# for name, param in model.named_parameters():
+#     if "multi_modal_projector" in name:
+#         param.requires_grad = True
 
 
 wandb.init(project=project_name, name=run_name)

@@ -445,12 +445,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         batch_indices, non_audio_indices = torch.where(
             input_ids != self.config.audio_token_index
         )
-
-        # 2. Compute the positions where text should be written
-        # Calculate new positions for text tokens in merged audio-text sequence.
-        # `special_audio_token_mask` identifies audio tokens. Each audio token will be replaced by `nb_text_tokens_per_images - 1` text tokens.
-        # `torch.cumsum` computes how each audio token shifts subsequent text token positions.
-        # - 1 to adjust for zero-based indexing, as `cumsum` inherently increases indices by one.
         new_token_positions = (
             torch.cumsum((special_audio_token_mask * (num_audio_patches - 1) + 1), -1)
             - 1
@@ -481,8 +475,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 dtype=input_ids.dtype,
                 device=input_ids.device,
             )
-        # In case the audio model or the Language model has been offloaded to CPU, we need to manually
-        # set the corresponding tensors into their correct target device.
+
         target_device = inputs_embeds.device
         batch_indices, non_audio_indices, text_to_overwrite = (
             batch_indices.to(target_device),
@@ -490,9 +483,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             text_to_overwrite.to(target_device),
         )
         attention_mask = attention_mask.to(target_device)
-
-        # 4. Fill the embeddings based on the mask. If we have ["hey" "<|audio|>", "how", "are"]
-        # we need to index copy on [0, 577, 578, 579] for the text and [1:576] for the audio features
         final_embedding[batch_indices, text_to_overwrite] = inputs_embeds[
             batch_indices, non_audio_indices
         ]
@@ -504,7 +494,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 batch_indices, non_audio_indices
             ]
 
-        # 5. Fill the embeddings corresponding to the audio. Anything that is still zeros needs filling
         audio_to_overwrite = torch.all(final_embedding == 0, dim=-1)
         audio_positions = audio_to_overwrite.to(torch.int16).cumsum(-1) - 1
         audio_left_pad_mask = audio_positions >= nb_image_pad[:, None].to(target_device)
@@ -578,6 +567,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 # print("audio_values", audio_values.shape)
                 # audio_tower_outputs = self.audio_tower(audio_values).last_hidden_state
                 # print("output shape of audio_tower", audio_tower_outputs.shape) #torch.Size([1, 608, 768])
+                print("premm proj shape of audio values", audio_values.shape)
                 audio_features = self.multi_modal_projector(audio_values)
                 print("shape of projected audio features", audio_features.shape)
                 (

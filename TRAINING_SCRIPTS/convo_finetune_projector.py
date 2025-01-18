@@ -166,9 +166,9 @@ def inference_collator(audios, input_ids, labels, attention_mask):
     print("lengths", lengths)
 
     #convert input_ids, labels, attention_mask to tensor
-    input_ids = torch.tensor(input_ids)
-    labels = torch.tensor(labels)
-    attention_mask = torch.tensor(attention_mask)
+    input_ids = torch.tensor(input_ids).unsqueeze(0)
+    labels = torch.tensor(labels).unsqueeze(0)
+    attention_mask = torch.tensor(attention_mask).unsqueeze(0)
     print("shapes", input_ids.shape, labels.shape, attention_mask.shape)
 
     return {

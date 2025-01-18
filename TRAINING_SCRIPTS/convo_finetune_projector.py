@@ -128,6 +128,20 @@ def process_audio_tensor(audio, sample_rate=16000):
     mel = whisper.log_mel_spectrogram(audio)
     return mel, int(duration_ms / 20) + 1
 
+def pad_and_cat_sequences(sequence_list):
+    max_len = max(t.shape[1] for t in sequence_list)
+    padded_features = []
+    lengths = []
+    
+    for t in sequence_list:
+        curr_len = t.shape[1]
+        lengths.append(curr_len)
+        pad_len = max_len - curr_len
+        padded = torch.nn.functional.pad(t, (0, 0, 0, pad_len, 0, 0))
+        padded_features.append(padded)
+
+    return torch.cat(padded_features), torch.tensor(lengths)
+
 def inference_collator(audios, input_ids, labels, attention_mask):
 
     max_len = max(len(seq) for seq in audios)
@@ -147,13 +161,12 @@ def inference_collator(audios, input_ids, labels, attention_mask):
         audio_feature = whisper_model.embed_audio(mel)[0][:length]
         audio_feature = audio_feature.unsqueeze(0)
         processed_features.append(audio_feature)
-    for t in processed_features:
-        print("sub audio shape",t.shape)
-    audio_feature = torch.cat(processed_features)
-    print("audio feature size", audio_feature.shape())
+    padded_audio, lengths = pad_and_cat_sequences(processed_features)
+    print("audio feature size", padded_audio.shape())
+    print(lengths)
 
     return {
-        "audio_values": audio_feature.to(model.device).to(model.dtype),
+        "audio_values": padded_audio.to(model.device).to(model.dtype),
         "input_ids": input_ids.to(model.device),
         "labels": labels.to(model.device),
         "attention_mask": attention_mask.to(model.device),

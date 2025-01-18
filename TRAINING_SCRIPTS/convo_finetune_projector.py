@@ -162,7 +162,7 @@ def inference_collator(audios, input_ids, labels, attention_mask):
         audio_feature = audio_feature.unsqueeze(0)
         processed_features.append(audio_feature)
     padded_audio, lengths = pad_and_cat_sequences(processed_features)
-    print("audio feature size", padded_audio.shape())
+    print("audio feature size", padded_audio.shape)
     print("lengths", lengths)
 
     return {

@@ -373,11 +373,11 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         #     "bert" in self.audio_tower.config.model_type.lower()
         #     or self.config.projector_type == "hierarchal"
         # ):
-        #     self.multi_modal_projector = GazelleHierarchalProjector(config)
+        # self.multi_modal_projector = GazelleHierarchalProjector(config)
         # else:
-        #     self.multi_modal_projector = GazelleProjector(config)
+        self.multi_modal_projector = GazelleProjector(config)
 
-        self.multi_modal_projector = whisperMLP()
+        # self.multi_modal_projector = whisperMLP()
         self.vocab_size = config.vocab_size
         if config.text_model_id is not None:
             self.language_model = AutoModelForCausalLM.from_pretrained(

@@ -23,6 +23,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "pretrain_projector-3b"
-run_name: "16-1-w2v-hierachical"
+run_name: "16-1-whisper-2linprojwithpadandstack"
 
 resize_dataset: false

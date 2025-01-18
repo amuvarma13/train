@@ -129,7 +129,7 @@ def process_audio_tensor(audio, sample_rate=16000):
     mel = whisper.log_mel_spectrogram(audio)
     return mel, int(duration_ms / 20) + 1
 
-def inference_collator(audio_input, user_res, ass_res):
+def inference_collator(audios, user_res, ass_res):
 
     user_input_ids = tokenizer(user_res, return_tensors="pt").input_ids
     assistant_input_ids = tokenizer(ass_res, return_tensors="pt").input_ids
@@ -149,12 +149,24 @@ def inference_collator(audio_input, user_res, ass_res):
 
     attention_mask = torch.ones_like(labels)
 
-    audio_input = audio_input.squeeze(0)
-    mel, length = process_audio_tensor(audio_input)
-    mel = mel.to(whisper_model.device)
-    mel = mel.unsqueeze(0)
-    audio_feature = whisper_model.embed_audio(mel)[0][:length]
-    audio_feature = audio_feature.unsqueeze(0)
+    max_len = max(len(seq) for seq in audios)
+    padded_sequences = []
+    for seq in audios:
+        padded = seq + [0] * (max_len - len(seq))  # Zero padding
+        padded_sequences.append(padded)
+
+    processed_features = []
+    for audio_input in audios:
+        audio_input = audio_input.squeeze(0)
+        mel, length = process_audio_tensor(audio_input)
+        mel = mel.to(whisper_model.device)
+        mel = mel.unsqueeze(0)
+        audio_feature = whisper_model.embed_audio(mel)[0][:length]
+        audio_feature = audio_feature.unsqueeze(0)
+        processed_features.append(audio_feature)
+
+    audio_feature = torch.cat(padded_sequences)
+    print("audio feature size", audio_feature.shape())
 
     return {
         "audio_values": audio_feature.to(model.device).to(model.dtype),
@@ -173,6 +185,7 @@ class AudioChatDataCollator:
         audio = torch.tensor([features[0]["question_audio"]["array"]])
         assistant_response = features[0]["answer"]
         user_response = features[0]["question"]
+        audios = features[0]["audios"]
 
         # Simple contains check
         if "<|audio|>" in user_response:
@@ -182,7 +195,7 @@ class AudioChatDataCollator:
             
         # empty_tensor = torch.tensor([[[]]])
 
-        batch = inference_collator(audio, user_response, assistant_response)
+        batch = inference_collator(audios, user_response, assistant_response)
 
         return {
             "audio_values": batch["audio_values"].cpu(),

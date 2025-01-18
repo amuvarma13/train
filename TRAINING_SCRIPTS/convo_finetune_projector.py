@@ -148,7 +148,7 @@ def inference_collator(audios, input_ids, labels, attention_mask):
         audio_feature = audio_feature.unsqueeze(0)
         processed_features.append(audio_feature)
 
-    audio_feature = torch.cat(padded_sequences)
+    audio_feature = torch.cat(processed_features)
     print("audio feature size", audio_feature.shape())
 
     return {

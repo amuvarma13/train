@@ -120,6 +120,8 @@ audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
 
 print("6")
 
+whisper_model = whisper_model.to(model.device)
+
 def process_audio_tensor(audio, sample_rate=16000):
     audio = audio.to(torch.float32)
     duration_ms = (len(audio) / sample_rate) * 1000
@@ -151,6 +153,7 @@ def inference_collator(audio_input, user_res, ass_res, snac_tokens):
 
     audio_input = audio_input.squeeze(0)
     mel, length = process_audio_tensor(audio_input)
+    
     mel = mel.to(whisper_model.device)
     mel = mel.unsqueeze(0)
     audio_feature = whisper_model.embed_audio(mel)[0][:length]

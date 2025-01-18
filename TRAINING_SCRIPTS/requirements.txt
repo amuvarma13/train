@@ -8,3 +8,4 @@ pyyaml
 librosa
 soundfile
 torchaudio==2.5.1
+openai-whisper

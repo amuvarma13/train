@@ -17,12 +17,11 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "gpt-omni/VoiceAssistant-400K"
-
+  - "amuvarma/zuckqa-with-qaaudio-total-cast-snacced"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "eval-projector-3b"
+project_name: "eval-projector-3b-snactune"
 run_name: "eval-proj-3b-2m-checkpoint-proj2-3281"
 
 resize_dataset: false

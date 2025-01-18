@@ -21,7 +21,7 @@ dataset_names:
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "eval-projector-3b-convotune"
-run_name: "eval-proj-3b-2m-checkpoint-proj2-3281"
+project_name: "projector-3b-convotune"
+run_name: "18-1-proj-convotune-r0"
 
 resize_dataset: false

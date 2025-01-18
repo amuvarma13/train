@@ -168,14 +168,6 @@ class AudioChatDataCollator:
         labels = features[0]["labels"]
         audios = features[0]["audios"]
 
-        # Simple contains check
-        if "<|audio|>" in user_response:
-            user_response = features[0]["question"]
-        else:
-            user_response = "<|audio|>"
-            
-        # empty_tensor = torch.tensor([[[]]])
-
         batch = inference_collator(audios, input_ids, labels, attention_mask)
 
         return {

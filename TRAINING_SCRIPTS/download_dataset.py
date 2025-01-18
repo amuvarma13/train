@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "amuvarma/zuckqa-with-qaaudio-total-cast-snacced"
+repo_id = "amuvarma/snacced-zuck-convo-sttsed-proc-no-discrepancies"
 
 snapshot_download(
     repo_id=repo_id,

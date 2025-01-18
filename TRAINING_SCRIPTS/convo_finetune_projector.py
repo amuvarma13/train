@@ -16,7 +16,7 @@ whisper_model = whisper.load_model("small")
 whisper_model = whisper_model.to("cuda:1")
 
 
-config_file = "FINETUNE_PROJECTOR_ARGS.yaml"
+config_file = "CONVO_FINETUNE_PROJECTOR_ARGS.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)

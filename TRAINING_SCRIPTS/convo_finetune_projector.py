@@ -128,25 +128,7 @@ def process_audio_tensor(audio, sample_rate=16000):
     mel = whisper.log_mel_spectrogram(audio)
     return mel, int(duration_ms / 20) + 1
 
-def inference_collator(audios, user_res, ass_res):
-
-    user_input_ids = tokenizer(user_res, return_tensors="pt").input_ids
-    assistant_input_ids = tokenizer(ass_res, return_tensors="pt").input_ids
-
-    start_token = torch.tensor([[128259]], dtype=torch.int64)
-    end_tokens = torch.tensor([[128009, 128260, 128261]], dtype=torch.int64)
-    final_tokens = torch.tensor([[128009]], dtype=torch.int64)
-
-    user_tokens = torch.cat(
-        [start_token, user_input_ids, end_tokens], dim=1)
-
-    labels = torch.cat([start_token, user_input_ids, end_tokens,
-                       assistant_input_ids, final_tokens], dim=1)
-
-    true_labels = torch.full_like(labels, -100)
-    true_labels[:, user_tokens.shape[1]:] = labels[:, user_tokens.shape[1]:]
-
-    attention_mask = torch.ones_like(labels)
+def inference_collator(audios, input_ids, labels, attention_mask):
 
     max_len = max(len(seq) for seq in audios)
     padded_sequences = []
@@ -169,9 +151,9 @@ def inference_collator(audios, user_res, ass_res):
 
     return {
         "audio_values": audio_feature.to(model.device).to(model.dtype),
-        "input_ids": labels.to(model.device),
-        "labels": true_labels.to(model.device),
-        "attention_mask": attention_mask.to(model.device)
+        "input_ids": input_ids.to(model.device),
+        "labels": labels.to(model.device),
+        "attention_mask": attention_mask.to(model.device),
     }
 
 
@@ -181,8 +163,9 @@ class AudioChatDataCollator:
         self.greeting = "Hello world."
 
     def __call__(self, features):
-        assistant_response = features[0]["answer"]
-        user_response = features[0]["question"]
+        input_ids = features[0]["input_ids"]
+        attention_mask = features[0]["attention_mask"]
+        labels = features[0]["labels"]
         audios = features[0]["audios"]
 
         # Simple contains check
@@ -193,7 +176,7 @@ class AudioChatDataCollator:
             
         # empty_tensor = torch.tensor([[[]]])
 
-        batch = inference_collator(audios, user_response, assistant_response)
+        batch = inference_collator(audios, input_ids, labels, attention_mask)
 
         return {
             "audio_values": batch["audio_values"].cpu(),

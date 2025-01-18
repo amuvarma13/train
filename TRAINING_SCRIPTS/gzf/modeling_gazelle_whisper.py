@@ -578,7 +578,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 # print("audio_values", audio_values.shape)
                 # audio_tower_outputs = self.audio_tower(audio_values).last_hidden_state
                 # print("output shape of audio_tower", audio_tower_outputs.shape) #torch.Size([1, 608, 768])
-                print("audio values shape", audio_values.shape)
                 audio_features = self.multi_modal_projector(audio_values)
                 (
                     inputs_embeds,

@@ -537,6 +537,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
     ) -> Union[Tuple, GazelleCausalLMOutputWithPast]:
         
 
+        print("forward audio shape", audio_values.shape)
    
         output_attentions = (
             output_attentions

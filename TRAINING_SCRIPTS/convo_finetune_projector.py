@@ -124,7 +124,7 @@ audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
 def process_audio_tensor(audio, sample_rate=16000):
     audio = audio.to(torch.float32)
     duration_ms = (len(audio) / sample_rate) * 1000
-    audio = whisper.pad_or_trim(audio)
+    # audio = whisper.pad_or_trim(audio)
     mel = whisper.log_mel_spectrogram(audio)
     return mel, int(duration_ms / 20) + 1
 

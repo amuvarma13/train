@@ -138,6 +138,8 @@ def inference_collator(audios, input_ids, labels, attention_mask):
 
     processed_features = []
     for audio_input in audios:
+        #convert audio input to tensor
+        audio_input = torch.tensor(audio_input)
         audio_input = audio_input.squeeze(0)
         mel, length = process_audio_tensor(audio_input)
         mel = mel.to(whisper_model.device)

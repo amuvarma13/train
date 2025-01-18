@@ -115,12 +115,11 @@ def remove_short_audio(dataset, min_seconds=1.0):
 
     return filtered_dataset
 
-dataset = remove_short_audio(dataset)
+# dataset = remove_short_audio(dataset)
 
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)
 
-print("6")
 
 def process_audio_tensor(audio, sample_rate=16000):
     audio = audio.to(torch.float32)

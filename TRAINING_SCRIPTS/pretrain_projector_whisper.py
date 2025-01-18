@@ -154,8 +154,7 @@ class AudioChatDataCollator:
         else:
             user_response = "<|audio|>"
             
-        
-        print(f"User Response: {user_response}")
+    
         
 
         batch = inference_collator(audio, user_response, assistant_response)

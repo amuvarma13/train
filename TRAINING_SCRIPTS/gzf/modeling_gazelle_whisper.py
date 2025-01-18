@@ -603,7 +603,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                     # that are set to 0
                     first_layer_past_key_value = past_key_values[0][0][:, :, :, 0]
 
-                    # Sum all dimensions of head_dim (-2) to avoid random errors such as: https://github.com/huggingface/transformers/pull/28032#issuecomment-1863691941
                     batch_index, non_attended_tokens = torch.where(
                         first_layer_past_key_value.float().sum(-2) == 0
                     )

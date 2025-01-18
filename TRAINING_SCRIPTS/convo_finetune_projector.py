@@ -169,6 +169,7 @@ def inference_collator(audios, input_ids, labels, attention_mask):
     input_ids = torch.tensor(input_ids)
     labels = torch.tensor(labels)
     attention_mask = torch.tensor(attention_mask)
+    print("shapes", input_ids.shape, labels.shape, attention_mask.shape)
 
     return {
         "audio_values": padded_audio.to(model.device).to(model.dtype),

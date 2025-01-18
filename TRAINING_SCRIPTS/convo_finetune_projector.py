@@ -194,7 +194,6 @@ class AudioChatDataCollator:
         print("batch audio size", batch["audio_values"].shape)
         return {
             "audio_values": batch["audio_values"].cpu(),
-            # "audio_values": empty_tensor,
             "input_ids": batch["input_ids"].cpu(),
             "labels": batch["labels"].cpu(),
             "attention_mask": batch["attention_mask"].cpu()

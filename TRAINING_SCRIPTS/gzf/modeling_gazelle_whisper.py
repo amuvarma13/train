@@ -728,7 +728,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             model_inputs = {"inputs_embeds": inputs_embeds}
         else:
             model_inputs = {"input_ids": input_ids}
-
+        print("in prep inpsaudio_values", audio_values.shape)
         model_inputs.update(
             {
                 "position_ids": position_ids,

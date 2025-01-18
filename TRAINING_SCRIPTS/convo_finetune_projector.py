@@ -191,7 +191,6 @@ class AudioChatDataCollator:
         audios = features[0]["audios"]
 
         batch = inference_collator(audios, input_ids, labels, attention_mask)
-        print("batch audio size", batch["audio_values"].shape)
         return {
             "audio_values": batch["audio_values"].cpu(),
             "input_ids": batch["input_ids"].cpu(),

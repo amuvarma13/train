@@ -537,7 +537,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
     ) -> Union[Tuple, GazelleCausalLMOutputWithPast]:
         
 
-        print("forward audio shape", audio_values.shape)
    
         output_attentions = (
             output_attentions
@@ -565,12 +564,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 and input_ids.shape[1] != 1
             ):
                 
-                # print("audio_values", audio_values.shape)
-                # audio_tower_outputs = self.audio_tower(audio_values).last_hidden_state
-                # print("output shape of audio_tower", audio_tower_outputs.shape) #torch.Size([1, 608, 768])
-                print("premm proj shape of audio values", audio_values.shape)
                 audio_features = self.multi_modal_projector(audio_values)
-                print("shape of projected audio features", audio_features.shape)
                 (
                     inputs_embeds,
                     attention_mask,
@@ -728,7 +722,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             model_inputs = {"inputs_embeds": inputs_embeds}
         else:
             model_inputs = {"input_ids": input_ids}
-        print("in prep inpsaudio_values", audio_values.shape)
         model_inputs.update(
             {
                 "position_ids": position_ids,

@@ -617,6 +617,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 print("labels after removal:", labels.shape)
                 inputs_embeds = inputs_embeds[:, mask[0]]
                 attention_mask = attention_mask[:, mask[0]]
+                position_ids = position_ids[:, mask[0]]
 
 
     

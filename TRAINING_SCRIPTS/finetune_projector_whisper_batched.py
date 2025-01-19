@@ -204,7 +204,7 @@ class AudioChatDataCollator:
             user_response = "<|audio|>"
             
         snac_tokens = []
-        if("codes_list" in features[0]):
+        if("codes_list" in features[0] and self.call_index % 2 == 0):
             snac_tokens = features[0]["codes_list"]
 
         batch = inference_collator(audio, user_response, assistant_response, snac_tokens)

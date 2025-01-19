@@ -426,7 +426,83 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         self.config.vocab_size = model_embeds.num_embeddings
         self.vocab_size = model_embeds.num_embeddings
         return model_embeds
+    def _merge_input_ids_with_audio_features_variable(
+        self, audio_features_list,   # a list of length B; each is shape [lengths[i], embed_dim]
+        input_ids,
+        attention_mask,
+        labels
+    ):
+        B = len(audio_features_list)
+        device = input_ids.device
 
+        # For each sample i, find all the <|audio|> tokens in input_ids[i].
+        # Suppose each sample i has M_i <|audio|> tokens, which should match audio_features_list[i].size(0).
+        # Then we create new embeddings by expanding the text with the audio embeddings in place.
+
+        final_embeddings = []
+        final_attention_masks = []
+        final_labels = []
+
+        for i in range(B):
+            # input_ids[i]: shape [seq_len]
+            # audio_features_list[i]: shape [lengths[i], embed_dim]
+
+            # 1. Find audio placeholders in input_ids[i].
+            audio_placeholder_positions = (input_ids[i] == self.config.audio_token_index).nonzero().flatten()
+
+            # Check that number of placeholders matches length of audio_features_list[i].
+            if len(audio_placeholder_positions) != audio_features_list[i].size(0):
+                raise ValueError(
+                    f"Mismatched audio placeholders vs. audio frames for sample {i}:\n"
+                    f" Found {len(audio_placeholder_positions)} placeholders but "
+                    f"{audio_features_list[i].size(0)} frames."
+                )
+
+            # 2. Convert input_ids to embeddings
+            text_embeds = self.get_input_embeddings()(input_ids[i].unsqueeze(0))  
+            text_embeds = text_embeds.squeeze(0)  # shape [seq_len, embed_dim]
+
+            # 3. Replace each placeholder’s embedding with the audio embedding
+            text_embeds[audio_placeholder_positions] = audio_features_list[i].to(text_embeds.device)
+
+            # 4. Build attention mask
+            attn = attention_mask[i].clone()  # shape [seq_len]
+            # Usually it's already 1s for text tokens. 
+            # The placeholders are also 1 (assuming they are “valid” tokens).
+            # If you want to set them specifically, that’s up to you.
+
+            # 5. If labels are not None, replicate same indexing
+            lbls = None
+            if labels is not None:
+                lbls = labels[i].clone()  # shape [seq_len]
+
+            final_embeddings.append(text_embeds)
+            final_attention_masks.append(attn)
+            final_labels.append(lbls)
+
+        # Now each final_embeddings[i] is shape [seq_len, embed_dim].
+        # If you want to do batch processing, you might re-pad them all to the same length.
+
+        max_length = max(e.size(0) for e in final_embeddings)
+        # pad them to [B, max_length, embed_dim]
+        new_embeds = torch.zeros(B, max_length, final_embeddings[0].size(-1), device=device)
+        new_attn = torch.zeros(B, max_length, device=device, dtype=attention_mask.dtype)
+        new_labels = None
+        if labels is not None:
+            new_labels = torch.full((B, max_length), self.config.ignore_index, device=device)
+
+        for i in range(B):
+            seq_len = final_embeddings[i].size(0)
+            new_embeds[i, :seq_len, :] = final_embeddings[i]
+            new_attn[i, :seq_len] = final_attention_masks[i]
+            if new_labels is not None and final_labels[i] is not None:
+                new_labels[i, :seq_len] = final_labels[i]
+
+        # Position IDs
+        position_ids = (new_attn.cumsum(-1) - 1).masked_fill_(new_attn == 0, 0)
+
+        return new_embeds, new_attn, new_labels, position_ids
+        
     def _merge_input_ids_with_audio_features(
         self, audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
     ):
@@ -572,7 +648,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                     attention_mask,
                     labels,
                     position_ids,
-                ) = self._merge_input_ids_with_audio_features(
+                ) = self._merge_input_ids_with_audio_features_variable(
                     audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
                 )
                 if labels is None:

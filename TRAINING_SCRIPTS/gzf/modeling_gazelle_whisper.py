@@ -596,6 +596,12 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 else:
                     print("Mismatch between number of patches and removals length.")
 
+                false_tensor = torch.zeros((1, 1), dtype=torch.bool, device=labels.device)
+                ends = is_negative_100 & ~torch.cat((is_negative_100[:, 1:], false_tensor), dim=1)
+                last_indices_of_patches = torch.where(ends)[1]
+                print("Indices of the last -100 in each patch:", last_indices_of_patches)
+
+
 
     
                 if labels is None:

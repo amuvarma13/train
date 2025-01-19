@@ -444,7 +444,12 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         final_embeddings = []
         final_attention_masks = []
         final_labels = []
-
+        if len(audio_placeholder_positions) != B:
+                raise ValueError(
+                    f"Mismatched audio placeholders vs. audio frames for sample {i}:\n"
+                    f" Found {len(audio_placeholder_positions)} placeholders but "
+                    f"{audio_features_list[i].size(0)} frames."
+                )
         for i in range(B):
             # input_ids[i]: shape [seq_len]
             # audio_features_list[i]: shape [lengths[i], embed_dim]
@@ -453,12 +458,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             audio_placeholder_positions = (input_ids[i] == self.config.audio_token_index).nonzero().flatten()
 
             # Check that number of placeholders matches length of audio_features_list[i].
-            if len(audio_placeholder_positions) != audio_features_list[i].size(0):
-                raise ValueError(
-                    f"Mismatched audio placeholders vs. audio frames for sample {i}:\n"
-                    f" Found {len(audio_placeholder_positions)} placeholders but "
-                    f"{audio_features_list[i].size(0)} frames."
-                )
+
 
             # 2. Convert input_ids to embeddings
             text_embeds = self.get_input_embeddings()(input_ids[i].unsqueeze(0))  

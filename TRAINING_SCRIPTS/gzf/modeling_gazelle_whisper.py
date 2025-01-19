@@ -582,67 +582,22 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 max_length = lengths.max()
                 removals = max_length - lengths
 
-
-                # Assuming `labels` is your tensor with shape [B, N]
                 is_negative_100 = labels == -100
-
-# Compute the starts of each patch
                 false_tensor = torch.zeros((1, 1), dtype=torch.bool, device=labels.device)
+                shifted = torch.cat((false_tensor, is_negative_100[:, :-1]), dim=1)
+                starts = is_negative_100 & ~shifted
+                num_patches = int(starts.sum().item())
+
+                print("Number of patches of -100:", num_patches)
+                print("Removals tensor shape:", removals.shape)
+
+                if removals.shape[0] == num_patches:
+                    print("The number of patches matches the first dimension of removals.")
+                else:
+                    print("Mismatch between number of patches and removals length.")
 
 
-                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:, :-1]), dim=1)
-
-
-                # Verify shapes
-                print("labels shape:", labels.shape)        # Should be [5, 6667]
-                print("removals shape:", removals.shape)    # Should be [5]
-                print("starts shape:", starts.shape)        # Should be [5, 6667]
-
-                # Assert batch sizes match
-                # assert labels.shape[0] == removals.shape[0], "Batch size of labels and removals must match."
-                # assert starts.shape[0] == labels.shape[0], "Batch size of starts and labels must match."
-
-                # Process each batch element
-                B = removals.shape[0]  # Batch size
-                for i in range(B):  # Iterate over the batch
-                    num_to_remove = removals[i].item()  # Get the number of -100s to change for this batch element
-                    if num_to_remove > 0:
-                        # Identify the start indices of each patch of -100s
-                        start_indices = torch.where(starts[i])[0]  # Tensor of start indices
-
-                        for start_idx in start_indices:
-                            # Identify the end of the current patch of -100s
-                            end_idx = start_idx.item()
-                            while end_idx < N and labels[i, end_idx] == -100:
-                                end_idx += 1
-
-                            # Get all indices in this patch
-                            patch_indices = torch.arange(start_idx, end_idx, device=device)
-
-                            # Determine how many `-100`s to change in this patch
-                            patch_size = len(patch_indices)
-                            patch_removal = min(num_to_remove, patch_size)  # Ensure not to exceed the patch size
-
-                            # Update the last `patch_removal` indices of the patch to -101
-                            if patch_removal > 0:
-                                labels[i, patch_indices[-patch_removal:]] = -101
-
-                            # Reduce the number of removals left for this batch element
-                            num_to_remove -= patch_removal
-
-                            # Break if all removals are done
-                            if num_to_remove <= 0:
-                                break
-
-                print("Updated labels:", labels)
-
-
-
-
-                # print("inputs_embeds.shape",inputs_embeds.shape[1])
-                # print(input_ids.shape, audio_values.shape, audio_features.shape)
-                # print(input_ids.shape[1] - audio_values.shape[0] + audio_features.shape[1]*audio_values.shape[0])
-
+    
                 if labels is None:
                     labels = torch.full_like(
                         attention_mask, self.config.ignore_index

@@ -512,7 +512,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             .to(target_device, dtype=final_embedding.dtype)
         )
         final_attention_mask |= audio_to_overwrite
-        new_length = labels.shape[1]
+        new_length = labels.size(1)
         position_ids = torch.arange(new_length, device=labels.device).unsqueeze(0)
 
         if labels is None:

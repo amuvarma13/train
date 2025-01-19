@@ -190,6 +190,7 @@ def inference_collator(audio_input, user_res, ass_res, snac_tokens):
 class AudioChatDataCollator:
     def __init__(self):
         self.greeting = "Hello world."
+        self.call_index = 0
 
     def __call__(self, features):
         audio = torch.tensor([features[0]["answer_audio"]["array"]])
@@ -207,7 +208,8 @@ class AudioChatDataCollator:
             snac_tokens = features[0]["codes_list"]
 
         batch = inference_collator(audio, user_response, assistant_response, snac_tokens)
-
+        self.call_index += 1
+        print("self.call_index", self.call_index)
         return {
             "audio_values": batch["audio_values"].cpu(),
             "input_ids": batch["input_ids"].cpu(),

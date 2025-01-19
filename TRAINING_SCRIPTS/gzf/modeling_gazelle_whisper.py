@@ -588,18 +588,17 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 starts = is_negative_100 & ~shifted
                 num_patches = int(starts.sum().item())
 
-                print("Number of patches of -100:", num_patches)
-                print("Removals tensor shape:", removals.shape)
+                # print("Number of patches of -100:", num_patches)
+                # print("Removals tensor shape:", removals.shape)
 
-                if removals.shape[0] == num_patches:
-                    print("The number of patches matches the first dimension of removals.")
-                else:
-                    print("Mismatch between number of patches and removals length.")
+                # if removals.shape[0] == num_patches:
+                #     print("The number of patches matches the first dimension of removals.")
+                # else:
+                #     print("Mismatch between number of patches and removals length.")
 
                 false_tensor = torch.zeros((1, 1), dtype=torch.bool, device=labels.device)
                 ends = is_negative_100 & ~torch.cat((is_negative_100[:, 1:], false_tensor), dim=1)
                 last_indices_of_patches = torch.where(ends)[1]
-                print("Indices of the last -100 in each patch:", last_indices_of_patches)
 
                 for idx, removal in zip(last_indices_of_patches.tolist(), removals.tolist()):
                     count = removal
@@ -609,12 +608,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                         end_idx -= 1
                         count -= 1
 
-                print("successfully added the -101 tokens")
-
                 mask = labels != -101
-                print("labels initiallly:", labels.shape)
                 labels = labels[:, mask[0]]
-                print("labels after removal:", labels.shape)
                 inputs_embeds = inputs_embeds[:, mask[0]]
                 attention_mask = attention_mask[:, mask[0]]
                 new_length = labels.size(1)

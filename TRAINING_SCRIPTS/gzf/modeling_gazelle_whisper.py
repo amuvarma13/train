@@ -577,14 +577,27 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
                 count = (labels == -100).sum().item()
                 # print("Number of entries equal to -100:", count, audio_features.shape[0]*audio_features.shape[1])
-                is_negative_100 = labels == -100
-                false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
-                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
+
                 lengths = ((lengths + 7) // 8)
                 max_length = lengths.max()
                 removals = max_length - lengths
-                print("removals", removals)
-                print("starts", starts)
+
+                is_negative_100 = labels == -100
+                false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
+                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
+
+                # Process each row to modify the last `removal` number of `-100`s
+                for i in range(removals.size(0)):  # Iterate over the batch
+                    num_to_remove = removals[i].item()  # Get the number of -100s to change
+                    if num_to_remove > 0:
+                        # Get indices of -100s in the current row
+                        neg_100_indices = torch.where(labels[i] == -100)[0]
+                        
+                        # Select the last `num_to_remove` indices
+                        indices_to_change = neg_100_indices[-num_to_remove:]
+                        
+                        # Set these indices to -101
+                        labels[i, indices_to_change] = -101
 
 
                 # print("inputs_embeds.shape",inputs_embeds.shape[1])

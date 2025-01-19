@@ -19,8 +19,8 @@ gradient_accumulation_steps: 1
 # dataset_names: 
 #   - "amuvarma/textonlylabels-snac-sts-convo-zuck"
 
-dsn1: "amuvarma/textonlylabels-snac-sts-convo-zuck-secondhalf"
-dsn2: "amuvarma/textonlylabels-snac-sts-convo-zuck-half"
+dataset_1: "amuvarma/textonlylabels-snac-sts-convo-zuck-secondhalf"
+dataset_2: "amuvarma/textonlylabels-snac-sts-convo-zuck-half"
 
 # Naming and paths
 save_folder: "checkpoints"

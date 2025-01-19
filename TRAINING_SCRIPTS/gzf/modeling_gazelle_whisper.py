@@ -583,22 +583,21 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 removals = max_length - lengths
 
 
+                # Assuming `labels` is your tensor with shape [B, N]
                 is_negative_100 = labels == -100
                 false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
                 starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
 
-
-
-                # Process each row to modify the last `removal` number of `-100`s
+                # Process each row to handle each patch of -100s individually
                 for i in range(removals.size(0)):  # Iterate over the batch
                     num_to_remove = removals[i].item()  # Get the number of -100s to change for this row
                     if num_to_remove > 0:
                         # Identify the start indices of each patch of -100s
-                        start_indices = torch.where(starts[i])[0]
+                        start_indices = torch.where(starts[i, :])[0]  # Fix: use starts[i, :] for 2D tensors
                         
                         for start_idx in start_indices:
                             # Identify the end of the current patch of -100s
-                            end_idx = start_idx
+                            end_idx = start_idx.item()
                             while end_idx < labels.size(1) and labels[i, end_idx] == -100:
                                 end_idx += 1
                             
@@ -619,6 +618,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                             # Break if all removals are done
                             if num_to_remove <= 0:
                                 break
+
+                print(labels)
 
 
 

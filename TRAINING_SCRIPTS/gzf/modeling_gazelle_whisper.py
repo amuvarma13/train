@@ -587,7 +587,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 is_negative_100 = labels == -100
                 false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
                 starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
-
+                print("starts shape:", starts.shape)
                 # Process each row to handle each patch of -100s individually
                 for i in range(removals.size(0)):  # Iterate over the batch
                     num_to_remove = removals[i].item()  # Get the number of -100s to change for this row

@@ -611,6 +611,11 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
                 print("successfully added the -101 tokens")
 
+                mask = labels != -101
+                labels = labels[:, mask[0]]
+                inputs_embeds = inputs_embeds[:, mask[0]]
+                attention_mask = attention_mask[:, mask[0]]
+
 
     
                 if labels is None:

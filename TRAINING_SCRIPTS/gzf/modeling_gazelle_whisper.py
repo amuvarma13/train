@@ -584,7 +584,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
 
                 # Assuming `labels` is your tensor with shape [B, N]
-                # Assuming `labels` is your tensor with shape [B, N]
                 is_negative_100 = labels == -100
                 false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
                 starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)

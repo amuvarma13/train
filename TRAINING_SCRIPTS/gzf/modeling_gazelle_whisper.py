@@ -648,6 +648,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 print(audio_features.shape)
                 print(audio_values.shape)
                 print(lengths)
+                lengths = ((lengths + 7) // 8)
+                print("new lengths", lengths)
 
                 (
                     inputs_embeds,

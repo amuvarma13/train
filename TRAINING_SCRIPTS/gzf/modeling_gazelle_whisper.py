@@ -431,6 +431,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         input_ids,
         attention_mask,
         labels
+
+        # audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
     ):
         B = len(audio_features_list)
         device = input_ids.device
@@ -643,13 +645,17 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             ):
                 
                 audio_features = self.multi_modal_projector(audio_values)
+                print(audio_features.shape)
+                print(audio_values.shape)
+                print(lengths)
+
                 (
                     inputs_embeds,
                     attention_mask,
                     labels,
                     position_ids,
                 ) = self._merge_input_ids_with_audio_features_variable(
-                    audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
+                    audio_features, input_ids, attention_mask, labels
                 )
                 if labels is None:
                     labels = torch.full_like(

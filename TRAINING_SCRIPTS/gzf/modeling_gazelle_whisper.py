@@ -582,8 +582,12 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 max_length = lengths.max()
                 removals = max_length - lengths
 
+
                 is_negative_100 = labels == -100
                 false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
+                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
+
+
 
                 # Process each row to modify the last `removal` number of `-100`s
                 for i in range(removals.size(0)):  # Iterate over the batch

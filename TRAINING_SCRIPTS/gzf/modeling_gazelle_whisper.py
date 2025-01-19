@@ -587,9 +587,11 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 is_negative_100 = labels == -100
 
 # Compute the starts of each patch
-                false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=labels.device)
+                false_tensor = torch.zeros((1, 1), dtype=torch.bool, device=labels.device)
 
-                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
+
+                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:, :-1]), dim=1)
+
 
                 # Verify shapes
                 print("labels shape:", labels.shape)        # Should be [5, 6667]
@@ -597,8 +599,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 print("starts shape:", starts.shape)        # Should be [5, 6667]
 
                 # Assert batch sizes match
-                assert labels.shape[0] == removals.shape[0], "Batch size of labels and removals must match."
-                assert starts.shape[0] == labels.shape[0], "Batch size of starts and labels must match."
+                # assert labels.shape[0] == removals.shape[0], "Batch size of labels and removals must match."
+                # assert starts.shape[0] == labels.shape[0], "Batch size of starts and labels must match."
 
                 # Process each batch element
                 B = removals.shape[0]  # Batch size

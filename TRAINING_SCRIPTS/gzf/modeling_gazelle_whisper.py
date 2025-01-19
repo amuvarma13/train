@@ -428,8 +428,9 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         return model_embeds
 
     def _merge_input_ids_with_audio_features(
-        self, audio_features, inputs_embeds, input_ids, attention_mask, labels
+        self, audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
     ):
+        print("audio_features.shape", audio_features.shape)
         num_audio_samples, num_audio_patches, embed_dim = audio_features.shape
         batch_size, sequence_length = input_ids.shape
         left_padding = not torch.sum(
@@ -524,6 +525,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
     def forward(
         self,
         input_ids: torch.LongTensor = None,
+        lengths: Optional[torch.LongTensor] = None,
         audio_values: torch.FloatTensor = None,
         attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,
@@ -571,7 +573,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                     labels,
                     position_ids,
                 ) = self._merge_input_ids_with_audio_features(
-                    audio_features, inputs_embeds, input_ids, attention_mask, labels
+                    audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
                 )
                 if labels is None:
                     labels = torch.full_like(

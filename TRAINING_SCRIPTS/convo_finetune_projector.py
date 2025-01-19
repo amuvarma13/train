@@ -173,6 +173,7 @@ def inference_collator(audios, input_ids, labels, attention_mask):
         "input_ids": input_ids.to(model.device),
         "labels": labels.to(model.device),
         "attention_mask": attention_mask.to(model.device),
+        "lengths": lengths.to(model.device)
     }
 
 
@@ -192,7 +193,8 @@ class AudioChatDataCollator:
             "audio_values": batch["audio_values"].cpu(),
             "input_ids": batch["input_ids"].cpu(),
             "labels": batch["labels"].cpu(),
-            "attention_mask": batch["attention_mask"].cpu()
+            "attention_mask": batch["attention_mask"].cpu(),
+            "lengths": batch["lengths"].cpu()
         }
 
 

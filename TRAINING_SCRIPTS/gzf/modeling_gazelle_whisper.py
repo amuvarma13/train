@@ -584,20 +584,38 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
                 is_negative_100 = labels == -100
                 false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=is_negative_100.device)
-                starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
 
                 # Process each row to modify the last `removal` number of `-100`s
                 for i in range(removals.size(0)):  # Iterate over the batch
-                    num_to_remove = removals[i].item()  # Get the number of -100s to change
+                    num_to_remove = removals[i].item()  # Get the number of -100s to change for this row
                     if num_to_remove > 0:
-                        # Get indices of -100s in the current row
-                        neg_100_indices = torch.where(labels[i] == -100)[0]
+                        # Identify the start indices of each patch of -100s
+                        start_indices = torch.where(starts[i])[0]
                         
-                        # Select the last `num_to_remove` indices
-                        indices_to_change = neg_100_indices[-num_to_remove:]
-                        
-                        # Set these indices to -101
-                        labels[i, indices_to_change] = -101
+                        for start_idx in start_indices:
+                            # Identify the end of the current patch of -100s
+                            end_idx = start_idx
+                            while end_idx < labels.size(1) and labels[i, end_idx] == -100:
+                                end_idx += 1
+                            
+                            # Get all indices in this patch
+                            patch_indices = torch.arange(start_idx, end_idx, device=labels.device)
+                            
+                            # Determine how many `-100`s to change in this patch
+                            patch_size = len(patch_indices)
+                            patch_removal = min(num_to_remove, patch_size)  # Don't exceed the patch size
+                            
+                            # Update the last `patch_removal` indices of the patch to -101
+                            if patch_removal > 0:
+                                labels[i, patch_indices[-patch_removal:]] = -101
+                            
+                            # Reduce the number of removals left for this row
+                            num_to_remove -= patch_removal
+                            
+                            # Break if all removals are done
+                            if num_to_remove <= 0:
+                                break
+
 
 
                 # print("inputs_embeds.shape",inputs_embeds.shape[1])

@@ -445,11 +445,11 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         final_attention_masks = []
         final_labels = []
         if len(audio_placeholder_positions) != B:
-                raise ValueError(
-                    f"Mismatched audio placeholders vs. audio frames for sample {i}:\n"
-                    f" Found {len(audio_placeholder_positions)} placeholders but "
-                    f"{audio_features_list[i].size(0)} frames."
-                )
+            raise ValueError(
+                f"Mismatched audio placeholders vs. audio frames for sample {i}:\n"
+                f" Found {len(audio_placeholder_positions)} placeholders but "
+                f"{audio_features_list[i].size(0)} frames."
+            )
         for i in range(B):
             # input_ids[i]: shape [seq_len]
             # audio_features_list[i]: shape [lengths[i], embed_dim]

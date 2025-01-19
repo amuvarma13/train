@@ -587,7 +587,8 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 is_negative_100 = labels == -100
 
 # Compute the starts of each patch
-                false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=device)
+                false_tensor = torch.zeros((1, is_negative_100.size(1)), dtype=torch.bool, device=labels.device)
+
                 starts = is_negative_100 & ~torch.cat((false_tensor, is_negative_100[:-1]), dim=0)
 
                 # Verify shapes

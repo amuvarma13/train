@@ -577,7 +577,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
 
                 print("inputs_embeds.shape",inputs_embeds.shape[1])
                 print(input_ids.shape, audio_values.shape, audio_features.shape)
-                print(input_ids.shape[1] - audio_values.shape[1] + audio_features.shape[1]*audio_values.shape[0])
+                print(input_ids.shape[1] - audio_values.shape[0] + audio_features.shape[1]*audio_values.shape[0])
 
                 if labels is None:
                     labels = torch.full_like(

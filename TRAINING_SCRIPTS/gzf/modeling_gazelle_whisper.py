@@ -426,128 +426,10 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         self.config.vocab_size = model_embeds.num_embeddings
         self.vocab_size = model_embeds.num_embeddings
         return model_embeds
-    def _merge_input_ids_with_audio_features_variable(
-    self,
-    audio_features_list,   # List of length B; each is shape [N_i, embed_dim] for a single example
-    input_ids,             # shape [seq_len]
-    attention_mask,        # shape [seq_len]
-    labels=None            # shape [seq_len] or None
-):
-        """
-        We have exactly ONE text example (batch size = 1 in the usual sense), 
-        but that single text has B audio placeholders (<|audio|>).
-        
-        audio_features_list: a list of B tensors, each [N_i, embed_dim],
-                            where N_i is the number of frames for the i-th placeholder.
-        input_ids: shape [seq_len], containing B occurrences of self.config.audio_token_index
-        attention_mask: shape [seq_len], 1 for real tokens, etc.
-        labels: optional, shape [seq_len] (token IDs or -100).
-        
-        Returns:
-        final_embeds:  [1, expanded_seq_len, embed_dim]
-        final_attn:    [1, expanded_seq_len]
-        final_labels:  [1, expanded_seq_len] or None
-        position_ids:  [1, expanded_seq_len]
-        """
-        device = input_ids.device
-        seq_len = input_ids.size(0)
-
-        # B = number of audio placeholders in THIS single example
-        B = len(audio_features_list)
-
-        # 1. Locate all <|audio|> placeholders in input_ids
-        audio_token_id = self.config.audio_token_index  # e.g. <|audio|>
-        placeholder_positions = (input_ids == audio_token_id).nonzero(as_tuple=True)[0]
-        if placeholder_positions.size(0) != B:
-            raise ValueError(
-                f"Mismatch between number of placeholders and audio features:\n"
-                f" Found {placeholder_positions.size(0)} placeholders in `input_ids` "
-                f"but received {B} audio embeddings in `audio_features_list`."
-            )
-
-        # 2. Convert the entire text input to embeddings (shape [1, seq_len, embed_dim])
-        text_embeds = self.get_input_embeddings()(input_ids.unsqueeze(0))
-        text_embeds = text_embeds.squeeze(0)  # now [seq_len, embed_dim]
-
-        # 3. Determine final (expanded) sequence length
-        #    Each placeholder is replaced by N_i frames (instead of 1 token).
-        #    So expansion for each placeholder i is (N_i - 1).
-        total_audio_frames = sum(audio.shape[0] for audio in audio_features_list)
-        final_seq_len = seq_len - B + total_audio_frames
-
-        # 4. Allocate final tensors
-        final_embeds = torch.zeros(
-            (final_seq_len, text_embeds.size(-1)),
-            device=device,
-            dtype=text_embeds.dtype
-        )
-        final_attn = torch.zeros(final_seq_len, dtype=attention_mask.dtype, device=device)
-        
-        if labels is not None:
-            final_labels = torch.full(
-                (final_seq_len,),
-                self.config.ignore_index,  # e.g. -100
-                dtype=labels.dtype,
-                device=device,
-            )
-        else:
-            final_labels = None
-
-        # 5. Expand text + insert audio
-        src_idx = 0  # where we read from the original text
-        dst_idx = 0  # where we write in final_embeds
-
-        for placeholder_idx in range(B):
-            placeholder_pos = placeholder_positions[placeholder_idx].item()
-            
-            # (a) Copy all text tokens up to this placeholder
-            n_text_tokens = placeholder_pos - src_idx
-            if n_text_tokens > 0:
-                final_embeds[dst_idx : dst_idx + n_text_tokens] = text_embeds[src_idx : placeholder_pos]
-                final_attn[dst_idx : dst_idx + n_text_tokens] = attention_mask[src_idx : placeholder_pos]
-                if final_labels is not None:
-                    final_labels[dst_idx : dst_idx + n_text_tokens] = labels[src_idx : placeholder_pos]
-                dst_idx += n_text_tokens
-            
-            # Skip the placeholder token itself
-            src_idx = placeholder_pos + 1  
-
-            # (b) Insert the audio frames for this placeholder
-            audio_frames = audio_features_list[placeholder_idx].to(device)  # shape [N_i, embed_dim]
-            n_frames = audio_frames.size(0)
-
-            final_embeds[dst_idx : dst_idx + n_frames] = audio_frames
-            final_attn[dst_idx : dst_idx + n_frames] = 1  # We usually attend to these frames
-            # final_labels stays at ignore_index for these audio frames
-            dst_idx += n_frames
-
-        # (c) Copy remaining text tokens after the last placeholder
-        if src_idx < seq_len:
-            n_text_tokens = seq_len - src_idx
-            final_embeds[dst_idx : dst_idx + n_text_tokens] = text_embeds[src_idx : src_idx + n_text_tokens]
-            final_attn[dst_idx : dst_idx + n_text_tokens] = attention_mask[src_idx : src_idx + n_text_tokens]
-            if final_labels is not None:
-                final_labels[dst_idx : dst_idx + n_text_tokens] = labels[src_idx : src_idx + n_text_tokens]
-            dst_idx += n_text_tokens
-
-        # 6. Compute position_ids (simple cumsum approach)
-        # shape [final_seq_len]
-        position_ids = (final_attn.cumsum(dim=0) - 1).masked_fill_(final_attn == 0, 0)
-        
-        # 7. Return as [1, final_seq_len, ...] to mimic a batch dimension
-        final_embeds = final_embeds.unsqueeze(0)      # [1, final_seq_len, embed_dim]
-        final_attn = final_attn.unsqueeze(0)          # [1, final_seq_len]
-        position_ids = position_ids.unsqueeze(0)      # [1, final_seq_len]
-
-        if final_labels is not None:
-            final_labels = final_labels.unsqueeze(0)  # [1, final_seq_len]
-
-        return final_embeds, final_attn, final_labels, position_ids
 
     def _merge_input_ids_with_audio_features(
-        self, audio_features, inputs_embeds, input_ids, attention_mask, labels, lengths
+        self, audio_features, inputs_embeds, input_ids, attention_mask, labels
     ):
-        print("audio_features.shape", audio_features.shape)
         num_audio_samples, num_audio_patches, embed_dim = audio_features.shape
         batch_size, sequence_length = input_ids.shape
         left_padding = not torch.sum(
@@ -684,32 +566,13 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
             ):
                 
                 audio_features = self.multi_modal_projector(audio_values)
-                print(audio_features.shape)
-                print(audio_values.shape)
-                print(lengths)
-                lengths = ((lengths + 7) // 8)
-   # Example setup
-                print("new lengths", lengths)
-                cropped_list = []
-
-                # Iterate over the batch dimension
-                for i in range(audio_features.size(0)):  # Loop over B
-                    crop_size = lengths[i].item()  # Extract the integer for the current sample
-                    cropped = audio_features[i, :crop_size, :]  # Crop the middle dimension
-                    cropped_list.append(cropped)
-
-                # Print the shapes of the cropped tensors
-                for t in cropped_list:
-                    print(t.shape)
-
-
                 (
                     inputs_embeds,
                     attention_mask,
                     labels,
                     position_ids,
-                ) = self._merge_input_ids_with_audio_features_variable(
-                    audio_features, input_ids, attention_mask, labels
+                ) = self._merge_input_ids_with_audio_features(
+                    audio_features, inputs_embeds, input_ids, attention_mask, labels
                 )
                 if labels is None:
                     labels = torch.full_like(

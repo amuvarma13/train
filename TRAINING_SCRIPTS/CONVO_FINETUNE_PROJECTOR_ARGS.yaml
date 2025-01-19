@@ -16,8 +16,11 @@ learning_rate: 2.0e-4
 gradient_accumulation_steps: 1
 
 # Datasets
-dataset_names: 
-  - "amuvarma/textonlylabels-snac-sts-convo-zuck"
+# dataset_names: 
+#   - "amuvarma/textonlylabels-snac-sts-convo-zuck"
+
+dsn1: "amuvarma/textonlylabels-snac-sts-convo-zuck-secondhalf"
+dsn2: "amuvarma/textonlylabels-snac-sts-convo-zuck-half"
 
 # Naming and paths
 save_folder: "checkpoints"

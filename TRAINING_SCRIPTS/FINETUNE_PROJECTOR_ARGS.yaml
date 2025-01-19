@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/zuckqa-with-qaaudio-total-cast-snacced"
+  - "amuvarma/snacced-flat-zuck-convo-sttsed"
 
 # Naming and paths
 save_folder: "checkpoints"

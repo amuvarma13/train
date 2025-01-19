@@ -259,7 +259,7 @@ class AudioChatDataCollator:
             "input_ids": batch["input_ids"].cpu(),
             "labels": batch["labels"].cpu(),
             "attention_mask": batch["attention_mask"].cpu(),
-            "lengths": batch["lengths"].cpu()
+            # "lengths": batch["lengths"].cpu()
         }
 
 

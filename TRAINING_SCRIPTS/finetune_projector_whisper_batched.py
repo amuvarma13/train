@@ -185,7 +185,18 @@ def inference_collator(audio_input, user_res, ass_res, snac_tokens):
         "attention_mask": attention_mask.to(model.device)
     }
 
-
+class DistributedTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    def log(self, logs, start_time=None):
+        super().log(logs, start_time)
+        if self.is_world_process_zero():
+            global_step = self.state.global_step
+            if global_step % 2 == 0:
+                wandb.log({"text_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"audio_loss": logs["loss"], "step": global_step})
+    
 
 class AudioChatDataCollator:
     def __init__(self):
@@ -237,7 +248,7 @@ training_args = TrainingArguments(
 
 print("7")
 
-trainer = Trainer(
+trainer = DistributedTrainer(
     model=model,
     args=training_args,
     train_dataset=dataset,

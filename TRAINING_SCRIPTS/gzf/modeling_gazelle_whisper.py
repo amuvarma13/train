@@ -602,13 +602,14 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 print("Indices of the last -100 in each patch:", last_indices_of_patches)
 
                 for idx, removal in zip(last_indices_of_patches.tolist(), removals.tolist()):
-                    print("my removal",removal)
-                    # count = removal
-                    # end_idx = idx
-                    # while count > 0 and end_idx >= 0 and labels[0, end_idx] == -100:
-                    #     labels[0, end_idx] = -101
-                    #     end_idx -= 1
-                    #     count -= 1
+                    count = removal
+                    end_idx = idx
+                    print("Patch end index:", end_idx)
+                    print("label pred", labels[0, end_idx])
+                    while count > 0 and end_idx >= 0 and labels[0, end_idx] == -100:
+                        labels[0, end_idx] = -101
+                        end_idx -= 1
+                        count -= 1
 
 
 

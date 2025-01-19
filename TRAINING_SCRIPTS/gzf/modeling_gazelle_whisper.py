@@ -649,15 +649,20 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 print(audio_values.shape)
                 print(lengths)
                 lengths = ((lengths + 7) // 8)
+   # Example setup
                 print("new lengths", lengths)
                 cropped_list = []
+
+                # Iterate over the batch dimension
                 for i in range(audio_features.size(0)):  # Loop over B
-                    crop_size = lengths[i, 0].item()  # Extract the integer for the current sample
+                    crop_size = lengths[i].item()  # Extract the integer for the current sample
                     cropped = audio_features[i, :crop_size, :]  # Crop the middle dimension
                     cropped_list.append(cropped)
 
+                # Print the shapes of the cropped tensors
                 for t in cropped_list:
                     print(t.shape)
+
 
                 (
                     inputs_embeds,

@@ -576,7 +576,11 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 )
 
                 count = (labels == -100).sum().item()
-                print("Number of entries equal to -100:", count, audio_features.shape[0]*audio_features.shape[1])
+                # print("Number of entries equal to -100:", count, audio_features.shape[0]*audio_features.shape[1])
+                is_negative_100 = labels == -100
+                starts = (is_negative_100 & ~torch.cat((torch.tensor([False]), is_negative_100[:-1]))).nonzero(as_tuple=True)[0]
+                print(starts)
+
                 # print("inputs_embeds.shape",inputs_embeds.shape[1])
                 # print(input_ids.shape, audio_values.shape, audio_features.shape)
                 # print(input_ids.shape[1] - audio_values.shape[0] + audio_features.shape[1]*audio_values.shape[0])

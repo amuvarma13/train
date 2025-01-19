@@ -11,6 +11,9 @@ from gzf import (
     GazelleForConditionalGeneration,
 )
 import whisper
+from torch.utils.data import Dataset, DataLoader
+from torch.utils.data.distributed import DistributedSampler
+
 
 whisper_model = whisper.load_model("small")
 whisper_model = whisper_model.to("cuda:1")
@@ -21,7 +24,8 @@ config_file = "CONVO_FINETUNE_PROJECTOR_ARGS.yaml"
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)
 
-dsns = config["dataset_names"]
+dsn1 = config["dataset_1"]
+dsn2 = config["dataset_2"]
 
 model_name = config["model_name"]
 base_model_name =  config["base_model_name"]
@@ -42,7 +46,6 @@ gradient_accumulation_steps = config["gradient_accumulation_steps"]
 audio_model_id = config["audio_model_id"]
 audio_processor_id = config["audio_processor_id"] 
 save_folder = config["save_folder"]
-batch_size = config["batch_size"]
 gradient_accumulation_steps = config["gradient_accumulation_steps"]
 
 
@@ -95,12 +98,74 @@ for name, param in model.named_parameters():
 wandb.init(project=project_name, name=run_name)
 
 all_datasets = []
-for dsn in dsns:
-    fractional_dataset = load_dataset(dsn, split="train")
-    all_datasets.append(fractional_dataset)
+ds1 = load_dataset(dsn1, split="train")
+ds2 = load_dataset(dsn2, split="train")
 
-dataset = concatenate_datasets(all_datasets)
-dataset = dataset.shuffle(seed=42)
+class BatchedAlternatingDataset(Dataset):
+    def __init__(self, dataset1, dataset2, batch_total):
+        self.dataset1 = dataset1
+        self.dataset2 = dataset2
+        self.batch_total = batch_total
+        self.length = 2 * min(len(dataset1), len(dataset2))
+        
+    def __len__(self):
+        return self.length
+    
+    def __getitem__(self, index):
+        super_batch = index // (2 * self.batch_total)
+        position_in_super_batch = index % (2 * self.batch_total)
+        
+        if position_in_super_batch < self.batch_total:
+            dataset_index = super_batch * self.batch_total + position_in_super_batch
+            return self.dataset1[dataset_index]
+        else:
+            dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
+            return self.dataset2[dataset_index]
+
+class AlternatingDistributedSampler(DistributedSampler):
+    def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):
+        super().__init__(dataset, num_replicas=num_replicas, rank=rank, shuffle=shuffle)
+        self.shuffle = shuffle
+
+    def __iter__(self):
+        indices = list(range(len(self.dataset)))
+        indices = indices[self.rank:self.total_size:self.num_replicas]
+        return iter(indices)
+
+class DistributedTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_train_dataloader(self):
+        sampler = AlternatingDistributedSampler(
+            self.train_dataset,
+            num_replicas=torch.distributed.get_world_size(),
+            rank=torch.distributed.get_rank(),
+            shuffle=False, 
+        )
+
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.per_device_train_batch_size,
+            sampler=sampler,
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=0,
+            pin_memory=self.args.dataloader_pin_memory,
+        )
+    
+    def log(self, logs, start_time=None):
+        super().log(logs, start_time)
+        if self.is_world_process_zero():
+            global_step = self.state.global_step
+            if global_step % 2 == 0:
+                wandb.log({"text_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"audio_loss": logs["loss"], "step": global_step})
+    
+
+batch_total = batch_size * 2
+dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 print("5")
 def remove_short_audio(dataset, min_seconds=1.0):
     indices_to_keep = []
@@ -217,7 +282,7 @@ training_args = TrainingArguments(
 
 print("7")
 
-trainer = Trainer(
+trainer = DistributedTrainer(
     model=model,
     args=training_args,
     train_dataset=dataset,

@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/snacced-zuck-convo-sttsed-proc-no-discrepancies"
+  - "amuvarma/textonlylabels-snac-sts-convo-zuck"
 
 # Naming and paths
 save_folder: "checkpoints"

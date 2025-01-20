@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
-  - "amuvarma/snacced-flat-zuck-convo-sttsed"
+  - "amuvarma/qa_pairs_regular-sttsed"
 
 # Naming and paths
 save_folder: "checkpoints"

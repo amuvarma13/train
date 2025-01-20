@@ -1,13 +1,13 @@
 # Model
-model_name: "amuvarma/snac-pretrain-2m-96000"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B"
+model_name: "amuvarma/8b-2m-pretrain"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.1-8B"
 
 # Training Args
 epochs: 1
 batch_size: 1
 number_processes: 8
 pad_token: 128263
-save_steps: 1250
+save_steps: 1000
 learning_rate: 5.0e-6
 
 # Datasets
@@ -16,7 +16,7 @@ TTS_dataset: "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-qa-tune-3b"
-run_name: "15-1-3b-2m-r1"
+project_name: "zuck-qa-tune-8b"
+run_name: "20-1-r0"
 
 resize_dataset: false

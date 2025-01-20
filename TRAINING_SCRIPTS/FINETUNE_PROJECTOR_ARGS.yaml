@@ -12,7 +12,7 @@ epochs: 1
 batch_size: 1
 pad_token: 128263
 save_steps: 10000
-learning_rate: 2.0e-5
+learning_rate: 2.0e-7
 gradient_accumulation_steps: 1
 
 # Datasets
@@ -22,5 +22,5 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "eval-convo-text"
-run_name: "va-tune-llmunfreeze-2e-5-r2"
+run_name: "va-tune-llmunfreeze-2e-7-r2"
 resize_dataset: false 

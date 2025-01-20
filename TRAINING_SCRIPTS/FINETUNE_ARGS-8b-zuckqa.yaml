@@ -1,5 +1,5 @@
 # Model
-model_name: "amuvarma/8b-2m-pretrain"  # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.1-8B"
 
 # Training Args
@@ -16,7 +16,7 @@ TTS_dataset: "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-qa-tune-8b"
+project_name: "zuck-qa-tune-3b"
 run_name: "20-1-r0"
 
 resize_dataset: false

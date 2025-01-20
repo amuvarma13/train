@@ -89,6 +89,9 @@ for name, param in model.named_parameters():
     if "language_model" in name:
         param.requires_grad = True
  
+ #number of trainable parameters
+params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+print("number of trainable parameters: ", params)
 
 
 wandb.init(project=project_name, name=run_name)

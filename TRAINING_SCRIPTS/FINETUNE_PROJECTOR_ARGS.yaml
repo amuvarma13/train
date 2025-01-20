@@ -23,5 +23,4 @@ dataset_names:
 save_folder: "checkpoints"
 project_name: "eval-convo-text"
 run_name: "va-tune-llmunfreeze-2e-4-r2"
-
-resize_dataset: false
+resize_dataset: false 

@@ -21,7 +21,7 @@ dataset_names:
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "projector-3b-convotune"
-run_name: "flat-noconvo-qa-snac-tune-interleave-3"
+project_name: "eval-convo-text"
+run_name: "va-tune-2e-4"
 
 resize_dataset: false

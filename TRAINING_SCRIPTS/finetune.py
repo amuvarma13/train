@@ -40,8 +40,8 @@ tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
 
-ds1 = load_dataset(dsn1, split="train")
-ds2 = load_dataset(dsn1, split="train")
+ds1 = load_dataset(dsn2, split="train")
+ds2 = load_dataset(dsn2, split="train")
 
 
 

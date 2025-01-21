@@ -17,6 +17,6 @@ TTS_dataset: "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zuck-qa-tune-8b"
-run_name: "20-1-r1"
+run_name: "21-1-r1"
 
 resize_dataset: false

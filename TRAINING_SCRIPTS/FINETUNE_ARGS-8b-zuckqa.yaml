@@ -7,7 +7,7 @@ epochs: 1
 batch_size: 1
 number_processes: 8
 pad_token: 128263
-save_steps: 1000
+save_steps: 2000
 learning_rate: 5.0e-6
 
 # Datasets
@@ -16,7 +16,7 @@ TTS_dataset: "amuvarma/zuck-qa-ds-no-identity-TTTTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-qa-tune-3b"
-run_name: "20-1-r0"
+project_name: "zuck-qa-tune-8b"
+run_name: "20-1-r0-3B"
 
 resize_dataset: false

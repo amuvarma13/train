@@ -115,6 +115,7 @@ def inference_collator(audio_input, user_res, ass_res):
 
     user_tokens = torch.cat(
         [start_token, user_input_ids, end_tokens], dim=1)
+    
 
     labels = torch.cat([start_token, user_input_ids, end_tokens,
                        assistant_input_ids, final_tokens], dim=1)

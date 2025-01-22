@@ -7,7 +7,7 @@ epochs: 1
 batch_size: 1
 number_processes: 2
 pad_token: 128263
-save_steps: 200
+save_steps: 500
 learning_rate: 5.0e-6
 
 # Datasets

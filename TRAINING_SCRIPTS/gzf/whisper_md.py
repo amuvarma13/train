@@ -21,6 +21,7 @@ from typing import List, Optional, Tuple, Union
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 import torch
 import torch.utils.checkpoint
 from torch import nn
@@ -342,9 +343,6 @@ class GazellePreTrainedModel(PreTrainedModel):
     GAZELLE_START_DOCSTRING,
 )
 
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class EnhancedWhisperMLP(nn.Module):
     def __init__(self):

@@ -172,7 +172,7 @@ class AudioChatDataCollator:
         self.greeting = "Hello world."
 
     def __call__(self, features):
-        audio = torch.tensor([features[0]["answer_audio"]["array"]])
+        audio = torch.tensor([features[0]["question_audio"]["array"]])
         assistant_response = features[0]["answer"]
         user_response = features[0]["question"]
 

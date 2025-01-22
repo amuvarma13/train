@@ -19,10 +19,6 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-
-import torch
 import torch.utils.checkpoint
 from torch import nn
 from torch.nn import functional as F
@@ -343,85 +339,6 @@ class GazellePreTrainedModel(PreTrainedModel):
     GAZELLE_START_DOCSTRING,
 )
 
-
-class EnhancedWhisperMLP(nn.Module):
-    def __init__(self):
-        super().__init__()
-        dim1 = 768
-        is_bias = True
-        n_embd = 4096
-        intermediate_size = 4 * n_embd
-
-        self.fc1 = nn.Linear(dim1, intermediate_size, bias=is_bias)
-        self.fc2 = nn.Linear(dim1, intermediate_size, bias=is_bias)
-        self.fc3 = nn.Linear(intermediate_size, intermediate_size, bias=is_bias)
-        self.norm = nn.LayerNorm(intermediate_size)
-        self.proj = nn.Linear(intermediate_size, n_embd, bias=is_bias)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x_fc1 = self.fc1(x)
-        x_fc2 = self.fc2(x)
-        x = F.silu(x_fc1) * x_fc2
-        
-        x = self.fc3(x)
-        x = self.norm(x)
-        
-        return self.proj(x)
-
-class ImprovedWhisperMLP(nn.Module):
-    def __init__(self, input_dim=768, n_embd=4096, dropout_prob=0.1):
-        super().__init__()
-        hidden_dim = 4 * n_embd  # or adjust as needed
-
-        # First layer expansion
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
-        self.norm1 = nn.LayerNorm(hidden_dim)
-        
-        # Intermediate layers
-        self.fc2 = nn.Linear(hidden_dim, hidden_dim)
-        self.norm2 = nn.LayerNorm(hidden_dim)
-        self.fc3 = nn.Linear(hidden_dim, hidden_dim)
-        self.norm3 = nn.LayerNorm(hidden_dim)
-
-        # Final projection
-        self.proj = nn.Linear(hidden_dim, n_embd)
-        
-        # Activation and dropout
-        self.activation = nn.SiLU()  # or GELU/ReLU
-        self.dropout = nn.Dropout(dropout_prob)
-
-        # Optional residual connections can be added between layers
-        # For simplicity, this example uses sequential residual blocks.
-    
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # First block
-        x_res = x  # potential residual input if dimensions match
-        x = self.fc1(x)
-        x = self.norm1(x)
-        x = self.activation(x)
-        x = self.dropout(x)
-        # (If dimensions differ, skip-residual from input might not apply)
-        
-        # Second block with residual connection
-        x_res2 = x
-        x = self.fc2(x)
-        x = self.norm2(x)
-        x = self.activation(x)
-        x = self.dropout(x)
-        x = x + x_res2  # residual connection
-        
-        # Third block with residual connection
-        x_res3 = x
-        x = self.fc3(x)
-        x = self.norm3(x)
-        x = self.activation(x)
-        x = self.dropout(x)
-        x = x + x_res3  # residual connection
-
-        # Final projection
-        output = self.proj(x)
-        return output
-
 class whisperMLP(nn.Module):
     def __init__(self, ) -> None:
         super().__init__()
@@ -460,7 +377,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         # else:
         # self.multi_modal_projector = GazelleProjector(config)
 
-        self.multi_modal_projector = EnhancedWhisperMLP()
+        self.multi_modal_projector = whisperMLP()
         self.vocab_size = config.vocab_size
         if config.text_model_id is not None:
             self.language_model = AutoModelForCausalLM.from_pretrained(

@@ -154,7 +154,7 @@ class GazelleCausalLMOutputWithPast(ModelOutput):
 
 
 class ProjectionLayer(nn.Module):
-    def __init__(self, stack_factor: int = 8):
+    def __init__(self, stack_factor: int = 4):
         super().__init__()
         # NB chua: stack_factor is the factor by which the audio embeddings are stacked
         # ideally this should be picked according to your hardware and should be a multiple of 8!

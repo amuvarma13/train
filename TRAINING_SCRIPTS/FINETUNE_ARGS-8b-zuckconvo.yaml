@@ -7,12 +7,12 @@ epochs: 1
 batch_size: 1
 number_processes: 8
 pad_token: 128263
-save_steps: 124
+save_steps: 200
 learning_rate: 5.0e-6
 
 # Datasets
-text_QA_dataset: "amuvarma/qa_pairs_regular-QA_TTTTS"
-TTS_dataset: "amuvarma/snacced-flat-zuck-convo-StTtS"
+text_QA_dataset: "amuvarma/reg-convs-1-2"
+TTS_dataset: "amuvarma/reg-convs-2-2"
 
 # Naming and paths
 save_folder: "checkpoints"

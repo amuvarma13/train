@@ -1,5 +1,5 @@
 # Model
-model_name: "amuvarma/8b-zuckqa-TTTTS"
+model_name: "checkpoints/checkpoint-230"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.1-8B"
 audio_model_id: "facebook/wav2vec2-base-960h"
 audio_processor_id: "facebook/wav2vec2-base-960h"

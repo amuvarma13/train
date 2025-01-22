@@ -1,5 +1,5 @@
 # Model
-model_name: "amuvarma/8b-zuckqa-TTTTS"  # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "meta-llama/Llama-3.1-8B-Instruct"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.1-8B"
 audio_model_id: "facebook/wav2vec2-base-960h"
 audio_processor_id: "facebook/wav2vec2-base-960h"
@@ -11,18 +11,17 @@ epochs: 1
 batch_size: 8
 pad_token: 128263
 save_steps: 10000
-learning_rate: 2.0e-4
+learning_rate: 2.0e-3
 gradient_accumulation_steps: 1
 
 # Datasets
 dataset_names: 
   - "amuvarma/mls-eng-10k-500k-projection_prep"
-  # - "amuvarma/proj-train-qa-and-speechqa"
 
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "pretrain_projector-3b"
-run_name: "21-1-whisper-8b-zuckreg-normalproj"
+run_name: "21-1-whisper-8bmeta-normalproj"
 
 resize_dataset: false

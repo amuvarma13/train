@@ -13,7 +13,7 @@ import wandb
 from huggingface_hub import HfApi, snapshot_download
 
 
-config_file = "FINETUNE_ARGS-8b-zuckqa.yaml"
+config_file = "FINETUNE_ARGS-8b-zuckconvo.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)

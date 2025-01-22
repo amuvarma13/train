@@ -41,7 +41,9 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 
 
 ds1 = load_dataset(dsn1, split="train")
+ds1 = ds1.shuffle(seed=42)
 ds2 = load_dataset(dsn2, split="train")
+ds2 = ds2.shuffle(seed=42)
 
 
 

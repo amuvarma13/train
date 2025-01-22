@@ -524,7 +524,6 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
     def forward(
         self,
         input_ids: torch.LongTensor = None,
-        lengths: Optional[torch.LongTensor] = None,
         audio_values: torch.FloatTensor = None,
         attention_mask: Optional[torch.Tensor] = None,
         position_ids: Optional[torch.LongTensor] = None,

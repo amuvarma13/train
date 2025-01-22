@@ -1,6 +1,6 @@
 # Model
 model_name: "meta-llama/Llama-3.1-8B-Instruct"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B"
+tokenizer_name: "meta-llama/Llama-3.1-8B"
 audio_model_id: "facebook/wav2vec2-base-960h"
 audio_processor_id: "facebook/wav2vec2-base-960h"
 audio_token_index: 156939

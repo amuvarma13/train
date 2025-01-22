@@ -71,7 +71,7 @@ class GazelleConfig(PretrainedConfig):
         audio_token_index=32000,
         vocab_size=32000,
         hidden_size=4096,
-        stack_factor=12,
+        stack_factor=8,
         projector_type="mlp",
         **kwargs,
     ):
@@ -580,6 +580,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 # print("output shape of audio_tower", audio_tower_outputs.shape) #torch.Size([1, 608, 768])
 
                 audio_features = self.multi_modal_projector(audio_values)
+                print("audio_features", audio_features.shape)
                 (
                     inputs_embeds,
                     attention_mask,
@@ -588,6 +589,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
                 ) = self._merge_input_ids_with_audio_features(
                     audio_features, inputs_embeds, input_ids, attention_mask, labels
                 )
+                print("merged input ids", inputs_embeds.shape)
                 if labels is None:
                     labels = torch.full_like(
                         attention_mask, self.config.ignore_index

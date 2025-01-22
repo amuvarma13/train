@@ -19,6 +19,9 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple, Union
 
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch
 import torch.utils.checkpoint
 from torch import nn
 from torch.nn import functional as F
@@ -339,9 +342,6 @@ class GazellePreTrainedModel(PreTrainedModel):
     GAZELLE_START_DOCSTRING,
 )
 
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class ImprovedWhisperMLP(nn.Module):
     def __init__(self, input_dim=768, n_embd=4096, dropout_prob=0.1):

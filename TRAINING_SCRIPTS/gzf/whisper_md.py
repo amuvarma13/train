@@ -342,6 +342,33 @@ class GazellePreTrainedModel(PreTrainedModel):
     GAZELLE_START_DOCSTRING,
 )
 
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class EnhancedWhisperMLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+        dim1 = 768
+        is_bias = True
+        n_embd = 4096
+        intermediate_size = 4 * n_embd
+
+        self.fc1 = nn.Linear(dim1, intermediate_size, bias=is_bias)
+        self.fc2 = nn.Linear(dim1, intermediate_size, bias=is_bias)
+        self.fc3 = nn.Linear(intermediate_size, intermediate_size, bias=is_bias)
+        self.norm = nn.LayerNorm(intermediate_size)
+        self.proj = nn.Linear(intermediate_size, n_embd, bias=is_bias)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x_fc1 = self.fc1(x)
+        x_fc2 = self.fc2(x)
+        x = F.silu(x_fc1) * x_fc2
+        
+        x = self.fc3(x)
+        x = self.norm(x)
+        
+        return self.proj(x)
 
 class ImprovedWhisperMLP(nn.Module):
     def __init__(self, input_dim=768, n_embd=4096, dropout_prob=0.1):
@@ -435,7 +462,7 @@ class GazelleForConditionalGeneration(GazellePreTrainedModel):
         # else:
         # self.multi_modal_projector = GazelleProjector(config)
 
-        self.multi_modal_projector = ImprovedWhisperMLP()
+        self.multi_modal_projector = EnhancedWhisperMLP()
         self.vocab_size = config.vocab_size
         if config.text_model_id is not None:
             self.language_model = AutoModelForCausalLM.from_pretrained(

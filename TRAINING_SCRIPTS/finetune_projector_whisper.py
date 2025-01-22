@@ -85,13 +85,13 @@ for param in model.parameters():
 for name, param in model.named_parameters():
     if "multi_modal_projector" in name:
         param.requires_grad = True
-for name, param in model.named_parameters():
-    if "language_model" in name:
-        param.requires_grad = True
+# for name, param in model.named_parameters():
+#     if "language_model" in name:
+#         param.requires_grad = True
  
- #number of trainable parameters
-params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-print("number of trainable parameters: ", params)
+#  #number of trainable parameters
+# params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+# print("number of trainable parameters: ", params)
 
 
 wandb.init(project=project_name, name=run_name)
@@ -117,7 +117,7 @@ def remove_short_audio(dataset, min_seconds=1.0):
 
     return filtered_dataset
 
-dataset = remove_short_audio(dataset)
+# dataset = remove_short_audio(dataset)
 
 audio_processor = transformers.Wav2Vec2Processor.from_pretrained(
     audio_processor_id)

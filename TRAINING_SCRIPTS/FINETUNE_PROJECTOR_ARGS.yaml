@@ -17,7 +17,7 @@ gradient_accumulation_steps: 1
 
 # Datasets 
 dataset_names: 
-  - "gpt-omni/VoiceAssistant-400K"
+  - "amuvarma/zuckqa-with-qaaudio-total-cast-snacced"
 
 # Naming and paths
 save_folder: "checkpoints"

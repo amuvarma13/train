@@ -70,7 +70,7 @@ class GazelleConfig(PretrainedConfig):
         ignore_index=-100,
         audio_token_index=32000,
         vocab_size=32000,
-        hidden_size=4096,
+        hidden_size=3072,
         stack_factor=8,
         projector_type="mlp",
         **kwargs,
@@ -344,7 +344,7 @@ class whisperMLP(nn.Module):
         super().__init__()
         dim1 = 768
         is_bias = True
-        n_embd = 4096
+        n_embd = 3072
         intermediate_size = 4* n_embd
         self.fc_1 = nn.Linear(dim1, intermediate_size, bias=is_bias)
         self.fc_2 = nn.Linear(dim1, intermediate_size, bias=is_bias)

@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/8b-zuckqa-TTTTS"
-tokenizer_name: "meta-llama/Llama-3.1-8B"
+model_name: "amuvarma/zuckconvotune-3b-2m-checkpoint-124"
+tokenizer_name: "meta-llama/Llama-3.2-3B"
 audio_model_id: "facebook/wav2vec2-base-960h"
 audio_processor_id: "facebook/wav2vec2-base-960h"
 audio_token_index: 156939
@@ -11,7 +11,7 @@ epochs: 1
 batch_size: 8
 pad_token: 128263
 save_steps: 10000
-learning_rate: 2.0e-2
+learning_rate: 2.0e-3
 gradient_accumulation_steps: 1
 
 # Datasets
@@ -23,6 +23,6 @@ dataset_names:
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "pretrain_projector-3b"
-run_name: "21-1-whisper-8b"
+run_name: "16-1-whisper-funkyproj"
 
 resize_dataset: false

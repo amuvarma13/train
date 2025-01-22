@@ -71,7 +71,7 @@ class GazelleConfig(PretrainedConfig):
         audio_token_index=32000,
         vocab_size=32000,
         hidden_size=4096,
-        stack_factor=8,
+        stack_factor=6,
         projector_type="mlp",
         **kwargs,
     ):

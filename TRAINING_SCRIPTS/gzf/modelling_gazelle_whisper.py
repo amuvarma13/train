@@ -344,7 +344,7 @@ class whisperMLP(nn.Module):
         super().__init__()
         dim1 = 768
         is_bias = True
-        n_embd = 3072
+        n_embd = 4096
         intermediate_size = 4* n_embd
         self.fc_1 = nn.Linear(dim1, intermediate_size, bias=is_bias)
         self.fc_2 = nn.Linear(dim1, intermediate_size, bias=is_bias)

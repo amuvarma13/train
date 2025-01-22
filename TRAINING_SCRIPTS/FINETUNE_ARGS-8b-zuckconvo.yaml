@@ -17,6 +17,6 @@ TTS_dataset: "amuvarma/reg-convs-2-2"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zuck-reg-convo-tune-3b"
-run_name: "21-1-8b-r1"
+run_name: "21-1-8b-r2"
 
 resize_dataset: false

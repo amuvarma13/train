@@ -21,7 +21,7 @@ dataset_names:
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "pretrain_projector-3b"
+project_name: "pretrain_projector-8b"
 run_name: "21-1-whisper-8bmeta-normalproj"
 
 resize_dataset: false

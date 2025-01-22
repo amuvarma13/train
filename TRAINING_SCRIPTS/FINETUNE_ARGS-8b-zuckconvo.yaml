@@ -8,7 +8,7 @@ batch_size: 1
 number_processes: 2
 pad_token: 128263
 save_steps: 500
-learning_rate: 5.0e-6
+learning_rate: 5.0e-7
 
 # Datasets
 text_QA_dataset: "amuvarma/reg-convs-1-2"
@@ -17,6 +17,6 @@ TTS_dataset: "amuvarma/reg-convs-2-2"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zuck-reg-convo-tune-3b"
-run_name: "21-1-8b-r2"
+run_name: "21-1-8b-r3-lr-5e7"
 
 resize_dataset: false

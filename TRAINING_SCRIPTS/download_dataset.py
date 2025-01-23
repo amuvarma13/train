@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "gpt-omni/VoiceAssistant-400K"
+repo_id = "amuvarma/zuckqa-with-qaaudio-total-cast-snacced"
 
 snapshot_download(
     repo_id=repo_id,

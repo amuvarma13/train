@@ -25,8 +25,9 @@ prompt = "Here is a story about a dragon:"
 inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
 # Note: engine.module is the actual sharded model
-start_time = time.time()
+
 with torch.inference_mode():
+    start_time = time.time()
     outputs = engine.module.generate(**inputs, max_new_tokens=500)
 end_time = time.time()
 print("Tokens/second:", len(outputs[0]) / (end_time - start_time))

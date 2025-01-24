@@ -10,7 +10,7 @@ device = torch.device(f"cuda:{local_rank}")
 
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn, use_fast=False)
-model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2")
+model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.bfloat16)
 
 # Initialize DeepSpeed engine
 engine = deepspeed.init_inference(
@@ -25,6 +25,11 @@ prompt = "Here is a story about a dragon:"
 inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
 # Note: engine.module is the actual sharded model
+start_time = time.time()
+outputs = engine.module.generate(**inputs, max_new_tokens=500)
+end_time = time.time()
+print("Tokens/second:", len(outputs[0]) / (end_time - start_time))
+print(f"[Rank {local_rank}] {tokenizer.decode(outputs[0], skip_special_tokens=True)}")
 start_time = time.time()
 outputs = engine.module.generate(**inputs, max_new_tokens=500)
 end_time = time.time()

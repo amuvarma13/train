@@ -1,26 +1,25 @@
 import torch
-import torch_tensorrt
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import time
 
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn)
-model = AutoModelForCausalLM.from_pretrained(mdn)
-model.eval()
+model = AutoModelForCausalLM.from_pretrained(mdn, device_map="auto", torch_dtype="auto", attn_implementation="flash_attention_2")    
+#print dtype
+print("model.dtype:", model.dtype)
 
-# Compile the model with Torch-TensorRT
-trt_model = torch_tensorrt.compile(
-    model,
-    inputs=[torch_tensorrt.Input((1, 128), dtype=torch.int64)],
-    enabled_precisions={torch.float16},  # Enable FP16
-)
+# Initialize inference
+inputs = tokenizer("Here is a short story about a dragon:", return_tensors="pt").to(model.device)
 
-# Prepare input
-input_text = "Here is a short story about a dragon:"
-inputs = tokenizer(input_text, return_tensors="pt").to('cuda')
-
-# Inference
+# Measure time
+start_time = time.time()
 with torch.no_grad():
-    outputs = trt_model.generate(**inputs, max_new_tokens=500)
+    outputs = model.generate(**inputs, max_new_tokens=500)
+end_time = time.time()
 
-# Decode and display output
+# Calculate tokens/second
+output_tokens = len(outputs[0])
+tokens_per_second = output_tokens / (end_time - start_time)
+
 print(tokenizer.decode(outputs[0]))
+print(f"Tokens/second: {tokens_per_second:.2f}")

@@ -9,11 +9,12 @@ model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.float16)
 # Initialize DeepSpeed inference engine
 engine = deepspeed.init_inference(
     model,
-    mp_size=2,               # 2 GPUs
-    dtype=torch.bfloat16,     # or bfloat16
+    mp_size=2,
+    dtype=torch.float16,
     replace_method="auto",
-    replace_with_kernel_inject=True
+    replace_with_kernel_inject=False  # Turn OFF kernel injection
 )
+
 
 prompt = "Hello, how are you?"
 inputs = tokenizer(prompt, return_tensors="pt").to(engine.device)

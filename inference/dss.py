@@ -12,6 +12,7 @@ mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.bfloat16)
 
+model = torch.compile(model)
 # Initialize DeepSpeed engine
 engine = deepspeed.init_inference(
     model,

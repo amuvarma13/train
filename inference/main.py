@@ -12,23 +12,3 @@ def generate_output(prompt, llm, sampling_params):
    return generated_text
 
 
-
-# sampling_params = SamplingParams(temperature=0.5, max_tokens=50)
-# generated_text = generate_output(prompt, llm, sampling_params)
-# print(generated_text)
-
-def generate_with_embeddings(prompt):
-
-   
-   inputs = tokenizer(prompt, return_tensors="pt")
-   embeddings = model(**inputs).last_hidden_state
-   
-   sampling_params = SamplingParams(input_embeddings=embeddings)
-   output = llm.generate([prompt], sampling_params)[0]
-   return output.outputs[0].text
-
-# Usage
-
-prompt = "The quick brown"
-result = generate_with_embeddings("Hello")
-print(result)

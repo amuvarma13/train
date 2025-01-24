@@ -1,19 +1,14 @@
 mdn_name = "amuvarma/3b-zuckreg-convo"
 from vllm import LLM, SamplingParams
 
-prompts = [
-    "Hello, my name is",
-    "The president of the United States is",
-    "The capital of France is",
-    "The future of AI is",
-]
-sampling_params = SamplingParams(temperature=0.8, top_p=0.95)
+def generate_output(prompt, llm, sampling_params):
+   output = llm.generate([prompt], sampling_params)[0]
+   generated_text = output.outputs[0].text
+   print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
+   return generated_text
 
-llm = LLM(model=mdn_name)
-
-outputs = llm.generate(prompts, sampling_params)
-
-for output in outputs:
-    prompt = output.prompt
-    generated_text = output.outputs[0].text
-    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
+prompt = "The quick brown fox jumps over the lazy dog."
+llm = LLM(mdn_name)
+sampling_params = SamplingParams(temperature=0.5, max_tokens=50)
+generated_text = generate_output(prompt, llm, sampling_params)
+print(generated_text)

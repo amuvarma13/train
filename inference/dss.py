@@ -26,12 +26,8 @@ inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
 # Note: engine.module is the actual sharded model
 start_time = time.time()
-outputs = engine.module.generate(**inputs, max_new_tokens=500)
-end_time = time.time()
-print("Tokens/second:", len(outputs[0]) / (end_time - start_time))
-print(f"[Rank {local_rank}] {tokenizer.decode(outputs[0], skip_special_tokens=True)}")
-start_time = time.time()
-outputs = engine.module.generate(**inputs, max_new_tokens=500)
+with torch.inference_mode():
+    outputs = engine.module.generate(**inputs, max_new_tokens=500)
 end_time = time.time()
 print("Tokens/second:", len(outputs[0]) / (end_time - start_time))
 print(f"[Rank {local_rank}] {tokenizer.decode(outputs[0], skip_special_tokens=True)}")

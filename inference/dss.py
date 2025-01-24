@@ -14,7 +14,7 @@ model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.float16)
 # Initialize DeepSpeed engine
 engine = deepspeed.init_inference(
     model,
-    mp_size=2,
+    mp_size=1,
     dtype=torch.float16,
     replace_method="auto",
     replace_with_kernel_inject=False

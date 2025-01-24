@@ -17,6 +17,6 @@ engine = deepspeed.init_inference(
 
 
 prompt = "Hello, how are you?"
-inputs = tokenizer(prompt, return_tensors="pt")
+inputs = tokenizer(prompt, return_tensors="pt").to(engine.device)
 outputs = engine.module.generate(**inputs, max_new_tokens=50)
 print(tokenizer.decode(outputs[0], skip_special_tokens=True))

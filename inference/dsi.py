@@ -1,6 +1,10 @@
 import deepspeed
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
+from torch.distributed import dist
+if dist.is_initialized():
+    print(f"Rank: {dist.get_rank()}, World Size: {dist.get_world_size()}")
+
 
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 

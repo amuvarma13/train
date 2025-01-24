@@ -1,6 +1,6 @@
 from mii import pipeline
 from huggingface_hub import snapshot_download
-mdn = "meta-llama/Llama-3.1-8B-Instruct"
+mdn = "meta-llama/Llama-3.2-3B-Instruct"
 model_path = snapshot_download(
     repo_id=mdn,
     allow_patterns=[

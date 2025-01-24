@@ -7,7 +7,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 ort_model = ORTModelForCausalLM.from_pretrained(
     model_name,
     export=True,
-    device="cuda" if torch.cuda.is_available() else "cpu",
+    device_map="auto"
     optimization_level="basic"
 )
 input_text = "Here is a short story about a dragon:"

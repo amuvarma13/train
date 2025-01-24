@@ -10,7 +10,7 @@ model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.float16)
 engine = deepspeed.init_inference(
     model,
     mp_size=2,               # 2 GPUs
-    dtype=torch.float16,     # or bfloat16
+    dtype=torch.bfloat16,     # or bfloat16
     replace_method="auto",
     replace_with_kernel_inject=True
 )

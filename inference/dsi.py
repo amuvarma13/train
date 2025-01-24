@@ -20,6 +20,6 @@ model_path = snapshot_download(
     ]
 )
 
-pipe = pipeline(mdn, infer_params=True, tensor_parallel={"tp_size": 1})
+pipe = pipeline(mdn, tensor_parallel=1)
 output = pipe(["Hello, my name is", "DeepSpeed is"], max_new_tokens=128)
 print(output)

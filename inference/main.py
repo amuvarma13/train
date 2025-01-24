@@ -1,5 +1,8 @@
 import time
-from vllm import LLM, SamplingParams
+
+
+import vllm.vllm.entrypoints.llm as LLM
+from vllm.vllm.entrypoints.llm import SamplingParams
 from transformers import AutoTokenizer, AutoModel
 
 mdn = "meta-llama/Llama-3.2-3B-Instruct"

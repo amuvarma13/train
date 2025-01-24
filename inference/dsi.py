@@ -1,5 +1,4 @@
 import deepspeed
-from huggingface_hub import snapshot_download
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 

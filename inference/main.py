@@ -7,7 +7,7 @@ def generate_output(prompt, llm, sampling_params):
    print(f"Prompt: {prompt!r}, Generated text: {generated_text!r}")
    return generated_text
 
-prompt = "The quick brown fox jumps over the lazy dog."
+prompt = "The quick brown"
 llm = LLM(mdn_name)
 sampling_params = SamplingParams(temperature=0.5, max_tokens=50)
 generated_text = generate_output(prompt, llm, sampling_params)

@@ -7,12 +7,12 @@ tokenizer = AutoTokenizer.from_pretrained(mdn)
 model = AutoModelForCausalLM.from_pretrained(mdn, device_map="auto", torch_dtype="auto")
 
 # Initialize inference
-inputs = tokenizer("Input String", return_tensors="pt").to(model.device)
+inputs = tokenizer("Here is a short story about a dragon:", return_tensors="pt").to(model.device)
 
 # Measure time
 start_time = time.time()
 with torch.no_grad():
-    outputs = model.generate(**inputs)
+    outputs = model.generate(**inputs, max_new_tokens=500)
 end_time = time.time()
 
 # Calculate tokens/second

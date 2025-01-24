@@ -6,7 +6,7 @@ tokenizer = AutoTokenizer.from_pretrained(mdn)
 model = AutoModelForCausalLM.from_pretrained(mdn)
 
 # Export to ONNX with Optimum
-ort_model = ORTModelForCausalLM._from_transformers(model, save_dir="./onnx_model")
+ort_model = ORTModelForCausalLM._from_transformers(model)
 
 # Inference with ONNX Runtime
 input_text = "Here is a short story about a dragon:"

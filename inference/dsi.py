@@ -20,6 +20,6 @@ model_path = snapshot_download(
     ]
 )
 
-pipe = pipeline(mdn, config={"q_ratio": 4})  # Use 4 or another supported value
+pipe = pipeline(mdn, infer_params=True, tensor_parallel={"tp_size": 1})
 output = pipe(["Hello, my name is", "DeepSpeed is"], max_new_tokens=128)
 print(output)

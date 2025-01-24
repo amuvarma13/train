@@ -1,7 +1,8 @@
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import time
-
+from liger_kernel.transformers import apply_liger_kernel_to_llama
+apply_liger_kernel_to_llama()
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn)
 model = AutoModelForCausalLM.from_pretrained(mdn, device_map="auto", torch_dtype="auto", attn_implementation="flash_attention_2")    

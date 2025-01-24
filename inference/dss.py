@@ -10,7 +10,7 @@ device = torch.device(f"cuda:{local_rank}")
 
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn, use_fast=False)
-model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained(mdn, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2")
 
 # Initialize DeepSpeed engine
 engine = deepspeed.init_inference(

@@ -5,6 +5,8 @@ import time
 mdn = "meta-llama/Llama-3.2-3B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(mdn)
 model = AutoModelForCausalLM.from_pretrained(mdn, device_map="auto", torch_dtype="auto")
+#print dtype
+print("model.dtype:", model.dtype)
 
 # Initialize inference
 inputs = tokenizer("Here is a short story about a dragon:", return_tensors="pt").to(model.device)

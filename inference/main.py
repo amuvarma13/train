@@ -1,5 +1,7 @@
 mdn_name = "amuvarma/3b-zuckreg-convo"
 from vllm import LLM, SamplingParams
+from transformers import AutoTokenizer, AutoModel
+
 
 def generate_output(prompt, llm, sampling_params):
    output = llm.generate([prompt], sampling_params)[0]

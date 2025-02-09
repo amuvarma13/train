@@ -125,11 +125,11 @@ class FSDPTrainer(Trainer):
             global_step = self.state.global_step
             mod = (global_step + 1) % 3
             if mod == 1:
-                wandb.log({"text_loss": logs["loss"], "step": global_step})
-            elif mod == 2:
-                wandb.log({"audio_loss": logs["loss"], "step": global_step})
-            else:
                 wandb.log({"motion_loss": logs["loss"], "step": global_step})
+            elif mod == 2:
+                wandb.log({"text_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"audio_loss": logs["loss"], "step": global_step})
 
 
     def save_model(self, output_dir=None, _internal_call=False):

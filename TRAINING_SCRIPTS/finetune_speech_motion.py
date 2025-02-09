@@ -167,6 +167,7 @@ training_args = TrainingArguments(
     # fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
+    warmup_steps=500,
     evaluation_strategy="steps",  # Evaluate every `eval_steps` during training
     eval_steps=20,
     remove_unused_columns=True, 

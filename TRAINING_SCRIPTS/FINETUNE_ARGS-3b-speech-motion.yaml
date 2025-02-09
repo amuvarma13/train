@@ -17,7 +17,7 @@ motion_dataset: "amuvarma/humanml3d-flat-train-t5-toks-grouped"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-speech-motion-3b-0-eval"
+project_name: "luna-speech-motion-3b-1"
 run_name: "9-2-r1"
 
 resize_dataset: false

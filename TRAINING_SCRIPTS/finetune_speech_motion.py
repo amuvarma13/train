@@ -13,13 +13,14 @@ import wandb
 from huggingface_hub import snapshot_download
 
 
-config_file = "FINETUNE_ARGS-8b-zuckconvo.yaml"
+config_file = "FINETUNE_ARGS-3b-speech-motion.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)
 
 dsn1 = config["text_QA_dataset"]
 dsn2 = config["TTS_dataset"]
+dsn3 = config["motion_dataset"]
 resize_dataset = config["resize_dataset"]
 
 model_name = config["model_name"]
@@ -44,6 +45,8 @@ ds1 = load_dataset(dsn1, split="train")
 ds1 = ds1.shuffle(seed=42)
 ds2 = load_dataset(dsn2, split="train")
 ds2 = ds2.shuffle(seed=42)
+ds3 = load_dataset(dsn3, split="train")
+ds3 = ds3.shuffle(seed=42)
 
 
 
@@ -51,26 +54,35 @@ wandb.init(project=project_name, name = run_name)
 
 batch_total = number_processes * batch_size
 
+
 class BatchedAlternatingDataset(Dataset):
-    def __init__(self, dataset1, dataset2, batch_total):
+    def __init__(self, dataset1, dataset2, dataset3, batch_total):
         self.dataset1 = dataset1
         self.dataset2 = dataset2
+        self.dataset3 = dataset3
         self.batch_total = batch_total
-        self.length = 2 * min(len(dataset1), len(dataset2))
-        
+        self.num_batches = min(
+            len(dataset1) // batch_total,
+            len(dataset2) // batch_total,
+            len(dataset3) // batch_total
+        )
+        self.length = 3 * self.num_batches * batch_total
+
     def __len__(self):
         return self.length
-    
+
     def __getitem__(self, index):
-        super_batch = index // (2 * self.batch_total)
-        position_in_super_batch = index % (2 * self.batch_total)
-        
-        if position_in_super_batch < self.batch_total:
-            dataset_index = super_batch * self.batch_total + position_in_super_batch
-            return self.dataset1[dataset_index]
+        global_batch = index // self.batch_total
+        offset = index % self.batch_total
+        base_idx = (global_batch // 3) * self.batch_total
+        mod = (global_batch + 1) % 3
+        if mod == 1:
+            return self.dataset1[base_idx + offset]
+        elif mod == 2:
+            return self.dataset2[base_idx + offset]
         else:
-            dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
-            return self.dataset2[dataset_index]
+            return self.dataset3[base_idx + offset]
+
 
 class AlternatingDistributedSampler(DistributedSampler):
     def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):
@@ -110,10 +122,14 @@ class FSDPTrainer(Trainer):
         super().log(logs)
         if self.is_world_process_zero():
             global_step = self.state.global_step
-            if global_step % 2 == 0:
+            mod = (global_step + 1) % 3
+            if mod == 1:
                 wandb.log({"text_loss": logs["loss"], "step": global_step})
-            else:
+            elif mod == 2:
                 wandb.log({"audio_loss": logs["loss"], "step": global_step})
+            else:
+                wandb.log({"motion_loss": logs["loss"], "step": global_step})
+
 
     def save_model(self, output_dir=None, _internal_call=False):
         if output_dir is None:
@@ -139,14 +155,8 @@ if resize_dataset:
 
 
 
-train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
+train_dataset = BatchedAlternatingDataset(ds1, ds2, ds3, batch_total)
 print("Dataset loaded")
-
-def compute_metrics(eval_pred):
-    predictions, labels = eval_pred
-    predictions = np.argmax(predictions, axis=1)
-    accuracy = (predictions == labels).mean()
-    return {"accuracy": accuracy} 
 
 def data_collator(features):
     input_ids = [f["input_ids"] for f in features]
@@ -190,7 +200,6 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    compute_metrics=compute_metrics,  
     data_collator=data_collator, 
 )
 

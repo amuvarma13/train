@@ -1,0 +1,23 @@
+# Model
+model_name: "checkpoints/checkpoint-1250"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.1-8B"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 2
+pad_token: 128263
+save_steps: 230
+learning_rate: 5.0e-6
+
+# Datasets
+text_QA_dataset: "amuvarma/10k-qa"
+TTS_dataset: "amuvarma/luna-6k"
+motion_dataset: "amuvarma/humanml3d-flat-train-t5-toks-grouped-dupped-6k"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "luna-speech-motion-3b"
+run_name: "9-2-r0"
+
+resize_dataset: false

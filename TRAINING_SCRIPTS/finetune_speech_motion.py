@@ -163,6 +163,7 @@ train_dataset = BatchedAlternatingDataset(ds1, ds2, ds3, batch_total)
 print("Dataset loaded")
 
 def data_collator(features):
+    print(features)
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -193,8 +194,8 @@ training_args = TrainingArguments(
     fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
-    # evaluation_strategy="steps",  # Evaluate every `eval_steps` during training
-    # eval_steps=50,
+    evaluation_strategy="steps",  # Evaluate every `eval_steps` during training
+    eval_steps=50,
     remove_unused_columns=True, 
     learning_rate=learning_rate,
     lr_scheduler_type="cosine"  # Cosine decay scheduler
@@ -206,7 +207,7 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    # eval_dataset=eval_dataset,
+    eval_dataset=eval_dataset,
 )
 
 trainer.train()

@@ -41,6 +41,9 @@ tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.resize_token_embeddings(128266+(7*4096+10)+1000)
 
+eval_dsn = "amuvarma/humanml3d-flat-train-padded-dedup-2"
+eval_dataset = load_dataset(eval_dsn, split="train")
+
 
 ds1 = load_dataset(dsn1, split="train")
 ds1 = ds1.shuffle(seed=42)
@@ -190,6 +193,8 @@ training_args = TrainingArguments(
     fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
+    evaluation_strategy="steps",  # Evaluate every `eval_steps` during training
+    eval_steps=500,
     remove_unused_columns=True, 
     learning_rate=learning_rate,
     lr_scheduler_type="cosine"  # Cosine decay scheduler
@@ -202,6 +207,7 @@ trainer = FSDPTrainer(
     args=training_args,
     train_dataset=train_dataset,
     data_collator=data_collator, 
+    eval_dataset=eval_dataset,
 )
 
 trainer.train()

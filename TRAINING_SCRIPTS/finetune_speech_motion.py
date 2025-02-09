@@ -110,6 +110,8 @@ class MotionSpeechTrainer(Trainer):
         if self.is_world_process_zero():
             global_step = self.state.global_step
             mod = (global_step + 1) % 3
+            if logs["loss"] is None:
+                return
             if mod == 1:
                 wandb.log({"motion_loss": logs["loss"], "step": global_step})
             elif mod == 2:

@@ -164,7 +164,7 @@ print("Dataset loaded")
 
 def data_collator(features):
     #print keys of features
-    #print(features[0].keys())
+    print(features[0].keys())
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):

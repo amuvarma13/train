@@ -11,8 +11,8 @@ save_steps: 230
 learning_rate: 5.0e-6
 
 # Datasets
-text_QA_dataset: "amuvarma/10k-qa"
-TTS_dataset: "amuvarma/luna-6k"
+text_QA_dataset: "amuvarma/10k-qa-proc"
+TTS_dataset: "amuvarma/luna-6k-snacced-TTTTS"
 motion_dataset: "amuvarma/humanml3d-flat-train-t5-toks-grouped"
 
 # Naming and paths

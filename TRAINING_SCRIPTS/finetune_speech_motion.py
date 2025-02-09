@@ -39,6 +39,7 @@ learning_rate = config["learning_rate"]
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+model.resize_token_embeddings(128266+(7*4096+10)+1000)
 
 
 ds1 = load_dataset(dsn1, split="train")

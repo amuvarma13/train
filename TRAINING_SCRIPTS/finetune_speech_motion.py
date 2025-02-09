@@ -206,7 +206,7 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    data_collator=data_collator, 
+    # data_collator=data_collator, 
     eval_dataset=eval_dataset,
 )
 

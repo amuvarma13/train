@@ -186,7 +186,7 @@ def data_collator(features):
 
 
 training_args = Trainer(
-    overwrite_output_dir=True,
+    # overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
     logging_steps=1,

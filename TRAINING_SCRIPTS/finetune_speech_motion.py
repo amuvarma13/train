@@ -185,14 +185,14 @@ def data_collator(features):
     return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 
-training_args = TrainingArguments(
+training_args = Trainer(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
     logging_steps=1,
     bf16=True,
     output_dir=f"./{base_repo_id}",
-    fsdp="auto_wrap",
+    # fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
     # evaluation_strategy="steps",  # Evaluate every `eval_steps` during training

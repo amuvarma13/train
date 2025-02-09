@@ -185,8 +185,8 @@ def data_collator(features):
     return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
 
-training_args = Trainer(
-    # overwrite_output_dir=True,
+training_args = TrainingArguments(
+    overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
     logging_steps=1,
@@ -205,7 +205,7 @@ training_args = Trainer(
 print("Training arguments set")
 
 print(eval_dataset)
-trainer = FSDPTrainer(
+trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,

@@ -38,11 +38,10 @@ number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2").to(torch.bfloat16)
+model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 model.resize_token_embeddings(128266+(7*4096+10)+1000)
 
-eval_dsn = "amuvarma/humanml3d-flat-train-padded-dedup-2"
-eval_dataset = load_dataset(eval_dsn, split="train")
+
 
 
 ds1 = load_dataset(dsn1, split="train")
@@ -99,25 +98,52 @@ class AlternatingDistributedSampler(DistributedSampler):
         return iter(indices)
 
 
-
-class MotionSpeechTrainer(Trainer):
+class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.repo_id = base_repo_id
+    
+    def get_train_dataloader(self):
+        sampler = AlternatingDistributedSampler(
+            self.train_dataset,
+            num_replicas=torch.distributed.get_world_size(),
+            rank=torch.distributed.get_rank(),
+            shuffle=False, 
+        )
 
-
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.per_device_train_batch_size,
+            sampler=sampler,
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=0,
+            pin_memory=self.args.dataloader_pin_memory,
+        )
+    
     def log(self, logs, callback=None):
         super().log(logs)
         if self.is_world_process_zero():
             global_step = self.state.global_step
             mod = (global_step + 1) % 3
-            if logs["loss"] is None:
-                return
             if mod == 1:
                 wandb.log({"motion_loss": logs["loss"], "step": global_step})
             elif mod == 2:
                 wandb.log({"text_loss": logs["loss"], "step": global_step})
             else:
                 wandb.log({"audio_loss": logs["loss"], "step": global_step})
+
+
+    def save_model(self, output_dir=None, _internal_call=False):
+        if output_dir is None:
+            output_dir = self.args.output_dir
+        self.save_and_push_model(output_dir)
+ 
+    def save_and_push_model(self, output_dir):
+        save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
+        with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
+            cpu_state_dict = self.model.state_dict()
+        self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 
 
@@ -136,7 +162,6 @@ train_dataset = BatchedAlternatingDataset(ds1, ds2, ds3, batch_total)
 print("Dataset loaded")
 
 def data_collator(features):
-    #print keys of features
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -164,12 +189,9 @@ training_args = TrainingArguments(
     logging_steps=1,
     bf16=True,
     output_dir=f"./{base_repo_id}",
-    # fsdp="auto_wrap",
+    fsdp="auto_wrap",
     report_to="wandb", 
     save_steps=save_steps,
-    warmup_steps=500,
-    evaluation_strategy="steps",  # Evaluate every `eval_steps` during training
-    eval_steps=20,
     remove_unused_columns=True, 
     learning_rate=learning_rate,
     lr_scheduler_type="cosine"  # Cosine decay scheduler
@@ -177,13 +199,11 @@ training_args = TrainingArguments(
 
 print("Training arguments set")
 
-print(eval_dataset)
-trainer = MotionSpeechTrainer(
+trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
-    data_collator=data_collator,
+    data_collator=data_collator, 
 )
 
 trainer.train()

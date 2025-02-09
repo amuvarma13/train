@@ -163,7 +163,8 @@ train_dataset = BatchedAlternatingDataset(ds1, ds2, ds3, batch_total)
 print("Dataset loaded")
 
 def data_collator(features):
-    print(features)
+    #print keys of features
+    #print(features[0].keys())
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -203,6 +204,7 @@ training_args = TrainingArguments(
 
 print("Training arguments set")
 
+print(eval_dataset)
 trainer = FSDPTrainer(
     model=model,
     args=training_args,

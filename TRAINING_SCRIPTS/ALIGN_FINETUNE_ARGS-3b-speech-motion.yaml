@@ -1,0 +1,23 @@
+# Model
+model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.2-3B"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 2
+pad_token: 128263
+save_steps: 7000
+learning_rate: 5.0e-5
+
+# Datasets
+text_QA_dataset: "amuvarma/sm-template-audio-snacced-TTTTMS-text"
+TTS_dataset: "amuvarma/sm-template-audio-snacced-TTTTMS-speech"
+motion_dataset: "amuvarma/sm-template-audio-snacced-TTTTMS-motion"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "luna-speech-motion-3b-2"
+run_name: "9-2-r1"
+
+resize_dataset: false

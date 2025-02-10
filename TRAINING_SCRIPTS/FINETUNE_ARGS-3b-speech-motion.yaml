@@ -13,7 +13,7 @@ learning_rate: 5.0e-5
 # Datasets
 text_QA_dataset: "amuvarma/10k-qa-proc"
 TTS_dataset: "amuvarma/luna-6k-snacced-TTTTS"
-motion_dataset: "amuvarma/humanml3d-flat-train-t5-toks-grouped"
+motion_dataset: "amuvarma/humanml3d-flat-train-t5-toks-grouped-2"
 
 # Naming and paths
 save_folder: "checkpoints"

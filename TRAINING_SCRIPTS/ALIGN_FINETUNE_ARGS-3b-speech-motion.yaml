@@ -17,7 +17,7 @@ motion_dataset: "amuvarma/sm-template-audio-snacced-TTTTMS-motion"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-speech-motion-3b-2"
+project_name: "align-luna-speech-motion-3b-2"
 run_name: "9-2-r1"
 
 resize_dataset: false

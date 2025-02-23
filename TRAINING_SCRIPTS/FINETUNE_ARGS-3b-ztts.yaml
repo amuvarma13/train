@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/zst-snacced-proc"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "zst"
-run_name: "r0-noinst"
+run_name: "r1-noinst"
 
 resize_dataset: false

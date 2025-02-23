@@ -1,0 +1,21 @@
+# Model
+model_name: "checkpoints/checkpoint-1250"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.1-8B"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 1
+pad_token: 128263
+save_steps: 230
+learning_rate: 5.0e-6
+
+# Datasets
+TTS_dataset: "amuvarma/zst-snacced-proc"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "zst"
+run_name: "r0"
+
+resize_dataset: false

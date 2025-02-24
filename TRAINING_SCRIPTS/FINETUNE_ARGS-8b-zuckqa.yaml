@@ -10,7 +10,7 @@ save_steps: 2000
 learning_rate: 5.0e-6
 
 # Datasets
-text_QA_dataset: "amuvarma/lunaconvo-textlabels"
+text_QA_dataset: "amuvarma/luna-tags_tts_convos-ttsed-proc"
 TTS_dataset: "amuvarma/luna-tags_tts_convos-ttsed-proc"
 # Naming and paths
 save_folder: "checkpoints"

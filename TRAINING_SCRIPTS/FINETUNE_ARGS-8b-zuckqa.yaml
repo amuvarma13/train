@@ -1,5 +1,4 @@
-# Model
-model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "amuvarma/luna-tts-tags"
 tokenizer_name: "meta-llama/Llama-3.1-8B"
 
 # Training Args
@@ -11,12 +10,11 @@ save_steps: 2000
 learning_rate: 5.0e-6
 
 # Datasets
-text_QA_dataset: "amuvarma/5k-qa-pairs-tttts"
-TTS_dataset: "amuvarma/va-320k-330k-snac-no-identity-QA_TTTTS"
-
+text_QA_dataset: "amuvarma/lunaconvo-textlabels"
+TTS_dataset: "amuvarma/luna-tags_tts_convos-ttsed-proc"
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zuck-qa-tune-8b"
-run_name: "21-1-r1-3b"
+project_name: "luna-convo"
+run_name: "r0"
 
 resize_dataset: false

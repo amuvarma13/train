@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zst"
-run_name: "r1-noinst"
+project_name: "luna"
+run_name: "r1-tags"
 
 resize_dataset: false

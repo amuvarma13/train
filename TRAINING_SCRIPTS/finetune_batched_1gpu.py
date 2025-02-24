@@ -2,16 +2,14 @@ import torch
 from datasets import load_dataset, concatenate_datasets
 from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoTokenizer
 import numpy as np
-from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
-from torch.distributed.fsdp import (FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
 from torch.utils.data import DataLoader, Dataset
-from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm
 import os
 import yaml
 import wandb
 from huggingface_hub import snapshot_download
 
+# Note: removed distributed and FSDP imports
 
 config_file = "FINETUNE_ARGS-8b-zuckqa.yaml"
 
@@ -39,15 +37,12 @@ learning_rate = config["learning_rate"]
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
-
 ds1 = load_dataset(dsn1, split="train")
 ds1 = ds1.shuffle(seed=42)
 ds2 = load_dataset(dsn2, split="train")
 ds2 = ds2.shuffle(seed=42)
 
-
-
-wandb.init(project=project_name, name = run_name)
+wandb.init(project=project_name, name=run_name)
 
 batch_total = number_processes * batch_size
 
@@ -71,73 +66,6 @@ class BatchedAlternatingDataset(Dataset):
         else:
             dataset_index = super_batch * self.batch_total + (position_in_super_batch - self.batch_total)
             return self.dataset2[dataset_index]
-
-class AlternatingDistributedSampler(DistributedSampler):
-    def __init__(self, dataset, num_replicas=None, rank=None, shuffle=False):
-        super().__init__(dataset, num_replicas=num_replicas, rank=rank, shuffle=shuffle)
-        self.shuffle = shuffle
-
-    def __iter__(self):
-        indices = list(range(len(self.dataset)))
-        indices = indices[self.rank:self.total_size:self.num_replicas]
-        return iter(indices)
-
-
-class FSDPTrainer(Trainer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.repo_id = base_repo_id
-    
-    def get_train_dataloader(self):
-        sampler = AlternatingDistributedSampler(
-            self.train_dataset,
-            num_replicas=torch.distributed.get_world_size(),
-            rank=torch.distributed.get_rank(),
-            shuffle=False, 
-        )
-
-        return DataLoader(
-            self.train_dataset,
-            batch_size=self.args.per_device_train_batch_size,
-            sampler=sampler,
-            collate_fn=self.data_collator,
-            drop_last=self.args.dataloader_drop_last,
-            num_workers=0,
-            pin_memory=self.args.dataloader_pin_memory,
-        )
-    
-    def log(self, logs, callback=None):
-        super().log(logs)
-        if self.is_world_process_zero():
-            global_step = self.state.global_step
-            if global_step % 2 == 0:
-                wandb.log({"text_loss": logs["loss"], "step": global_step})
-            else:
-                wandb.log({"audio_loss": logs["loss"], "step": global_step})
-
-    def save_model(self, output_dir=None, _internal_call=False):
-        if output_dir is None:
-            output_dir = self.args.output_dir
-        self.save_and_push_model(output_dir)
- 
-    def save_and_push_model(self, output_dir):
-        save_policy = FullStateDictConfig(offload_to_cpu=True, rank0_only=True)
-        with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
-            cpu_state_dict = self.model.state_dict()
-        self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
-
-
-
-tokenizer_length = len(tokenizer)
-tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
-
-if resize_dataset:
-    number_add_tokens = 7 * 4096 + 10
-    new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
-    tokenizer.add_tokens(new_tokens)
-    model.resize_token_embeddings(len(tokenizer))
-
-
 
 train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
 print("Dataset loaded")
@@ -168,7 +96,6 @@ def data_collator(features):
 
     return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 
-
 training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
@@ -185,7 +112,49 @@ training_args = TrainingArguments(
 
 print("Training arguments set")
 
-trainer = FSDPTrainer(
+# Modified Trainer that removes distributed/FSDP components.
+class SimpleTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.repo_id = base_repo_id
+
+    # Use default DataLoader with shuffle enabled.
+    def get_train_dataloader(self):
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.per_device_train_batch_size,
+            shuffle=True,
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=0,
+            pin_memory=self.args.dataloader_pin_memory,
+        )
+    
+    def log(self, logs, callback=None):
+        super().log(logs)
+        global_step = self.state.global_step
+        # Alternating log names as before.
+        if global_step % 2 == 0:
+            wandb.log({"text_loss": logs["loss"], "step": global_step})
+        else:
+            wandb.log({"audio_loss": logs["loss"], "step": global_step})
+
+    def save_model(self, output_dir=None, _internal_call=False):
+        if output_dir is None:
+            output_dir = self.args.output_dir
+        # Use the default Trainer saving mechanism.
+        super().save_model(output_dir, _internal_call=_internal_call)
+
+tokenizer_length = len(tokenizer)
+tokens = tokenizer.convert_ids_to_tokens(range(tokenizer_length))
+
+if resize_dataset:
+    number_add_tokens = 7 * 4096 + 10
+    new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
+    tokenizer.add_tokens(new_tokens)
+    model.resize_token_embeddings(len(tokenizer))
+
+trainer = SimpleTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
@@ -194,4 +163,3 @@ trainer = FSDPTrainer(
 )
 
 trainer.train()
-

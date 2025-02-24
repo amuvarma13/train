@@ -3,7 +3,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
-base_repo_id = "checkpoints/checkpoint-2838"
+base_repo_id = "checkpoints/checkpoint-4735"
 upload_name = "amuvarma/luna-tts-tags"
 
 

@@ -13,7 +13,7 @@ learning_rate: 5.0e-6
 # text_QA_dataset: "amuvarma/all-tagged-qa-6k-proc-2g"
 # TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 
-text_QA_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc-textlabels"
+text_QA_dataset: "amuvarma/tagged-qas-extended-proc"
 TTS_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc"
 # Naming and paths
 save_folder: "checkpoints"

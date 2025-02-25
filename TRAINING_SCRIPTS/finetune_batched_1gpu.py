@@ -12,7 +12,7 @@ from huggingface_hub import snapshot_download
 
 # Note: removed distributed and FSDP imports
 
-config_file = "FINETUNE_ARGS-8b-zuckqa.yaml"
+config_file = "FINETUNE_ARGS-3b-lunapretrain.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)

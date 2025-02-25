@@ -11,7 +11,7 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/luna-tags_tts_convos-ttsed-proc"
+TTS_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc"
 
 # Naming and paths
 save_folder: "checkpoints"

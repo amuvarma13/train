@@ -18,6 +18,6 @@ TTS_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "luna-convo"
-run_name: "r4"
+run_name: "r5"
 
 resize_dataset: false

@@ -1,4 +1,4 @@
-model_name: "amuvarma/3b-10m-pretrain-full"
+model_name: "checkpoints/checkpoint-5676"
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args

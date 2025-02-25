@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
 base_repo_id = "checkpoints/checkpoint-280"
-upload_name = "amuvarma/luna-pretrain-sass"
+upload_name = "amuvarma/luna-pretrain-tune-sass"
 
 
 def upload_single_file(args):

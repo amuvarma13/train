@@ -15,6 +15,6 @@ TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 # Naming and paths
 save_folder: "checkpoints_hlr"
 project_name: "luna-tts-text"
-run_name: "r0-5e7"
+run_name: "r0-9e6"
 
 resize_dataset: false

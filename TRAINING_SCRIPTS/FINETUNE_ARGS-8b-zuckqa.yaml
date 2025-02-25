@@ -7,7 +7,7 @@ batch_size: 1
 number_processes: 1
 pad_token: 128263
 save_steps: 10000
-learning_rate: 5.0e-5
+learning_rate: 5.0e-7
 
 # Datasets
 text_QA_dataset: "amuvarma/all-tagged-qa-6k-proc-2g"
@@ -15,6 +15,6 @@ TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 # Naming and paths
 save_folder: "checkpoints_hlr"
 project_name: "luna-tts-text"
-run_name: "r0-5e5"
+run_name: "r0-5e7"
 
 resize_dataset: false

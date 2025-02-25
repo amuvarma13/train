@@ -14,7 +14,7 @@ text_QA_dataset: "amuvarma/all-tagged-qa-6k-proc-2g"
 TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-convo"
+project_name: "luna-tts-text"
 run_name: "r0"
 
 resize_dataset: false

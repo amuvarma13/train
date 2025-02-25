@@ -3,6 +3,7 @@ from datasets import load_dataset, concatenate_datasets
 from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoTokenizer
 import numpy as np
 from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import DataLoader, SequentialSampler
 from tqdm import tqdm
 import os
 import yaml
@@ -124,7 +125,7 @@ class SimpleTrainer(Trainer):
         return DataLoader(
             self.train_dataset,
             batch_size=self.args.per_device_train_batch_size,
-            shuffle=True,
+            sampler=SequentialSampler(self.train_dataset),  # Use sequential sampler
             collate_fn=self.data_collator,
             drop_last=self.args.dataloader_drop_last,
             num_workers=0,

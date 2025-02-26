@@ -13,8 +13,8 @@ learning_rate: 2.0e-6
 # text_QA_dataset: "amuvarma/tagged-qas-extended-proc"
 # TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 
-text_QA_dataset: "amuvarma/rude-qas-proc"
-TTS_dataset: "amuvarma/838-luna-tts"
+text_QA_dataset: "amuvarma/luna-rude-convos-proc-textlabels"
+TTS_dataset: "amuvarma/luna-rude-convos-proc"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "luna-convo"

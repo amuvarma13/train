@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="amuvarma/luna-pretrain-sass",
+    repo_id="amuvarma/luna-rude-text-tune-ext",
     allow_patterns=[
         "config.json",
         "*.safetensors",

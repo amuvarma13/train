@@ -1,4 +1,4 @@
-model_name: "amuvarma/luna-pretrain-sass"
+model_name: "checkpoints/checkpoint-12000"
 tokenizer_name: "meta-llama/Llama-3.1-8B"
 
 # Training Args

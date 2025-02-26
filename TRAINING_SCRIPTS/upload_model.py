@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
 base_repo_id = "checkpoints/checkpoint-280"
-upload_name = "amuvarma/kok-v0-f"
+upload_name = "amuvarma/kok-v1-f"
 
 
 def upload_single_file(args):

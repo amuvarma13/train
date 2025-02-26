@@ -17,7 +17,7 @@ text_QA_dataset: "amuvarma/general-wellformatted-convs-audio-snacced-proc-textla
 TTS_dataset: "amuvarma/general-wellformatted-convs-audio-snacced-proc"
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-convo"
-run_name: "r5"
+project_name: "kokoro"
+run_name: "convotune"
 
 resize_dataset: false

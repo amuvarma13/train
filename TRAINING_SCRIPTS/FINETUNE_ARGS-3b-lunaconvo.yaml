@@ -1,4 +1,4 @@
-model_name: "checkpoints/checkpoint-5676"
+model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args
@@ -13,8 +13,8 @@ learning_rate: 5.0e-6
 # text_QA_dataset: "amuvarma/tagged-qas-extended-proc"
 # TTS_dataset: "amuvarma/luna-all-raw-snacced-TTS-2g"
 
-text_QA_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc-textlabels"
-TTS_dataset: "amuvarma/luna-tags_tts_convos-coll-ttsed-proc"
+text_QA_dataset: "amuvarma/10k-qa-proc-3g"
+TTS_dataset: "amuvarma/2k-luna-tts"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "luna-convo"

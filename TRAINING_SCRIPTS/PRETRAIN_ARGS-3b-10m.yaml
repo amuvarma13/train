@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/va-180k-kok-TTS-3g"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "batched_interleaving-datasets-pretrain"
-run_name: "14-1-3b-10m-r0"
+project_name: "24khz-kok-ext-pretrain"
+run_name: "r0"

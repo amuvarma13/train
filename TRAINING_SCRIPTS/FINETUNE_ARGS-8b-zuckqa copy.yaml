@@ -18,6 +18,6 @@ TTS_dataset: "amuvarma/regconvos-kokoro-proc"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "kok-convo"
-run_name: "r4"
+run_name: "8gpus"
 
 resize_dataset: false

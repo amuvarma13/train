@@ -17,7 +17,7 @@ text_QA_dataset: "amuvarma/regconvos-kokoro-proc-textlabels"
 TTS_dataset: "amuvarma/regconvos-kokoro-proc"
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-convo"
+project_name: "kok-convo"
 run_name: "r4"
 
 resize_dataset: false

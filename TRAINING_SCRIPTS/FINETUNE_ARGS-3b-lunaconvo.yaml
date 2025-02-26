@@ -1,4 +1,4 @@
-model_name: "amuvarma/3b-10m-pretrain-full" # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "checkpoints/checkpoint-12000" # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args

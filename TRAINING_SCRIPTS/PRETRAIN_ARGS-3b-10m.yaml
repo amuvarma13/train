@@ -12,7 +12,7 @@ learning_rate: 5.0e-5
 
 # Datasets
 text_QA_dataset: "amuvarma/text-messages-6m-processed-1-2g-8192l"
-TTS_dataset: "amuvarma/va-180k-kok-TTS"
+TTS_dataset: "amuvarma/va-180k-kok-TTS-3g"
 
 # Naming and paths
 save_folder: "checkpoints"

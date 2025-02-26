@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/general-wellformatted-convs-audio-snacced-proc"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "luna-convo-tune"
+project_name: "koko-tts"
 run_name: "r0"
 
 resize_dataset: false

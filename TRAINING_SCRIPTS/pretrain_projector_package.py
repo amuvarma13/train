@@ -1,5 +1,5 @@
 from orpheus import OrpheusTrainer
-model_name = "checkpoints/checkpoint-7813" # from stage_2_train.py
+model_name = "amuvarma/kok-convo-595-12000-stage3" # from stage_2_train.py
 
 #** loading the datasets can take a while, even up to an hour **
 orpheus = OrpheusTrainer(    

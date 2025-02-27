@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "amuvarma/mls-eng-10k-500k-projection_prep"
+repo_id = "amphion/Emilia-Dataset"
 
 snapshot_download(
     repo_id=repo_id,

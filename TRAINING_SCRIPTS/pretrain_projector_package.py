@@ -5,7 +5,7 @@ model_name = "amuvarma/kok-convo-595-12000-stage3" # from stage_2_train.py
 orpheus = OrpheusTrainer(    
     stage = "stage_4",
     model_name = model_name,
-    batch_size = 8, # use batch_size * number_of_gpus = 64 for quickest training
+    batch_size = 32, # use batch_size * number_of_gpus = 64 for quickest training
     )
 
 orpheus_trainer = orpheus.create_trainer( report_to="wandb" )

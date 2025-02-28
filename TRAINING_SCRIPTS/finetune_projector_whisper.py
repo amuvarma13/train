@@ -6,10 +6,7 @@ from transformers import Trainer, TrainingArguments
 from transformers.models.auto.modeling_auto import MODEL_FOR_CAUSAL_LM_MAPPING
 import yaml
 from tqdm import tqdm
-from gzf import (
-    GazelleConfig,
-    GazelleForConditionalGeneration,
-)
+
 import whisper
 
 whisper_model = whisper.load_model("small")

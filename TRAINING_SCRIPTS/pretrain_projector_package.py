@@ -1,4 +1,4 @@
-from .orpheus.src.orpheus import OrpheusTrainer
+from .orpheus.src import OrpheusTrainer
 model_name = "meta-llama/Llama-3.2-3B" # from stage_2_train.py
 
 #** loading the datasets can take a while, even up to an hour **

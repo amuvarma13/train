@@ -9,6 +9,9 @@ from orpheus import (
     OrpheusConfig,
     OrpheusForConditionalGeneration,
 )
+import whisper
+
+whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
 model_name = "amuvarma/3b-10m-pretrain-full"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -34,40 +37,57 @@ for name, param in model.named_parameters():
 
 wandb.init(project="test-proj", name="r0")
 
-
-def inference_collator(audio_input, user_res, ass_res):
-
-    user_input_ids = tokenizer(user_res, return_tensors="pt").input_ids
-    assistant_input_ids = tokenizer(ass_res, return_tensors="pt").input_ids
-
-    start_token = torch.tensor([[128259]], dtype=torch.int64)
-    end_tokens = torch.tensor([[128009, 128260, 128261]], dtype=torch.int64)
-    final_tokens = torch.tensor([[128009]], dtype=torch.int64)
-
-    user_tokens = torch.cat(
-        [start_token, user_input_ids, end_tokens], dim=1)
-
-    labels = torch.cat([start_token, user_input_ids, end_tokens,
-                       assistant_input_ids, final_tokens], dim=1)
-
-    true_labels = torch.full_like(labels, -100)
-    true_labels[:, user_tokens.shape[1]:] = labels[:, user_tokens.shape[1]:]
-
-    attention_mask = torch.ones_like(labels)
-
-
-    return {
-        "audio_values": audio_input.to(model.device).to(model.dtype),
-        "input_ids": labels.to(model.device),
-        "labels": true_labels.to(model.device),
-        "attention_mask": attention_mask.to(model.device)
-    }
-
-
-
 class AudioChatDataCollator:
-    def __init__(self):
-        self.greeting = "Hello world."
+    def __init__(self, tokenizer, model):
+        self.tokenizer = tokenizer
+        self.whisper_model = whisper_model.to("cuda")
+        self.model = model
+        
+        pass
+
+    def _process_audio_tensor(self, audio, sample_rate=16000):
+        audio = audio.to(torch.float32)
+        duration_ms = (len(audio) / sample_rate) * 1000
+        audio = whisper.pad_or_trim(audio)
+        mel = whisper.log_mel_spectrogram(audio)
+        return mel, int(duration_ms / 20) + 1
+
+    def _inference_collator(self, audio_input, user_res, ass_res):
+        user_input_ids = self.tokenizer(
+            user_res, return_tensors="pt").input_ids
+        assistant_input_ids = self.tokenizer(
+            ass_res, return_tensors="pt").input_ids
+
+        start_token = torch.tensor([[128259]], dtype=torch.int64)
+        end_tokens = torch.tensor(
+            [[128009, 128260, 128261]], dtype=torch.int64)
+        final_tokens = torch.tensor([[128009]], dtype=torch.int64)
+
+        user_tokens = torch.cat(
+            [start_token, user_input_ids, end_tokens], dim=1)
+
+        labels = torch.cat([start_token, user_input_ids, end_tokens,
+                            assistant_input_ids, final_tokens], dim=1)
+
+        true_labels = torch.full_like(labels, -100)
+        true_labels[:, user_tokens.shape[1]:] = labels[:, user_tokens.shape[1]:]
+
+        attention_mask = torch.ones_like(labels)
+
+        audio_input = audio_input.squeeze(0)
+        mel, length = self._process_audio_tensor(audio_input)
+        mel = mel.to(whisper_model.device)
+        mel = mel.unsqueeze(0)
+        audio_feature = whisper_model.embed_audio(mel)[0][:length]
+        audio_feature = audio_feature.unsqueeze(0)
+
+
+        return {
+            "audio_values": audio_feature.to(self.model.device).to(self.model.dtype),
+            "input_ids": labels.to(self.model.device),
+            "labels": true_labels.to(self.model.device),
+            "attention_mask": attention_mask.to(self.model.device)
+        }
 
     def __call__(self, features):
         audio = torch.tensor([features[0]["audio"]["array"]])
@@ -79,11 +99,9 @@ class AudioChatDataCollator:
             user_response = features[0]["user"]
         else:
             user_response = "<|audio|>"
-            
-    
-        
 
-        batch = inference_collator(audio, user_response, assistant_response)
+        batch = self._inference_collator(
+            audio, user_response, assistant_response)
 
         return {
             "audio_values": batch["audio_values"].cpu(),
@@ -91,6 +109,8 @@ class AudioChatDataCollator:
             "labels": batch["labels"].cpu(),
             "attention_mask": batch["attention_mask"].cpu()
         }
+
+
 
 training_args = TrainingArguments(
     output_dir="checkpoints",
@@ -105,7 +125,7 @@ training_args = TrainingArguments(
     remove_unused_columns=False,
     warmup_ratio=0.03,
     lr_scheduler_type="cosine",
-    fp16=True,
+    bf16=True,
     save_steps=15000
 )
 
@@ -114,7 +134,7 @@ trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=ds,
-    data_collator=AudioChatDataCollator(),
+    data_collator=AudioChatDataCollator(tokenizer, model)
 )
 
 

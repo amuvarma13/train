@@ -22,11 +22,13 @@ num_new_tokens = 10 + 7 * 4096  # This equals 28,682 tokens
 new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
 
 # Add new tokens to the tokenizer
-num_added = tokenizer.add_tokens(new_tokens)
+tokenizer.add_tokens(new_tokens)
 
 tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
 )
+
+print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,
             audio_token_index=156939,

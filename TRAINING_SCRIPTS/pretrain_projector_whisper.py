@@ -107,6 +107,8 @@ def process_audio_tensor(audio, sample_rate=16000):
 def inference_collator(audio_input, user_res, ass_res):
 
     user_input_ids = tokenizer(user_res, return_tensors="pt").input_ids
+
+    print("user_input_ids", user_input_ids)
     assistant_input_ids = tokenizer(ass_res, return_tensors="pt").input_ids
 
     start_token = torch.tensor([[128259]], dtype=torch.int64)

@@ -1,0 +1,19 @@
+# Model
+model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.2-3B"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 8
+pad_token: 128263
+save_steps: 12000
+learning_rate: 5.0e-5
+
+# Datasets
+TTS_dataset: "amuvarma/emilia-30k-TTS"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "emilia-pretrain"
+run_name: "r0"

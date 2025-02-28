@@ -16,4 +16,4 @@ TTS_dataset: "amuvarma/emilia-30k-TTS-iter"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "emilia-pretrain"
-run_name: "r0"
+run_name: "r1"

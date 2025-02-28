@@ -11,9 +11,9 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-30k-TTS-iter"
+TTS_dataset: "amuvarma/emilia-30k-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "emilia-pretrain"
-run_name: "r1"
+run_name: "r2"

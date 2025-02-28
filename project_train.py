@@ -13,7 +13,7 @@ import whisper
 
 whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "meta-llama/Llama-3.2-3B-Instruct"
+model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens

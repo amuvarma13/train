@@ -37,8 +37,29 @@ class ProjectionLayer(nn.Module):
         )
         return audio_embeds
     
-
 class OrpheusProjector(ProjectionLayer):
+    def __init__(self, config: OrpheusConfig):
+        self.hidden_dim = config.hidden_size
+        super().__init__(config.stack_factor)
+        self.ln_pre = RMSNorm(config.audio_hidden_size * self.stack_factor)
+        self.linear_1 = nn.Linear(
+            config.audio_hidden_size * self.stack_factor,
+            self.hidden_dim,
+            bias=False,
+        )
+        self.act = SwiGLU()
+        self.linear_2 = nn.Linear(
+            self.hidden_dim // 2, self.hidden_dim, bias=True
+        )
+        self.ln_post = RMSNorm(self.hidden_dim)
+
+    def forward(self, audio_features: torch.Tensor) -> torch.Tensor:
+        audio_features = self._pad_and_stack(audio_features)
+        audio_features = self.ln_pre(audio_features)
+        hidden_states = self.linear_1(audio_features)
+        return hidden_states
+    
+class OrpheusProjectorA(ProjectionLayer):
     def __init__(self, config: OrpheusConfig):
         self.hidden_dim = config.hidden_size
         super().__init__(config.stack_factor)

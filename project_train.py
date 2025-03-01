@@ -16,7 +16,7 @@ whisper_model = whisper.load_model("small")
 model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-num_new_tokens = 10 + 7 * 4096
+num_new_tokens = 11 + 7 * 4096
 
 # Generate a list of new token strings
 new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]

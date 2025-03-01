@@ -35,6 +35,7 @@ config = OrpheusConfig(
             audio_token_index=156939,
             vocab_size=156939,
             hidden_size=4096,
+            audio_hidden_size=1024,
         )
 
 model = OrpheusForConditionalGeneration(config)

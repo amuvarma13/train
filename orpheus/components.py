@@ -59,7 +59,7 @@ class OrpheusProjectorA(ProjectionLayer):
         hidden_states = self.linear_1(audio_features)
         return hidden_states
     
-class OrpheusProjectorB(ProjectionLayer):
+class OrpheusProjector(ProjectionLayer):
     def __init__(self, config: OrpheusConfig):
         self.hidden_dim = config.hidden_size
         super().__init__(config.stack_factor)
@@ -67,11 +67,11 @@ class OrpheusProjectorB(ProjectionLayer):
         self.linear_1 = nn.Linear(
             config.audio_hidden_size * self.stack_factor,
             self.hidden_dim,
-            bias=True,
+            bias=False,
         )
         self.act = SwiGLU()
         self.linear_2 = nn.Linear(
-            self.hidden_dim // 2, self.hidden_dim, bias=True
+            self.hidden_dim // 2, self.hidden_dim, bias=False
         )
         self.ln_post = RMSNorm(self.hidden_dim)
 
@@ -80,40 +80,6 @@ class OrpheusProjectorB(ProjectionLayer):
         audio_features = self.ln_pre(audio_features)
         hidden_states = self.linear_1(audio_features)
         hidden_states = self.act(hidden_states)
-        hidden_states = self.linear_2(hidden_states)
-        hidden_states = self.ln_post(hidden_states)
-        return hidden_states
-
-
-class OrpheusProjector(ProjectionLayer):
-    def __init__(self, config: OrpheusConfig):
-        super().__init__()
-        self.hidden_dim = config.hidden_size
-        # self._pad_and_stack = self._pad_and_stack()
-        dim_in = 1024 * config.stack_factor
-        self.ln_pre = RMSNorm(config.audio_hidden_size * self.stack_factor)
-        self.linear_1 = nn.Linear(dim_in, self.hidden_dim, bias=False)
-        dim_mid = self.hidden_dim
-        self.act = SwiGLU()
-        dim_mid = dim_mid // 2
-        dim_out = config.text_config.hidden_size
-        self.linear_2 = nn.Linear(dim_mid, dim_out, bias=False)
-
-        # Ultravox v0.4.1 and below uses layer_norm after the second linear layer,
-        # while v0.5.0 and above uses layer_norm after the first linear layer.
-        # if config.projector_ln_mid:
-        #     self.ln_mid: nn.Module = RMSNorm(config.audio_hidden_size * self.stack_factor)
-        #     self.ln_post: nn.Module = nn.Identity()
-        # else:
-        self.ln_mid = nn.Identity()
-        self.ln_post = RMSNorm(dim_out)
-
-    def forward(self, audio_features: torch.Tensor) -> torch.Tensor:
-        audio_features = self._pad_and_stack(audio_features)
-        audio_features = self.ln_pre(audio_features)
-        hidden_states = self.linear_1(audio_features)
-        hidden_states = self.act(hidden_states)
-        hidden_states = self.ln_mid(hidden_states)
         hidden_states = self.linear_2(hidden_states)
         hidden_states = self.ln_post(hidden_states)
         return hidden_states

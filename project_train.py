@@ -11,7 +11,7 @@ from orpheus import (
 )
 import whisper
 
-whisper_model = whisper.load_model("medium")
+whisper_model = whisper.load_model("large")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
 model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)

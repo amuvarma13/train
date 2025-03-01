@@ -83,7 +83,9 @@ class OrpheusProjector(ProjectionLayer):
         hidden_states = self.linear_2(hidden_states)
         hidden_states = self.ln_post(hidden_states)
         return hidden_states
-class UltravoxProjector(nn.Module):
+
+
+# class UltravoxProjector(nn.Module):
     def __init__(self, config: UltravoxConfig):
         super().__init__()
         self.hidden_dim = config.hidden_size

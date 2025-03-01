@@ -95,7 +95,7 @@ class OrpheusProjector(ProjectionLayer):
         self.linear_1 = nn.Linear(dim_in, self.hidden_dim, bias=False)
         dim_mid = self.hidden_dim
         self.act = SwiGLU()
-        dim_mid = dim_mid // 2 if config.projector_act == "swiglu" else dim_mid
+        dim_mid = dim_mid // 2
         dim_out = config.text_config.hidden_size
         self.linear_2 = nn.Linear(dim_mid, dim_out, bias=False)
 

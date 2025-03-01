@@ -66,7 +66,7 @@ class OrpheusForConditionalGeneration(OrpheusPreTrainedModel):
                 attn_implementation=config._attn_implementation
             )
             if(new_vocab_size is not None):
-                self.language_model.resize_token_embeddings(156940)
+                self.language_model.resize_token_embeddings(152064)
         else:
             self.language_model = AutoModelForCausalLM.from_config(
                 config.text_config, 

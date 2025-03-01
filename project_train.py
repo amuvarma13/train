@@ -11,30 +11,24 @@ from orpheus import (
 )
 import whisper
 
-whisper_model = whisper.load_model("medium")
+whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "meta-llama/Llama-3.1-8B-Instruct"
+model_name = "Qwen/Qwen2.5-7B"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-
-num_new_tokens = 11 + 7 * 4096
-
-# Generate a list of new token strings
-new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
-
-# Add new tokens to the tokenizer
-tokenizer.add_tokens(new_tokens)
 
 tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
 )
 
+vs = 152064
 
 print("tokeniser is length of", len(tokenizer))
+
 config = OrpheusConfig(
             text_model_id=model_name,
-            audio_token_index=156939,
-            vocab_size=156939,
-            hidden_size=4096,
+            audio_token_index=152064,
+            vocab_size=152064,
+            hidden_size=3584,
             audio_hidden_size=1024,
         )
 

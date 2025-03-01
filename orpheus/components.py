@@ -101,12 +101,12 @@ class OrpheusProjector(ProjectionLayer):
 
         # Ultravox v0.4.1 and below uses layer_norm after the second linear layer,
         # while v0.5.0 and above uses layer_norm after the first linear layer.
-        if config.projector_ln_mid:
-            self.ln_mid: nn.Module = RMSNorm(config.audio_hidden_size * self.stack_factor)
-            self.ln_post: nn.Module = nn.Identity()
-        else:
-            self.ln_mid = nn.Identity()
-            self.ln_post = RMSNorm(dim_out, init=config.norm_init)
+        # if config.projector_ln_mid:
+        #     self.ln_mid: nn.Module = RMSNorm(config.audio_hidden_size * self.stack_factor)
+        #     self.ln_post: nn.Module = nn.Identity()
+        # else:
+        self.ln_mid = nn.Identity()
+        self.ln_post = RMSNorm(dim_out, init=config.norm_init)
 
     def forward(self, audio_features: torch.Tensor) -> torch.Tensor:
         audio_features = self._pad_and_stack(audio_features)

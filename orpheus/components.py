@@ -22,7 +22,7 @@ class SwiGLU(nn.Module):
         return F.silu(gate) * x
 
 class ProjectionLayer(nn.Module):
-    def __init__(self, stack_factor: int = 16):
+    def __init__(self, stack_factor: int = 8):
         super().__init__()
         self.stack_factor = stack_factor
 
@@ -45,12 +45,12 @@ class OrpheusProjector(ProjectionLayer):
         self.ln_pre = RMSNorm(config.audio_hidden_size * self.stack_factor)
         self.linear_1 = nn.Linear(
             config.audio_hidden_size * self.stack_factor,
-            self.hidden_dim,
+            3072,
             bias=False,
         )
         self.act = SwiGLU()
         self.linear_2 = nn.Linear(
-            self.hidden_dim // 2, self.hidden_dim, bias=False
+            3072 // 2, self.hidden_dim, bias=False
         )
         self.ln_post = RMSNorm(self.hidden_dim)
 

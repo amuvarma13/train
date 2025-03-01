@@ -11,7 +11,7 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-30k-TTS-grouped-3072"
+TTS_dataset: "amuvarma/emilia-30k-TTS-grouped-4096"
 
 # Naming and paths
 save_folder: "checkpoints"

@@ -131,7 +131,7 @@ class AudioChatDataCollator:
 
 training_args = TrainingArguments(
     output_dir="checkpoints",
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=4,
     gradient_accumulation_steps=1,
     num_train_epochs=1,
     logging_steps=1,

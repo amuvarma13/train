@@ -13,7 +13,7 @@ import whisper
 
 whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "meta-llama/Llama-3.1-8B-Instruct"
+model_name = "meta-llama/Meta-Llama-3-8B"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
@@ -67,9 +67,9 @@ class AudioChatDataCollator:
 
     def _inference_collator(self, audio_input, user_res, ass_res):
         user_input_ids = self.tokenizer(
-            user_res, return_tensors="pt", clean_up_tokenization_spaces=False).input_ids
+            user_res, return_tensors="pt").input_ids
         assistant_input_ids = self.tokenizer(
-            ass_res, return_tensors="pt", clean_up_tokenization_spaces=False).input_ids
+            ass_res, return_tensors="pt").input_ids
 
         start_token = torch.tensor([[128259]], dtype=torch.int64)
         end_tokens = torch.tensor(

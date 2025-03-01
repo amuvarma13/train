@@ -16,13 +16,13 @@ whisper_model = whisper.load_model("small")
 model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-# num_new_tokens = 10 + 7 * 4096
+num_new_tokens = 10 + 7 * 4096
 
-# # Generate a list of new token strings
-# new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
+# Generate a list of new token strings
+new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
 
-# # Add new tokens to the tokenizer
-# tokenizer.add_tokens(new_tokens)
+# Add new tokens to the tokenizer
+tokenizer.add_tokens(new_tokens)
 
 tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
@@ -95,7 +95,8 @@ class AudioChatDataCollator:
         mel = mel.unsqueeze(0)
         audio_feature = whisper_model.embed_audio(mel)[0][:length]
         audio_feature = audio_feature.unsqueeze(0)
-        
+
+        print(labels)
 
         return {
             "audio_values": audio_feature.to(self.model.device).to(self.model.dtype),

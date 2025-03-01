@@ -40,7 +40,7 @@ config = OrpheusConfig(
 model = OrpheusForConditionalGeneration(config)
 
 print(model)
-return
+# return
 
 dsn = "amuvarma/mls-eng-10k-500k-projection_prep"
 ds = load_dataset(dsn, split="train")

@@ -110,9 +110,9 @@ def inference_collator(audio_input, user_res, ass_res):
 
     assistant_input_ids = tokenizer(ass_res, return_tensors="pt").input_ids
 
-    start_token = torch.tensor([[128259]], dtype=torch.int64)
-    end_tokens = torch.tensor([[128009, 128260, 128261]], dtype=torch.int64)
-    final_tokens = torch.tensor([[128009]], dtype=torch.int64)
+    start_token = torch.tensor([[32232]], dtype=torch.int64)
+    end_tokens = torch.tensor([[32233, 32234, 32235]], dtype=torch.int64)
+    final_tokens = torch.tensor([[32236]], dtype=torch.int64)
 
     user_tokens = torch.cat(
         [start_token, user_input_ids, end_tokens], dim=1)

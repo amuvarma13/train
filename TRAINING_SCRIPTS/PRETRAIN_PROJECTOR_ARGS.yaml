@@ -3,8 +3,8 @@ model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must
 tokenizer_name: "amuvarma/3b-10m-pretrain-full"
 audio_model_id: "facebook/wav2vec2-base-960h"
 audio_processor_id: "facebook/wav2vec2-base-960h"
-audio_token_index: 156939
-vocab_size: 156939
+audio_token_index: 32769
+vocab_size: 32769
 
 # Training Args
 epochs: 1

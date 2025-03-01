@@ -67,9 +67,9 @@ class AudioChatDataCollator:
 
     def _inference_collator(self, audio_input, user_res, ass_res):
         user_input_ids = self.tokenizer(
-            user_res, return_tensors="pt").input_ids
+            user_res, return_tensors="pt", clean_up_tokenization_spaces=False).input_ids
         assistant_input_ids = self.tokenizer(
-            ass_res, return_tensors="pt").input_ids
+            ass_res, return_tensors="pt", clean_up_tokenization_spaces=False).input_ids
 
         start_token = torch.tensor([[128259]], dtype=torch.int64)
         end_tokens = torch.tensor(
@@ -137,6 +137,7 @@ training_args = TrainingArguments(
     dataloader_pin_memory=False,
     remove_unused_columns=False,
     warmup_ratio=0.03,
+    learning_rate=1e-4,
     lr_scheduler_type="cosine",
     bf16=True,
     save_steps=15000

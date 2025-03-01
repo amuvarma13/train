@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="mistralai/Mistral-7B-Instruct-v0.3",
+    repo_id="Qwen/Qwen2-7B-Instruct",
     allow_patterns=[
         "config.json",
         "*.safetensors",

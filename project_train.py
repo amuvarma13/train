@@ -46,7 +46,7 @@ dsn = "amuvarma/mls-eng-10k-500k-projection_prep"
 ds = load_dataset(dsn, split="train")
 
 for param in model.parameters():
-    param.requires_grad = True
+    param.requires_grad = False
 for name, param in model.named_parameters():
     if "multi_modal_projector" in name:
         param.requires_grad = True
@@ -131,7 +131,7 @@ class AudioChatDataCollator:
 
 training_args = TrainingArguments(
     output_dir="checkpoints",
-    per_device_train_batch_size=4,
+    per_device_train_batch_size=8,
     gradient_accumulation_steps=1,
     num_train_epochs=1,
     logging_steps=1,
@@ -141,7 +141,7 @@ training_args = TrainingArguments(
     dataloader_pin_memory=False,
     remove_unused_columns=False,
     warmup_ratio=0.03,
-    learning_rate=1e-4,
+    learning_rate=2e-06,
     lr_scheduler_type="cosine",
     bf16=True,
     save_steps=15000

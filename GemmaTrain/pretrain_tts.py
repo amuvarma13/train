@@ -95,7 +95,7 @@ wandb.init(project=project_name, name=run_name)
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name, attn_implementation="flash_attention_2")
+    model_name, attn_implementation="eager")
 
 
 number_add_tokens = 7 * 4096 + 10

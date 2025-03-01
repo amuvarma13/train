@@ -120,7 +120,7 @@ class AudioChatDataCollator:
 
         return {
             "audio_values": batch["audio_values"].cpu(),
-            "input_ids": batch["input_ids"].cpu(),
+            "input_ids": batch["input_ids"].cpu(), 
             "labels": batch["labels"].cpu(),
             "attention_mask": batch["attention_mask"].cpu()
         }

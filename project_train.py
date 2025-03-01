@@ -12,8 +12,8 @@ from orpheus import (
 import whisper
 
 whisper_model = whisper.load_model("small")
-# model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "meta-llama/Meta-Llama-3-8B"
+model_name = "meta-llama/Llama-3.2-1B-Instruct"
+# model_name = "meta-llama/Meta-Llama-3-8B"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
@@ -139,7 +139,7 @@ training_args = TrainingArguments(
     warmup_ratio=0.03,
     learning_rate=1e-4,
     lr_scheduler_type="cosine",
-    bf16=True,
+    # bf16=True,
     save_steps=15000
 )
 

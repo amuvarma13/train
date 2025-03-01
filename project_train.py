@@ -28,6 +28,10 @@ tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
 )
 
+tokenizer.decode("[INST]")
+tokenizer.decode("[INST/]")
+tokenizer.decode("[s]")
+
 print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,

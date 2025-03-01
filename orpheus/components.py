@@ -22,7 +22,7 @@ class SwiGLU(nn.Module):
         return F.silu(gate) * x
 
 class ProjectionLayer(nn.Module):
-    def __init__(self, stack_factor: int = 8):
+    def __init__(self, stack_factor: int = 4):
         super().__init__()
         self.stack_factor = stack_factor
 

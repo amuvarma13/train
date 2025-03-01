@@ -11,7 +11,7 @@ from orpheus import (
 )
 import whisper
 
-whisper_model = whisper.load_model("small")
+whisper_model = whisper.load_model("medium")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
 model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -130,7 +130,7 @@ class AudioChatDataCollator:
 
 training_args = TrainingArguments(
     output_dir="checkpoints",
-    per_device_train_batch_size=1,
+    per_device_train_batch_size=8,
     gradient_accumulation_steps=1,
     num_train_epochs=1,
     logging_steps=1,

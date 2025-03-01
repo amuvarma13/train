@@ -91,7 +91,7 @@ class OrpheusProjector(ProjectionLayer):
         self.hidden_dim = config.hidden_size
         # self._pad_and_stack = self._pad_and_stack()
         dim_in = 1024 * config.stack_factor
-        self.ln_pre = RMSNorm(dim_in, init=config.norm_init)
+        self.ln_pre = RMSNorm(config.audio_hidden_size * self.stack_factor)
         self.linear_1 = nn.Linear(dim_in, self.hidden_dim, bias=False)
         dim_mid = self.hidden_dim
         self.act = SwiGLU()
@@ -102,7 +102,7 @@ class OrpheusProjector(ProjectionLayer):
         # Ultravox v0.4.1 and below uses layer_norm after the second linear layer,
         # while v0.5.0 and above uses layer_norm after the first linear layer.
         if config.projector_ln_mid:
-            self.ln_mid: nn.Module = RMSNorm(dim_mid, init=config.norm_init)
+            self.ln_mid: nn.Module = RMSNorm(config.audio_hidden_size * self.stack_factor)
             self.ln_post: nn.Module = nn.Identity()
         else:
             self.ln_mid = nn.Identity()

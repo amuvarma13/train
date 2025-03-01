@@ -118,8 +118,6 @@ class OrpheusForConditionalGeneration(OrpheusPreTrainedModel):
         left_padding = not torch.sum(
             input_ids[:, -1] == torch.tensor(self.pad_token_id)
         )
-        print("input_ids", input_ids)
-        print("self.config.audio_token_index", self.config.audio_token_index)
         special_audio_token_mask = input_ids == self.config.audio_token_index
         num_special_image_tokens = torch.sum(special_audio_token_mask, dim=-1)
         max_embed_dim = (

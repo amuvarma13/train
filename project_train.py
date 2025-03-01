@@ -74,16 +74,16 @@ class AudioChatDataCollator:
         assistant_input_ids = self.tokenizer(
             ass_res, return_tensors="pt").input_ids
 
-        start_token = torch.tensor([[128259]], dtype=torch.int64)
+        # start_token = torch.tensor([[128259]], dtype=torch.int64)
         end_tokens = torch.tensor(
-            [[128009, 128260, 128261]], dtype=torch.int64)
-        final_tokens = torch.tensor([[128009]], dtype=torch.int64)
+            [[128009]], dtype=torch.int64)
+        # final_tokens = torch.tensor([[128009]], dtype=torch.int64)
 
         user_tokens = torch.cat(
-            [start_token, user_input_ids, end_tokens], dim=1)
+            [user_input_ids, end_tokens], dim=1)
 
-        labels = torch.cat([start_token, user_input_ids, end_tokens,
-                            assistant_input_ids, final_tokens], dim=1)
+        labels = torch.cat([user_input_ids, end_tokens,
+                            assistant_input_ids], dim=1)
 
         true_labels = torch.full_like(labels, -100)
         true_labels[:, user_tokens.shape[1]:] = labels[:, user_tokens.shape[1]:]

@@ -13,31 +13,28 @@ import whisper
 
 whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "meta-llama/Llama-3.1-8B-Instruct"
+model_name = "google/gemma-2-9b-it"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
+# num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
 
 # Generate a list of new token strings
-new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
+# new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
 
-# Add new tokens to the tokenizer
-tokenizer.add_tokens(new_tokens)
+# # Add new tokens to the tokenizer
+# tokenizer.add_tokens(new_tokens)
 
 tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
 )
 
-tokenizer.decode("[INST]")
-tokenizer.decode("[INST/]")
-tokenizer.decode("[s]")
 
 print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,
             audio_token_index=156939,
             vocab_size=156939,
-            hidden_size=4096,
+            hidden_size=3584,
         )
 
 model = OrpheusForConditionalGeneration(config)

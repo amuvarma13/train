@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "amuvarma/emilia-snac"
+repo_id = "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 
 snapshot_download(
     repo_id=repo_id,
@@ -11,3 +11,4 @@ snapshot_download(
 )
 
 load_dataset(repo_id, split="train")
+ 

@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="Qwen/Qwen2-7B-Instruct",
+    repo_id="amuvarma/3b-10m-pretrain-full",
     allow_patterns=[
         "config.json",
         "*.safetensors",

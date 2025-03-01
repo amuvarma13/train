@@ -13,7 +13,7 @@ import whisper
 
 whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "google/gemma-2-9b-it"
+model_name = "mistralai/Mistral-7B-Instruct-v0.3"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 # num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
@@ -32,9 +32,9 @@ tokenizer.add_special_tokens(
 print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,
-            audio_token_index=256000,
-            vocab_size=256000,
-            hidden_size=3584,
+            audio_token_index=32769,
+            vocab_size=32769,
+            hidden_size=4096,
         )
 
 model = OrpheusForConditionalGeneration(config)
@@ -74,10 +74,9 @@ class AudioChatDataCollator:
         assistant_input_ids = self.tokenizer(
             ass_res, return_tensors="pt").input_ids
 
-        start_token = torch.tensor([[128259]], dtype=torch.int64)
-        end_tokens = torch.tensor(
-            [[128009, 128260, 128261]], dtype=torch.int64)
-        final_tokens = torch.tensor([[128009]], dtype=torch.int64)
+        start_token = torch.tensor([[32232]], dtype=torch.int64)
+        end_tokens = torch.tensor([[32233, 32234, 32235]], dtype=torch.int64)
+        final_tokens = torch.tensor([[32236]], dtype=torch.int64)
 
         user_tokens = torch.cat(
             [start_token, user_input_ids, end_tokens], dim=1)

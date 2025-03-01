@@ -44,7 +44,7 @@ class OrpheusProjector(ProjectionLayer):
         self.ln_pre = RMSNorm(config.audio_hidden_size * self.stack_factor)
         self.linear_1 = nn.Linear(
             config.audio_hidden_size * self.stack_factor,
-            self.hidden_dim +8,
+            self.hidden_dim,
             bias=False,
         )
         self.act = SwiGLU()

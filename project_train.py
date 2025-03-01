@@ -13,16 +13,16 @@ import whisper
 
 whisper_model = whisper.load_model("small")
 # model_name = "meta-llama/Llama-3.2-3B-Instruct"
-model_name = "mistralai/Mistral-7B-Instruct-v0.3"
+model_name = "meta-llama/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-# num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
+num_new_tokens = 11 + 7 * 4096  # This equals 28,682 tokens
 
 # Generate a list of new token strings
-# new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
+new_tokens = [f"<extra_token_{i}>" for i in range(num_new_tokens)]
 
-# # Add new tokens to the tokenizer
-# tokenizer.add_tokens(new_tokens)
+# Add new tokens to the tokenizer
+tokenizer.add_tokens(new_tokens)
 
 tokenizer.add_special_tokens(
     {"additional_special_tokens": ["<|audio|>"]}
@@ -32,15 +32,13 @@ tokenizer.add_special_tokens(
 print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,
-            audio_token_index=32768,
-            vocab_size=32769,
+            audio_token_index=156939,
+            vocab_size=156939,
             hidden_size=4096,
         )
 
 model = OrpheusForConditionalGeneration(config)
 
-print(model) 
-# return
 
 dsn = "amuvarma/mls-eng-10k-500k-projection_prep"
 ds = load_dataset(dsn, split="train")
@@ -74,9 +72,10 @@ class AudioChatDataCollator:
         assistant_input_ids = self.tokenizer(
             ass_res, return_tensors="pt").input_ids
 
-        start_token = torch.tensor([[32232]], dtype=torch.int64)
-        end_tokens = torch.tensor([[32233, 32234, 32235]], dtype=torch.int64)
-        final_tokens = torch.tensor([[32236]], dtype=torch.int64)
+        start_token = torch.tensor([[128259]], dtype=torch.int64)
+        end_tokens = torch.tensor(
+            [[128009, 128260, 128261]], dtype=torch.int64)
+        final_tokens = torch.tensor([[128009]], dtype=torch.int64)
 
         user_tokens = torch.cat(
             [start_token, user_input_ids, end_tokens], dim=1)
@@ -93,8 +92,7 @@ class AudioChatDataCollator:
         mel, length = self._process_audio_tensor(audio_input)
         mel = mel.to(whisper_model.device)
         mel = mel.unsqueeze(0)
-        with torch.no_grad():
-            audio_feature = whisper_model.embed_audio(mel)[0][:length]
+        audio_feature = whisper_model.embed_audio(mel)[0][:length]
         audio_feature = audio_feature.unsqueeze(0)
         
 
@@ -121,7 +119,7 @@ class AudioChatDataCollator:
 
         return {
             "audio_values": batch["audio_values"].cpu(),
-            "input_ids": batch["input_ids"].cpu(), 
+            "input_ids": batch["input_ids"].cpu(),
             "labels": batch["labels"].cpu(),
             "attention_mask": batch["attention_mask"].cpu()
         }

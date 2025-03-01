@@ -106,7 +106,7 @@ class OrpheusProjector(ProjectionLayer):
         #     self.ln_post: nn.Module = nn.Identity()
         # else:
         self.ln_mid = nn.Identity()
-        self.ln_post = RMSNorm(dim_out, init=config.norm_init)
+        self.ln_post = RMSNorm(dim_out)
 
     def forward(self, audio_features: torch.Tensor) -> torch.Tensor:
         audio_features = self._pad_and_stack(audio_features)

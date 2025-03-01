@@ -91,7 +91,7 @@ class AudioChatDataCollator:
         with torch.no_grad():
             audio_feature = whisper_model.embed_audio(mel)[0][:length]
         audio_feature = audio_feature.unsqueeze(0)
-
+ 
         return {
             "audio_values": audio_feature.to(self.model.device).to(self.model.dtype),
             "input_ids": labels.to(self.model.device),

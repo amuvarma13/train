@@ -32,8 +32,8 @@ tokenizer.add_special_tokens(
 print("tokeniser is length of", len(tokenizer))
 config = OrpheusConfig(
             text_model_id=model_name,
-            audio_token_index=156941,
-            vocab_size=156941,
+            audio_token_index=256000,
+            vocab_size=256000,
             hidden_size=3584,
         )
 

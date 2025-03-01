@@ -8,7 +8,7 @@ class OrpheusConfig(PretrainedConfig):
     def __init__(
         self,
         text_config=None,
-        audio_hidden_size = 768,
+        audio_hidden_size = 1024,
         ignore_index=-100,
         audio_token_index=32000,
         vocab_size=32000,

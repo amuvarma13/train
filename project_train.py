@@ -50,7 +50,7 @@ for name, param in model.named_parameters():
     if "multi_modal_projector" in name:
         param.requires_grad = True
 
-wandb.init(project="test-proj", name="r0")
+wandb.init(project="test-proj-8", name="r0")
 
 class AudioChatDataCollator:
     def __init__(self, tokenizer, model):

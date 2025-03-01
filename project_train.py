@@ -12,7 +12,7 @@ from orpheus import (
 import whisper
 
 whisper_model = whisper.load_model("small")
-model_name = "meta-llama/Llama-3.2-1B-Instruct"
+model_name = "nvidia/nemotron-3-8b-base-4k"
 # model_name = "meta-llama/Meta-Llama-3-8B"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 

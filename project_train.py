@@ -50,7 +50,7 @@ for name, param in model.named_parameters():
     if "multi_modal_projector" in name:
         param.requires_grad = True
 
-wandb.init(project="test-proj-8", name="r0")
+wandb.init(project="test-proj-8", name="r1")
 
 class AudioChatDataCollator:
     def __init__(self, tokenizer, model):
@@ -93,8 +93,8 @@ class AudioChatDataCollator:
         mel, length = self._process_audio_tensor(audio_input)
         mel = mel.to(whisper_model.device)
         mel = mel.unsqueeze(0)
-        # with torch.no_grad():
-        audio_feature = whisper_model.embed_audio(mel)[0][:length]
+        with torch.no_grad():
+            audio_feature = whisper_model.embed_audio(mel)[0][:length]
         audio_feature = audio_feature.unsqueeze(0)
 
 

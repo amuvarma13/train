@@ -90,7 +90,7 @@ class OrpheusProjector(ProjectionLayer):
         super().__init__()
         self.hidden_dim = config.hidden_size
         # self._pad_and_stack = self._pad_and_stack()
-        dim_in = config.audio_config.hidden_size * config.stack_factor
+        dim_in = 1024 * config.stack_factor
         self.ln_pre = RMSNorm(dim_in, init=config.norm_init)
         self.linear_1 = nn.Linear(dim_in, self.hidden_dim, bias=False)
         dim_mid = self.hidden_dim

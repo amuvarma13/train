@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "24khz-kok-ext-pretrain"
+project_name: "gemma-batched-pretrain"
 run_name: "r0"

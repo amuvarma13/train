@@ -11,7 +11,7 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-CanopyElias-gemma-TTS-30k-grouped-3072"
+TTS_dataset: "amuvarma/emilia-snac-merged-CanopyElias-gemma-TTS-30k-grouped-2048"
 
 # Naming and paths
 save_folder: "checkpoints"

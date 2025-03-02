@@ -1,17 +1,17 @@
 # Model
-model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B"
+model_name: "google/gemma-2-9b-it"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "google/gemma-2-9b-it"
 
 # Training Args
 epochs: 1
 batch_size: 1
 number_processes: 8
 pad_token: 128263
-save_steps: 12000
+save_steps: 50000
 learning_rate: 5.0e-5
 
 # Datasets
-text_QA_dataset: "amuvarma/text-messages-6m-processed-1-2g-8192l"
+text_QA_dataset: "amuvarma/all-texts-2048-iids"
 TTS_dataset: "amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656"
 
 # Naming and paths

@@ -3,12 +3,13 @@ from datasets import load_dataset
 
 repo_id = "amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656"
 
-snapshot_download(
-    repo_id=repo_id,
-    repo_type="dataset",   
-    revision="main",        
-    max_workers=64,     
-) 
+# snapshot_download(
+#     repo_id=repo_id,
+#     repo_type="dataset",   
+#     revision="main",        
+#     max_workers=64,     
+# ) 
 
-load_dataset(repo_id, split="train")
+ds = load_dataset(repo_id, split="train")
+print(ds)
  

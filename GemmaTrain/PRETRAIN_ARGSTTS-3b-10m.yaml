@@ -15,5 +15,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-CanopyElias-gemma-TTS-30k-grouped-2656
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "emilia-gemma-pretrain"
-run_name: "r2"
+project_name: "emilia-gemma-pretrain-d"
+run_name: "r0"

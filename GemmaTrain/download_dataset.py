@@ -1,8 +1,8 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "amuvarma/all-texts-2048-iids"
-
+repo_id = "amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656"
+#amuvarma/emilia-snac-merged-all-gemma-TTS-grouped-2656
 snapshot_download(
     repo_id=repo_id,
     repo_type="dataset",   

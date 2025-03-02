@@ -11,9 +11,9 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-30k-TTS-grouped-6144"
+TTS_dataset: "amuvarma/emilia-snac-merged-CanopyElias-gemma-TTS-30k-grouped-4096"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "emilia-pretrain"
+project_name: "emilia-gemma-pretrain"
 run_name: "r2"

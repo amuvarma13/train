@@ -155,8 +155,7 @@ def data_collator(features):
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-ds1 = ds1.select(range(2170, len(ds1)))
-ds2 = ds2.select(range(2170, len(ds2)))
+
 
 batch_total = batch_size * number_processes
 train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)

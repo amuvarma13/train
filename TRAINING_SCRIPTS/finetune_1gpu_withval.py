@@ -35,8 +35,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 dataset = load_dataset(dsn, split="train")
 max_len = max(len(row["input_ids"]) for row in dataset)
 print("max_len", max_len)
-dataset = dataset.select(range(0, 50))
-split_dataset = dataset.train_test_split(test_size=0.2, seed=42)
+split_dataset = dataset.train_test_split(test_size=0.02, seed=42)
 
 train_dataset = split_dataset["train"]
 eval_dataset = split_dataset["test"]
@@ -61,7 +60,6 @@ def compute_metrics(eval_pred):
 
 def data_collator(features):
     input_ids = [f["input_ids"] for f in features]
-    print(len(input_ids))
     if any("attention_mask" not in f for f in features):
         attention_mask = [[1]*len(ids) for ids in input_ids]
     else:

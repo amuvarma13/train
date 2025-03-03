@@ -188,6 +188,7 @@ training_args = TrainingArguments(
     remove_unused_columns=True,
     learning_rate=learning_rate,
     lr_scheduler_type="cosine", 
+    warmup_steps=1000,
     # max_grad_norm = 20
 )
 

@@ -123,11 +123,11 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
-    max_length = 2656
+    # max_length = 2656
     input_ids = [f["input_ids"] for f in features]
 
-    if len(input_ids[0]) > max_length:
-        input_ids = [ids[:max_length] for ids in input_ids]
+    # if len(input_ids[0]) > max_length:
+    #     input_ids = [ids[:max_length] for ids in input_ids]
 
     if any("attention_mask" not in f for f in features):
         attention_mask = [[1]*len(ids) for ids in input_ids]
@@ -154,6 +154,9 @@ def data_collator(features):
 
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
+
+ds1 = ds1.select(range(2170, len(ds1)))
+ds2 = ds2.select(range(2170, len(ds2)))
 
 batch_total = batch_size * number_processes
 train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)

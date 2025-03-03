@@ -181,7 +181,8 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True,
     learning_rate=learning_rate,
-    lr_scheduler_type="cosine"
+    lr_scheduler_type="cosine", 
+    # max_grad_norm = 20
 )
 
 

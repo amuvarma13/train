@@ -123,8 +123,11 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
-    # max_length = 6144
+    max_length = 2656
     input_ids = [f["input_ids"] for f in features]
+
+    if len(input_ids[0]) > max_length:
+        input_ids = [ids[:max_length] for ids in input_ids]
 
     if any("attention_mask" not in f for f in features):
         attention_mask = [[1]*len(ids) for ids in input_ids]

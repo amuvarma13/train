@@ -35,7 +35,7 @@ model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="fl
 dataset = load_dataset(dsn, split="train")
 max_len = max(len(row["input_ids"]) for row in dataset)
 print("max_len", max_len)
-
+dataset = dataset.select(range(0, 50))
 split_dataset = dataset.train_test_split(test_size=0.2, seed=42)
 
 train_dataset = split_dataset["train"]

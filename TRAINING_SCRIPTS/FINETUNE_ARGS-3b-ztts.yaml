@@ -11,11 +11,11 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/tdt-proc"
+TTS_dataset: "amuvarma/400-playful-conversations-iids"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "tdt-tts"
+project_name: "personality-tune"
 run_name: "16k-base"
 
 resize_dataset: false

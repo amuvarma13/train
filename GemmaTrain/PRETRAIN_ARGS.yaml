@@ -1,5 +1,5 @@
 # Model
-# Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "google/gemma-2-9b-it"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "google/gemma-2-9b-it"
 
 # Training Args

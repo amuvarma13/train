@@ -56,7 +56,7 @@ if resize_dataset:
 
 
 
-train_dataset = ds
+train_dataset = ds.shuffle(seed=42)
 print("Dataset loaded")
 
 def compute_metrics(eval_pred):

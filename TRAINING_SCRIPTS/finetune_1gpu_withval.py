@@ -58,7 +58,7 @@ def compute_metrics(eval_pred):
 
 def data_collator(features):
     input_ids = [f["input_ids"] for f in features]
-    print(len(input_ids))
+    # print(len(input_ids))
     if any("attention_mask" not in f for f in features):
         attention_mask = [[1]*len(ids) for ids in input_ids]
     else:
@@ -69,22 +69,22 @@ def data_collator(features):
     else:
         labels = [f["labels"] for f in features]
 
-    # Convert all lists to tensors and pad
-    input_ids = torch.nn.utils.rnn.pad_sequence(
-        [torch.tensor(i, dtype=torch.long) for i in input_ids],
-        batch_first=True,
-        padding_value=pad_token
-    )
-    attention_mask = torch.nn.utils.rnn.pad_sequence(
-        [torch.tensor(m, dtype=torch.long) for m in attention_mask],
-        batch_first=True,
-        padding_value=0
-    )
-    labels = torch.nn.utils.rnn.pad_sequence(
-        [torch.tensor(l, dtype=torch.long) for l in labels],
-        batch_first=True,
-        padding_value=-100
-    )
+    # # Convert all lists to tensors and pad
+    # input_ids = torch.nn.utils.rnn.pad_sequence(
+    #     [torch.tensor(i, dtype=torch.long) for i in input_ids],
+    #     batch_first=True,
+    #     padding_value=pad_token
+    # )
+    # attention_mask = torch.nn.utils.rnn.pad_sequence(
+    #     [torch.tensor(m, dtype=torch.long) for m in attention_mask],
+    #     batch_first=True,
+    #     padding_value=0
+    # )
+    # labels = torch.nn.utils.rnn.pad_sequence(
+    #     [torch.tensor(l, dtype=torch.long) for l in labels],
+    #     batch_first=True,
+    #     padding_value=-100
+    # )
 
     return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 

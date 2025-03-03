@@ -1,5 +1,5 @@
 # Model
-model_name: "google/gemma-2-9b-it"  # Replace with your base model must be compatible with the tokenizer and transformers library
+t  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "google/gemma-2-9b-it"
 
 # Training Args
@@ -7,7 +7,7 @@ epochs: 1
 batch_size: 1
 number_processes: 24
 pad_token: 128263
-save_steps: 50000
+save_steps: 20000
 learning_rate: 5.0e-5
 
 # Datasets

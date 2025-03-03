@@ -58,7 +58,7 @@ def compute_metrics(eval_pred):
 
 def data_collator(features):
     input_ids = [f["input_ids"] for f in features]
-
+    print(len(input_ids))
     if any("attention_mask" not in f for f in features):
         attention_mask = [[1]*len(ids) for ids in input_ids]
     else:

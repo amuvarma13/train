@@ -18,4 +18,4 @@ save_folder: "checkpoints"
 project_name: "personality-tune"
 run_name: "8b-16k-base"
 
-resize_dataset: true
+resize_dataset: false

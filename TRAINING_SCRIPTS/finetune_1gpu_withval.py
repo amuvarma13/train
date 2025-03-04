@@ -86,6 +86,7 @@ training_args = TrainingArguments(
     bf16=True,
     output_dir=f"./{base_repo_id}",
     report_to="wandb",
+    fsdp = "auto_wrap",
     save_steps=save_steps,
     evaluation_strategy="epoch",  # Evaluate at the end of each epoch
     remove_unused_columns=True,

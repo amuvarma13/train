@@ -45,7 +45,7 @@ wandb.init(project=project_name, name=run_name)
 
 # Optionally add new tokens
 if resize_dataset:
-    number_add_tokens = 7 * 4096 + 10
+    number_add_tokens = 15
     new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
     tokenizer.add_tokens(new_tokens)
     model.resize_token_embeddings(len(tokenizer))

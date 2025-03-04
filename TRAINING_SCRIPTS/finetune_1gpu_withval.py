@@ -51,7 +51,7 @@ if resize_dataset:
     model.resize_token_embeddings(len(tokenizer))
 
 # Shuffle the train dataset if needed
-train_dataset = train_dataset.shuffle(seed=42)
+# train_dataset = train_dataset.shuffle(seed=42)
 
 def compute_metrics(eval_pred):
     predictions, labels = eval_pred

@@ -1,6 +1,6 @@
 # Model
-# model_name: "amuvarma/8b-2m-pretrain"  # Replace with your base model must be compatible with the tokenizer and transformers library
-model_name: "meta-llama/Llama-3.1-8B"
+model_name: "amuvarma/8b-2m-pretrain"  # Replace with your base model must be compatible with the tokenizer and transformers library
+# model_name: "meta-llama/Llama-3.1-8B"
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args

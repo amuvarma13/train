@@ -12,7 +12,7 @@ save_steps: 5000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/plus_2000-playful-conversations"
+TTS_dataset: "amuvarma/2000-playful-conversations-iids"
 
 # Naming and paths
 save_folder: "checkpoints"

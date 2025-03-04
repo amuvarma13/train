@@ -92,7 +92,8 @@ training_args = TrainingArguments(
     evaluation_strategy="epoch",  # Evaluate at the end of each epoch
     remove_unused_columns=True,
     learning_rate=learning_rate,
-    lr_scheduler_type="cosine"
+    lr_scheduler_type="cosine", 
+    warmup_steps=500,
 )
 
 class SimpleTrainer(Trainer):

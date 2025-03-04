@@ -17,6 +17,6 @@ TTS_dataset: "amuvarma/2000-playful-conversations-iids"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "personality-tune-2k"
-run_name: "8b-tts-5e6-batch2"
+run_name: "og-8b-tts-5e6-batch2"
 
 resize_dataset: true

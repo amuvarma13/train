@@ -11,11 +11,11 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/2000-playful-conversations-iids"
+TTS_dataset: "amuvarma/plus_2000-playful-conversations"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "personality-tune-2k"
+project_name: "personality-tune-10k"
 run_name: "8b-tts-5e6-batch2"
 
 resize_dataset: false

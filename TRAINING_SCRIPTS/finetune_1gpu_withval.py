@@ -93,28 +93,28 @@ training_args = TrainingArguments(
     remove_unused_columns=True,
     learning_rate=learning_rate,
     lr_scheduler_type="cosine", 
-    # warmup_steps=500,
+    warmup_steps=100,
 )
 
-class SimpleTrainer(Trainer):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.repo_id = base_repo_id
+# class SimpleTrainer(Trainer):
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         self.repo_id = base_repo_id
 
-    # Use default DataLoader with shuffle enabled.
-    def get_train_dataloader(self):
-        return DataLoader(
-            self.train_dataset,
-            batch_size=self.args.per_device_train_batch_size,
-            sampler=SequentialSampler(self.train_dataset),  # Use sequential sampler
-            collate_fn=self.data_collator,
-            drop_last=self.args.dataloader_drop_last,
-            num_workers=0,
-            pin_memory=self.args.dataloader_pin_memory,
-        )
+#     # Use default DataLoader with shuffle enabled.
+#     def get_train_dataloader(self):
+#         return DataLoader(
+#             self.train_dataset,
+#             batch_size=self.args.per_device_train_batch_size,
+#             sampler=SequentialSampler(self.train_dataset),  # Use sequential sampler
+#             collate_fn=self.data_collator,
+#             drop_last=self.args.dataloader_drop_last,
+#             num_workers=0,
+#             pin_memory=self.args.dataloader_pin_memory,
+#         )
 
 
-trainer = SimpleTrainer(
+trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,

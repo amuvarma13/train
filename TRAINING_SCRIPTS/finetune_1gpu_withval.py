@@ -4,6 +4,7 @@ from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoT
 import numpy as np
 import yaml
 import wandb
+from torch.utils.data import DataLoader, Dataset, SequentialSampler
 
 config_file = "FINETUNE_ARGS-3b-ztts.yaml"
 
@@ -94,7 +95,25 @@ training_args = TrainingArguments(
     lr_scheduler_type="cosine"
 )
 
-trainer = Trainer(
+class SimpleTrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.repo_id = base_repo_id
+
+    # Use default DataLoader with shuffle enabled.
+    def get_train_dataloader(self):
+        return DataLoader(
+            self.train_dataset,
+            batch_size=self.args.per_device_train_batch_size,
+            sampler=SequentialSampler(self.train_dataset),  # Use sequential sampler
+            collate_fn=self.data_collator,
+            drop_last=self.args.dataloader_drop_last,
+            num_workers=0,
+            pin_memory=self.args.dataloader_pin_memory,
+        )
+
+
+trainer = SimpleTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,

@@ -18,4 +18,4 @@ save_folder: "checkpoints"
 project_name: "personality-tune-2k"
 run_name: "llama3"
 
-resize_dataset: false
+resize_dataset: true

@@ -1,5 +1,5 @@
 # Model
-model_name: "meta-llama/Llama-3.2-3B"  # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "amuvarma/3b-10m-pretrain-full"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args
@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/2000-playful-conversations-iids"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "personality-tune-2k"
-run_name: "llama3"
+run_name: "10m-3b-tts"
 
-resize_dataset: true
+resize_dataset: false

@@ -18,4 +18,4 @@ save_folder: "checkpoints"
 project_name: "brian-notags"
 run_name: "5e6-0"
 
-resize_dataset: true
+resize_dataset: false

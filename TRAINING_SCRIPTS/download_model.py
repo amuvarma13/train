@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="amuvarma/8b-2m-pretrain",
+    repo_id="amuvarma/llama-3b-emilia_retrain-216985-216985",
     allow_patterns=[
         "config.json",
         "*.safetensors",

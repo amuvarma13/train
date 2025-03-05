@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/brian-luna-combined_emotion_mapped-TTS-name_tagged-emo_ta
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "brianluna"
-run_name: "5e6-name-emo"
+run_name: "5e6-name-emo-2"
 
 resize_dataset: false

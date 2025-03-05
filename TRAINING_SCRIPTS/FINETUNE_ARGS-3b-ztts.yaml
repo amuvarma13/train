@@ -11,11 +11,11 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-with-speaker-all-pairs-proc"
+TTS_dataset: "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-snacced-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "0st-ft"
+project_name: "brian"
 run_name: "5e6-0"
 
 resize_dataset: true

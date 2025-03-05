@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/brian-luna-TTS-name_tagged"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "brian-notags"
+project_name: "brianluna"
 run_name: "5e6-0"
 
 resize_dataset: false

@@ -125,9 +125,6 @@ training_args = TrainingArguments(
 )
 
 
-#freeze the model
-for param in model.parameters():
-    param.requires_grad = False
 
 trainer = FSDPTrainer(
     model=model,

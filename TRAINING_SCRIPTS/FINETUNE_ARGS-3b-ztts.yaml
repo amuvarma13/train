@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/luna-48k-full-enhanced_emotion_mapped-clipped-snacced-TTS
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "brianluna"
-run_name: "5e6-name-emo-2"
+project_name: "luna-emotags"
+run_name: "5e6-0"
 
 resize_dataset: false

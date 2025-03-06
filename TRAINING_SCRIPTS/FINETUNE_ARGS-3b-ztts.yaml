@@ -11,7 +11,7 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/brian-luna-combined_emotion_mapped-TTS-name_tagged-emo_tagged"
+TTS_dataset: "amuvarma/luna-48k-full-enhanced_emotion_mapped-clipped-snacced-TTS-emo_tagged"
 
 # Naming and paths
 save_folder: "checkpoints"

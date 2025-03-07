@@ -11,7 +11,7 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/luna-multi-TTS-emo_tagged"
+TTS_dataset: "amuvarma/enhanced_combined_with_source-TTS-src"
 
 # Naming and paths
 save_folder: "checkpoints"

@@ -1,5 +1,5 @@
 # Model
-model_name: "amuvarma/llama-3b-emilia_retrain-216985-216985"  # Replace with your base model must be compatible with the tokenizer and transformers library
+model_name: "meta-llama/Llama-3.2-3B"  # Replace with your base model must be compatible with the tokenizer and transformers library
 tokenizer_name: "meta-llama/Llama-3.2-3B"
 
 # Training Args
@@ -8,10 +8,10 @@ batch_size: 1
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-7
+learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-with-speaker-all-pairs-proc"
+TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-TTS-8192"
 
 # Naming and paths
 save_folder: "checkpoints"

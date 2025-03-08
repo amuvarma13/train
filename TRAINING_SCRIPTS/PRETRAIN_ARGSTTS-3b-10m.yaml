@@ -15,5 +15,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-TTS-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "0st-ft"
+project_name: "row1-5-snac"
 run_name: "1row-snac"

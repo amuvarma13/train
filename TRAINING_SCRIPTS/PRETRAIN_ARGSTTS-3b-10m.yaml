@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/rows-1-5-checkpoint-12000-of-40000"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "amuvarma/rows-1-5-checkpoint-12000-of-40000"
+model_name: "canopylabs/orpheus-tts-0.1-pretrained"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
 
 # Training Args
 epochs: 1

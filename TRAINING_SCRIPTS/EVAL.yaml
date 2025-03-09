@@ -1,6 +1,6 @@
 # Model
-model_name: "canopylabs/orpheus-tts-0.1-pretrained"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
+model_name: "amuvarma/rows-1-5-checkpoint-12000-of-40000"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "amuvarma/rows-1-5-checkpoint-12000-of-40000"
 
 # Training Args
 epochs: 1
@@ -11,9 +11,9 @@ save_steps: 12000
 learning_rate: 0.0
 
 # Datasets
-TTS_dataset: "amuvarma/podcast-all-TTS-8192-masked-row-1"
+TTS_dataset: "amuvarma/podcast-snac-mod7-1-5-TTS-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "EVAL_row1-5-snac"
-run_name: "1-r0"
+run_name: "onlyr1-5-shorterrows"

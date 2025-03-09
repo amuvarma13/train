@@ -16,4 +16,4 @@ TTS_dataset: "amuvarma/podcast-snac-mod7-1-5-TTS-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "EVAL_row1-5-snac"
-run_name: "onlyr1-5-shorterrows"
+run_name: "onlyr1-5-shorterrows-ckpt-12000"

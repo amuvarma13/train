@@ -63,7 +63,7 @@ class BatchedRatioDataset(Dataset):
 
     def __len__(self):
         print("accessing length", self.length)
-        return self.length
+        return int(self.length)
 
     def __getitem__(self, index):
         # Compute the cycle length in terms of samples.

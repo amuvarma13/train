@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="canopylabs/orpheus-tts-0.1-pretrained",
+    repo_id="amuvarma/rows-1-5-checkpoint-12000-of-40000",
     allow_patterns=[
         "config.json",
         "*.safetensors",

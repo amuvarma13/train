@@ -168,12 +168,6 @@ def data_collator(features):
     else:
         labels = [f["labels"] for f in features]
 
-
-    # input_ids = [ids[:max_length] for ids in input_ids]
-    # attention_mask = [m[:max_length] for m in attention_mask]
-    # labels = [l[:max_length] for l in labels]
-
-    # Convert all lists to tensors and pad
     input_ids = torch.nn.utils.rnn.pad_sequence([torch.tensor(
         i, dtype=torch.long) for i in input_ids], batch_first=True, padding_value=pad_token)
     attention_mask = torch.nn.utils.rnn.pad_sequence([torch.tensor(
@@ -201,8 +195,6 @@ model.resize_token_embeddings(len(tokenizer))
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-# ds1 = ds1.select(range(2170, len(ds1)))
-# ds2 = ds2.select(range(2170, len(ds2)))
 
 batch_total = batch_size * number_processes
 train_dataset = BatchedRatioDataset(ds1, ds2, batch_total, ratio=config_ratio)

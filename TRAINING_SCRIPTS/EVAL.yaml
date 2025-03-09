@@ -16,4 +16,4 @@ TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192-sample-1000-maske
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "EVAL_row1-5-snac"
-run_name: "1_5-r0"
+run_name: "1-r0"

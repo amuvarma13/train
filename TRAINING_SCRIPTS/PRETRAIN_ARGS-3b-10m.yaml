@@ -9,7 +9,7 @@ number_processes: 8
 pad_token: 128263
 save_steps: 12000
 learning_rate: 5.0e-5
-ratio: 3
+ratio: 1
 
 # Datasets
 text_QA_dataset: "amuvarma/text-messages-6m-processed-1-2g-8192l"

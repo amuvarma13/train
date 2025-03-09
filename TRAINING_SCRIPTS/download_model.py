@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="meta-llama/Llama-3.2-1B",
+    repo_id="amuvarma/r15-checkpoint-70201",
     allow_patterns=[
         "config.json",
         "*.safetensors",

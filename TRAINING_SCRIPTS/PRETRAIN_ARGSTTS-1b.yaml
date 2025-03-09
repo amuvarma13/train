@@ -1,0 +1,19 @@
+# Model
+model_name: "meta-llama/Llama-3.2-1B"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.2-1B"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 8
+pad_token: 128263
+save_steps: 12000
+learning_rate: 5.0e-6
+
+# Datasets
+TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-delay-TTS-all-rows-8192"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "podcast"
+run_name: "5e5"

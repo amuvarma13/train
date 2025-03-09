@@ -1,0 +1,19 @@
+# Model
+model_name: "canopylabs/orpheus-tts-0.1-pretrained"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
+
+# Training Args
+epochs: 1
+batch_size: 1
+number_processes: 2
+pad_token: 128263
+save_steps: 12000
+learning_rate: 0.0
+
+# Datasets
+TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192-sample-1000-masked-row-1"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "EVAL_row1-5-snac"
+run_name: "1_5-r0"

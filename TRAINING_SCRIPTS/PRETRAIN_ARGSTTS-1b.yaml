@@ -15,5 +15,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-delay-TTS-all-rows-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "podcast"
+project_name: "1b-delay-TTS"
 run_name: "5e5"

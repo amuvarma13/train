@@ -39,14 +39,6 @@ config_ratio = config["ratio"]
 
 class BatchedRatioDataset(Dataset):
     def __init__(self, dataset1, dataset2, batch_total, ratio=config_ratio):
-        """
-        Args:
-            dataset1 (Dataset): First dataset.
-            dataset2 (Dataset): Second dataset.
-            batch_total (int): Number of samples per batch.
-            ratio (int): Number of consecutive batches to take from dataset1
-                         for every one batch taken from dataset2.
-        """
         self.dataset1 = dataset1
         self.dataset2 = dataset2
         self.batch_total = batch_total
@@ -99,7 +91,7 @@ class AlternatingDistributedSampler(DistributedSampler):
 
 
 class FSDPTrainer(Trainer):
-    def __init__(self, *args, log_ratio=1, **kwargs):
+    def __init__(self, *args, log_ratio=config_ratio, **kwargs):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()

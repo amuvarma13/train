@@ -124,8 +124,10 @@ class FSDPTrainer(Trainer):
             # Each cycle is (log_ratio + 1) steps: first log_ratio steps for text_loss, then one for audio_loss.
             cycle_length = self.log_ratio + 1
             if global_step % cycle_length < self.log_ratio:
+                print("logging text_loss")
                 wandb.log({"text_loss": logs["loss"], "step": global_step})
             else:
+                print("logging audio_loss")
                 wandb.log({"audio_loss": logs["loss"], "step": global_step})
 
     def save_model(self, output_dir=None, _internal_call=False):
@@ -140,11 +142,7 @@ class FSDPTrainer(Trainer):
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 
-def compute_metrics(eval_pred):
-    predictions, labels = eval_pred
-    predictions = np.argmax(predictions, axis=1)
-    accuracy = (predictions == labels).mean()
-    return {"accuracy": accuracy}
+
 
 
 def data_collator(features):
@@ -213,7 +211,6 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=train_dataset,
-    compute_metrics=compute_metrics,
     data_collator=data_collator,
     log_ratio=config_ratio
 )

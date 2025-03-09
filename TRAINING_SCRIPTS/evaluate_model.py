@@ -73,6 +73,35 @@ ds1 = load_dataset(dsn1, split="train")
 
 batch_total = batch_size * number_processes
 
+def data_collator(features):
+    # max_length = 6144
+    input_ids = [f["input_ids"] for f in features]
+
+    if any("attention_mask" not in f for f in features):
+        attention_mask = [[1]*len(ids) for ids in input_ids]
+    else:
+        attention_mask = [f["attention_mask"] for f in features]
+
+    if any("labels" not in f for f in features):
+        labels = input_ids
+    else:
+        labels = [f["labels"] for f in features]
+
+
+    # input_ids = [ids[:max_length] for ids in input_ids]
+    # attention_mask = [m[:max_length] for m in attention_mask]
+    # labels = [l[:max_length] for l in labels]
+
+    # Convert all lists to tensors and pad
+    input_ids = torch.nn.utils.rnn.pad_sequence([torch.tensor(
+        i, dtype=torch.long) for i in input_ids], batch_first=True, padding_value=pad_token)
+    attention_mask = torch.nn.utils.rnn.pad_sequence([torch.tensor(
+        m, dtype=torch.long) for m in attention_mask], batch_first=True, padding_value=0)
+    labels = torch.nn.utils.rnn.pad_sequence([torch.tensor(
+        l, dtype=torch.long) for l in labels], batch_first=True, padding_value=-100)
+
+    return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
+
 
 training_args = TrainingArguments(
     overwrite_output_dir=True,
@@ -96,6 +125,7 @@ trainer = FSDPTrainer(
     model=model,
     args=training_args,
     train_dataset=ds1,
+    data_collator=data_collator,    
 )
 
 trainer.train()

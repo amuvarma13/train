@@ -1,6 +1,6 @@
 # Model
-model_name: "meta-llama/Llama-3.2-1B"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-1B"
+model_name: "amuvarma/r15-checkpoint-70201"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "amuvarma/r15-checkpoint-70201"
 
 # Training Args
 epochs: 1
@@ -11,9 +11,9 @@ save_steps: 12000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-delay-TTS-all-rows-8192"
+TTS_dataset: "amuvarma/comb-enh-clip-snac-mod7-1-5-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "1b-delay-TTS"
+project_name: "comb-play"
 run_name: "5e5"

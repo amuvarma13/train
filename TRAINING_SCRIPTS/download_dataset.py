@@ -1,7 +1,7 @@
 from huggingface_hub import snapshot_download
 from datasets import load_dataset
 
-repo_id = "amuvarma/emilia-snac-merged-18m-mod7-delay-TTS-all-rows-8192"
+repo_id = "amuvarma/text-messages-6m-processed-1-2g-8192l"
 
 snapshot_download(
     repo_id=repo_id,

@@ -32,31 +32,58 @@ save_steps = config["save_steps"]
 pad_token = config["pad_token"]
 number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
+config_ratio = config["ratio"]
 
 
 
 
-class BatchedAlternatingDataset(Dataset):
-    def __init__(self, dataset1, dataset2, batch_total):
+class BatchedRatioDataset(Dataset):
+    def __init__(self, dataset1, dataset2, batch_total, ratio=config_ratio):
+        """
+        Args:
+            dataset1 (Dataset): First dataset.
+            dataset2 (Dataset): Second dataset.
+            batch_total (int): Number of samples per batch.
+            ratio (int): Number of consecutive batches to take from dataset1
+                         for every one batch taken from dataset2.
+        """
         self.dataset1 = dataset1
         self.dataset2 = dataset2
         self.batch_total = batch_total
-        self.length = 2 * min(len(dataset1), len(dataset2))
+        self.ratio = ratio  # Number of batches from dataset1 per one batch from dataset2.
+
+        # Determine the number of complete cycles we can support.
+        # A full cycle uses (ratio) batches from dataset1 and 1 batch from dataset2.
+        num_cycles_ds1 = len(dataset1) // (batch_total * ratio)
+        num_cycles_ds2 = len(dataset2) // batch_total
+        self.num_cycles = min(num_cycles_ds1, num_cycles_ds2)
+
+        # Total number of samples: number of cycles * (number of batches per cycle) * batch_total.
+        self.length = self.num_cycles * (ratio + 1) * batch_total
 
     def __len__(self):
         return self.length
 
     def __getitem__(self, index):
-        super_batch = index // (2 * self.batch_total)
-        position_in_super_batch = index % (2 * self.batch_total)
+        # Compute the cycle length in terms of samples.
+        cycle_length = (self.ratio + 1) * self.batch_total
+        cycle = index // cycle_length
+        pos_in_cycle = index % cycle_length
 
-        if position_in_super_batch < self.batch_total:
-            dataset_index = super_batch * self.batch_total + position_in_super_batch
-            return self.dataset1[dataset_index]
+        if pos_in_cycle < self.ratio * self.batch_total:
+            # We are in one of the batches from dataset1.
+            # Determine which batch in this cycle and the sample's position within the batch.
+            batch_in_cycle = pos_in_cycle // self.batch_total
+            sample_in_batch = pos_in_cycle % self.batch_total
+            # Calculate the corresponding index in dataset1.
+            ds1_index = cycle * self.ratio * self.batch_total + batch_in_cycle * self.batch_total + sample_in_batch
+            return self.dataset1[ds1_index]
         else:
-            dataset_index = super_batch * self.batch_total + \
-                (position_in_super_batch - self.batch_total)
-            return self.dataset2[dataset_index]
+            # We are in the dataset2 batch for this cycle.
+            sample_in_batch = pos_in_cycle - self.ratio * self.batch_total
+            ds2_index = cycle * self.batch_total + sample_in_batch
+            return self.dataset2[ds2_index]
+
 
 
 class AlternatingDistributedSampler(DistributedSampler):
@@ -71,10 +98,13 @@ class AlternatingDistributedSampler(DistributedSampler):
 
 
 class FSDPTrainer(Trainer):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, log_ratio=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()
+        # log_ratio determines the number of steps that log "text_loss"
+        # before logging "audio_loss" once.
+        self.log_ratio = log_ratio
 
     def get_train_dataloader(self):
         sampler = AlternatingDistributedSampler(
@@ -98,7 +128,9 @@ class FSDPTrainer(Trainer):
         super().log(logs, start_time)
         if self.is_world_process_zero():
             global_step = self.state.global_step
-            if global_step % 2 == 0:
+            # Each cycle is (log_ratio + 1) steps: first log_ratio steps for text_loss, then one for audio_loss.
+            cycle_length = self.log_ratio + 1
+            if global_step % cycle_length < self.log_ratio:
                 wandb.log({"text_loss": logs["loss"], "step": global_step})
             else:
                 wandb.log({"audio_loss": logs["loss"], "step": global_step})
@@ -169,11 +201,11 @@ model.resize_token_embeddings(len(tokenizer))
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-ds1 = ds1.select(range(2170, len(ds1)))
-ds2 = ds2.select(range(2170, len(ds2)))
+# ds1 = ds1.select(range(2170, len(ds1)))
+# ds2 = ds2.select(range(2170, len(ds2)))
 
 batch_total = batch_size * number_processes
-train_dataset = BatchedAlternatingDataset(ds1, ds2, batch_total)
+train_dataset = BatchedRatioDataset(ds1, ds2, batch_total, ratio=config_ratio)
 
 
 training_args = TrainingArguments(
@@ -198,6 +230,7 @@ trainer = FSDPTrainer(
     train_dataset=train_dataset,
     compute_metrics=compute_metrics,
     data_collator=data_collator,
+    log_ratio=config_ratio
 )
 
 trainer.train()

@@ -1,0 +1,19 @@
+# Model
+model_name: "meta-llama/Llama-3.2-3B"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "amuvarma/r15-checkpoint-70201"
+
+# Training Args
+epochs: 1
+batch_size: 2
+number_processes: 8
+pad_token: 128263
+save_steps: 12000
+learning_rate: 5.0e-5
+
+# Datasets
+TTS_dataset: "amuvarma/comb-enh-clip-snac-mod7-1-5-TTS"
+
+# Naming and paths
+save_folder: "checkpoints"
+project_name: "1_5-zac-zoe"
+run_name: "5e5-act"

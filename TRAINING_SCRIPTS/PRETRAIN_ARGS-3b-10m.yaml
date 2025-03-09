@@ -18,4 +18,4 @@ TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "catfor-ratio-testing"
-run_name: "r0"
+run_name: "r0-ratio-3.0"

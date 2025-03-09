@@ -62,6 +62,7 @@ class BatchedRatioDataset(Dataset):
         self.length = self.num_cycles * (ratio + 1) * batch_total
 
     def __len__(self):
+        print("accessing length", self.length)
         return self.length
 
     def __getitem__(self, index):

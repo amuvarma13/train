@@ -11,7 +11,7 @@ import yaml
 import wandb
 from huggingface_hub import HfApi
 
-config_file = "PRETRAIN_ARGSTTS-1b.yaml"
+config_file = "PRETRAIN_ARGSTTS-1_5.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)

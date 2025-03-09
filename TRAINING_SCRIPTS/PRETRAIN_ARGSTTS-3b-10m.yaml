@@ -1,6 +1,6 @@
 # Model
-model_name: "meta-llama/Llama-3.2-3B"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B"
+model_name: "canopylabs/orpheus-tts-0.1-pretrained"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
 
 # Training Args
 epochs: 1
@@ -11,7 +11,7 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-TTS-8192"
+TTS_dataset: "amuvarma/podcast-all-TTS-8192"
 
 # Naming and paths
 save_folder: "checkpoints"

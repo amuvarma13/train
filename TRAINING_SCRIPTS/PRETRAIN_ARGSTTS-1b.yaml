@@ -15,5 +15,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "1b-TTS"
+project_name: "8b-TTS-debug"
 run_name: "5e5"

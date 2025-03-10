@@ -108,7 +108,6 @@ def main():
         top_p=0.9,
         max_tokens=128,
         # Try with the early stopping settings
-        early_stopping=True,
     )
     
     # Try the prompt packing approach

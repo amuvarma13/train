@@ -95,11 +95,11 @@ class FSDPTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()
-        self.audio_step = 0
-        self.text_step = 0
         # log_ratio determines the number of steps that log "text_loss"
         # before logging "audio_loss" once.
         self.log_ratio = log_ratio
+        self.text_step  = 0
+        self.audio_step = 0
 
     def get_train_dataloader(self):
         sampler = AlternatingDistributedSampler(
@@ -123,15 +123,13 @@ class FSDPTrainer(Trainer):
         super().log(logs, start_time)
         if self.is_world_process_zero():
             global_step = self.state.global_step
+            # Each cycle is (log_ratio + 1) steps: first log_ratio steps for text_loss, then one for audio_loss.
             cycle_length = self.log_ratio + 1
-
-            if (global_step % cycle_length) == 0:
-                # Audio loss step
-                wandb.log({"audio_loss": logs["loss"]}, step=self.audio_step)
+            if (global_step % cycle_length) + self.log_ratio - 1 < self.log_ratio:
+                wandb.log({"audio_loss": logs["loss"], "step": self.audio_step})
                 self.audio_step += 1
             else:
-                # Text loss step
-                wandb.log({"text_loss": logs["loss"]}, step=self.text_step)
+                wandb.log({"text_loss": logs["loss"], "step": self.text_step})
                 self.text_step += 1
 
     def save_model(self, output_dir=None, _internal_call=False):

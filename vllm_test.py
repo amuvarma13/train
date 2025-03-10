@@ -6,7 +6,7 @@ def main():
     model_path = "meta-llama/Llama-3.1-8B-Instruct"
     
     # Initialize the LLM
-    llm = LLM(model=model_path)
+    llm = LLM(model=model_path, tensor_parallel_size=4)
     
     sampling_params = SamplingParams(
         temperature=0.7,  # Controls the “creativity” or randomness

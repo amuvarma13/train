@@ -9,7 +9,7 @@ number_processes: 8
 pad_token: 128263
 save_steps: 12000
 learning_rate: 5.0e-5
-ratio: 3
+ratio: 6
 
 # Datasets
 text_QA_dataset: "amuvarma/text-messages-6m-processed-1-2g-8192l"
@@ -18,4 +18,4 @@ TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "catfor-ratio-testing-3b-deb"
-run_name: "r0-ratio-6"
+run_name: "r0-ratio-6-"

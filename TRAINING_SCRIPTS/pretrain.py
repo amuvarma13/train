@@ -126,10 +126,10 @@ class FSDPTrainer(Trainer):
             # Each cycle is (log_ratio + 1) steps: first log_ratio steps for text_loss, then one for audio_loss.
             cycle_length = self.log_ratio + 1
             if (global_step % cycle_length) + self.log_ratio - 1 < self.log_ratio:
-                wandb.log({"audio_loss": logs["loss"], "step": self.audio_step})
+                wandb.log({"audio_loss": logs["loss"], "audio_step": self.audio_step})
                 self.audio_step += 1
             else:
-                wandb.log({"text_loss": logs["loss"], "step": self.text_step})
+                wandb.log({"text_loss": logs["loss"], "text_step": self.text_step})
                 self.text_step += 1
 
     def save_model(self, output_dir=None, _internal_call=False):

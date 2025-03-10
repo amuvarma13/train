@@ -1,6 +1,6 @@
 # Model
-model_name: "meta-llama/Llama-3.2-3B-Instruct"  # Replace with your base model must be compatible with the tokenizer and transformers library
-tokenizer_name: "meta-llama/Llama-3.2-3B-Instruct"
+model_name: "meta-llama/Llama-3.1-8B-Instruct"  # Replace with your base model must be compatible with the tokenizer and transformers library
+tokenizer_name: "meta-llama/Llama-3.1-8B-Instruct"
 
 # Training Args
 epochs: 1

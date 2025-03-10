@@ -2,7 +2,7 @@ from vllm import LLM, SamplingParams
 
 def main():
     # Replace "llama-3.1-8b" with the actual Hugging Face repo ID or local model path
-    model_path = "llama-3.1-8b"
+    model_path = "meta-llama/Llama-3.1-8B-Instruct"
     
     # Initialize the LLM
     llm = LLM(model=model_path)

@@ -5,14 +5,14 @@ tokenizer_name: "meta-llama/Llama-3.1-8B"
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 8
+number_processes: 4
 pad_token: 128263
 save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
 text_QA_dataset: "amuvarma/text-messages-6m-processed-1-4g-3328l"
-TTS_dataset: "amuvarma/snac-2m-tts-2g-3328l"
+TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 
 # Naming and paths
 save_folder: "checkpoints"

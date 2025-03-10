@@ -4,12 +4,18 @@ from transformers import AutoModelForCausalLM, Trainer, TrainingArguments, AutoT
 import numpy as np
 from torch.distributed.fsdp.fully_sharded_data_parallel import FullStateDictConfig
 from torch.distributed.fsdp import (
-    FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType)
+    FullyShardedDataParallel as FSDP, FullStateDictConfig, StateDictType
+)
 from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.distributed import DistributedSampler
 import yaml
 import wandb
 from huggingface_hub import HfApi
+
+# ----------------------
+# MINIMAL CHANGE: import PEFT objects
+# ----------------------
+from peft import LoraConfig, get_peft_model, TaskType
 
 config_file = "PRETRAIN_ARGS-3b-10m.yaml"
 
@@ -35,8 +41,6 @@ learning_rate = config["learning_rate"]
 config_ratio = config["ratio"]
 
 
-
-
 class BatchedRatioDataset(Dataset):
     def __init__(self, dataset1, dataset2, batch_total, ratio=config_ratio):
         self.dataset1 = dataset1
@@ -54,29 +58,22 @@ class BatchedRatioDataset(Dataset):
         self.length = self.num_cycles * (ratio + 1) * batch_total
 
     def __len__(self):
-        print("accessing length", self.length)
         return int(self.length)
 
     def __getitem__(self, index):
-        # Compute the cycle length in terms of samples.
         cycle_length = (self.ratio + 1) * self.batch_total
         cycle = index // cycle_length
         pos_in_cycle = index % cycle_length
 
         if pos_in_cycle < self.ratio * self.batch_total:
-            # We are in one of the batches from dataset1.
-            # Determine which batch in this cycle and the sample's position within the batch.
             batch_in_cycle = pos_in_cycle // self.batch_total
             sample_in_batch = pos_in_cycle % self.batch_total
-            # Calculate the corresponding index in dataset1.
             ds1_index = cycle * self.ratio * self.batch_total + batch_in_cycle * self.batch_total + sample_in_batch
             return self.dataset1[ds1_index]
         else:
-            # We are in the dataset2 batch for this cycle.
             sample_in_batch = pos_in_cycle - self.ratio * self.batch_total
             ds2_index = cycle * self.batch_total + sample_in_batch
             return self.dataset2[ds2_index]
-
 
 
 class AlternatingDistributedSampler(DistributedSampler):
@@ -95,10 +92,8 @@ class FSDPTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()
-        # log_ratio determines the number of steps that log "text_loss"
-        # before logging "audio_loss" once.
         self.log_ratio = log_ratio
-        self.text_step  = 0
+        self.text_step = 0
         self.audio_step = 0
 
     def get_train_dataloader(self):
@@ -123,9 +118,8 @@ class FSDPTrainer(Trainer):
         super().log(logs, start_time)
         if self.is_world_process_zero():
             global_step = self.state.global_step
-            # Each cycle is (log_ratio + 1) steps: first log_ratio steps for text_loss, then one for audio_loss.
             cycle_length = self.log_ratio + 1
-            if (global_step % cycle_length) + self.log_ratio - 1 < self.log_ratio:
+            if (global_step % cycle_length) == self.log_ratio:
                 wandb.log({"audio_loss": logs["loss"], "audio_step": self.audio_step})
                 self.audio_step += 1
             else:
@@ -144,11 +138,7 @@ class FSDPTrainer(Trainer):
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
 
 
-
-
-
 def data_collator(features):
-    # max_length = 2656
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -176,22 +166,36 @@ wandb.init(project=project_name, name=run_name)
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name, attn_implementation="flash_attention_2")
-
+    model_name, attn_implementation="flash_attention_2"
+)
 
 number_add_tokens = 7 * 4096 + 10
 new_tokens = [f"<custom_token_{i}>" for i in range(0, number_add_tokens + 1)]
 tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
+# ----------------------
+# MINIMAL CHANGE: define LoRA config
+# ----------------------
+lora_config = LoraConfig(
+    r=8,
+    lora_alpha=32,
+    lora_dropout=0.05,
+    bias="none",
+    task_type=TaskType.CAUSAL_LM,
+    target_modules=["q_proj", "v_proj"]  # Adjust as needed for your model's layer names
+)
+
+# ----------------------
+# MINIMAL CHANGE: wrap the model with LoRA
+# ----------------------
+model = get_peft_model(model, lora_config)
 
 ds1 = load_dataset(dsn1, split="train")
 ds2 = load_dataset(dsn2, split="train")
 
-
 batch_total = batch_size * number_processes
 train_dataset = BatchedRatioDataset(ds1, ds2, batch_total, ratio=config_ratio)
-
 
 training_args = TrainingArguments(
     overwrite_output_dir=True,
@@ -205,10 +209,9 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True,
     learning_rate=learning_rate,
-    lr_scheduler_type="cosine", 
+    lr_scheduler_type="cosine",
     warmup_steps=1000,
 )
-
 
 trainer = FSDPTrainer(
     model=model,

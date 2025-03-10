@@ -13,7 +13,7 @@ ratio: 20
 
 # Datasets
 text_QA_dataset: "amuvarma/text-messages-6m-processed-1-2g-8192l"
-TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
+TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-TTS-8192"
 
 # Naming and paths
 save_folder: "checkpoints"

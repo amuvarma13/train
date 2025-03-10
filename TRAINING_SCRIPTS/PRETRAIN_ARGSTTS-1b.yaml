@@ -11,9 +11,9 @@ save_steps: 12000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-18m-mod7-delay-TTS-all-rows-8192"
+TTS_dataset: "amuvarma/emilia-snac-merged-all-TTS-grouped-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "1b-delay-TTS"
-run_name: "5e5-act"
+project_name: "1b-TTS"
+run_name: "5e5"

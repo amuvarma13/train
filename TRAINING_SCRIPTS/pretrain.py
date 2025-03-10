@@ -10,8 +10,6 @@ from torch.utils.data.distributed import DistributedSampler
 import yaml
 import wandb
 from huggingface_hub import HfApi
-from peft import LoraConfig, get_peft_model, TaskType
-
 
 config_file = "PRETRAIN_ARGS-3b-10m.yaml"
 
@@ -179,20 +177,6 @@ wandb.init(project=project_name, name=run_name)
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(
     model_name, attn_implementation="flash_attention_2")
-
-lora_config = LoraConfig(
-    r=8,
-    lora_alpha=32,
-    lora_dropout=0.05,
-    bias="none",
-    task_type=TaskType.CAUSAL_LM,
-    target_modules=["q_proj", "v_proj"]  # Adjust as needed for your model's layer names
-)
-
-# ----------------------
-# MINIMAL CHANGE: wrap the model with LoRA
-# ----------------------
-model = get_peft_model(model, lora_config)
 
 
 number_add_tokens = 7 * 4096 + 10

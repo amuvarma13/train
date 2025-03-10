@@ -14,7 +14,7 @@ def main():
         max_tokens=28     # Maximum number of new tokens to generate
     )
 
-    prep = "Hey whats up. I think that it will actually take quite a long time to"
+    prep = "Hey whats up. I think that it will actually take quite a long time to prefill the kv"
     outputs = llm.generate([prep], sampling_params)
     
     # Create a prompt

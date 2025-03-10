@@ -14,7 +14,7 @@ def main():
     sampling_params = SamplingParams(
         temperature=0.7,  # Controls the “creativity” or randomness
         top_p=0.9,        # Nucleus sampling cutoff
-        max_tokens=64     # Maximum number of new tokens to generate
+        max_tokens=1000     # Maximum number of new tokens to generate
     )
     
     # Generate text

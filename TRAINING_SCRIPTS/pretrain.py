@@ -205,7 +205,8 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True,
     learning_rate=learning_rate,
-    lr_scheduler_type="cosine"
+    lr_scheduler_type="cosine", 
+    warmup_steps=1000,
 )
 
 

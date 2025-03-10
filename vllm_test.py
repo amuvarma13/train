@@ -16,7 +16,7 @@ def main():
     
     # Create a prompt
     start = time.monotonic()
-    prompt = "Hey whats up"
+    prompt = "Hey whats up. I think that it will actually take quite a long time to prefill the kv cache."
     
     # Configure the sampling parameters
 

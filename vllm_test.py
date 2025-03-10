@@ -1,4 +1,5 @@
 from vllm import LLM, SamplingParams
+import time
 
 def main():
     # Replace "llama-3.1-8b" with the actual Hugging Face repo ID or local model path
@@ -7,18 +8,22 @@ def main():
     # Initialize the LLM
     llm = LLM(model=model_path)
     
-    # Create a prompt
-    prompt = "Hey whats up"
-    
-    # Configure the sampling parameters
     sampling_params = SamplingParams(
         temperature=0.7,  # Controls the “creativity” or randomness
         top_p=0.9,        # Nucleus sampling cutoff
-        max_tokens=1000     # Maximum number of new tokens to generate
+        max_tokens=28     # Maximum number of new tokens to generate
     )
+    
+    # Create a prompt
+    start = time.monotonic()
+    prompt = "Hey whats up"
+    
+    # Configure the sampling parameters
+
     
     # Generate text
     outputs = llm.generate([prompt], sampling_params)
+    print("Time taken:", time.monotonic() - start)
     
     # Print the first (and only) response
     print("Prompt:", prompt)

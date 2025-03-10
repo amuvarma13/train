@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/brian-48k-KRVv68cDw2PBeOJypLrzaiI4kol2-enhanced-clipped-s
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zac-zoe-1_5"
+project_name: "zac-zoe-1b-all"
 run_name: "5e6-0"
 
 resize_dataset: false

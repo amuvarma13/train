@@ -95,7 +95,7 @@ wandb.init(project=project_name, name=run_name)
 
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name, attn_implementation="flash_attention_2")
+    model_name)
 
 
 number_add_tokens = 7 * 4096 + 10
@@ -114,7 +114,7 @@ training_args = TrainingArguments(
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
     logging_steps=1,
-    fp16=True,
+    # fp16=True,
     output_dir=f"./{base_repo_id}",
     report_to="wandb",
     save_steps=save_steps,

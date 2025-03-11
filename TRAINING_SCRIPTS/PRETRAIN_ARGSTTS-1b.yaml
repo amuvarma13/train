@@ -17,4 +17,4 @@ TTS_dataset: "amuvarma/grouped-smol-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "135m-TTS"
-run_name: "5e2-batch2"
+run_name: "5e2-batch2-nofa"

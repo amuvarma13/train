@@ -8,7 +8,7 @@ batch_size: 1
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-3
+learning_rate: 5.0e-7
 
 # Datasets
 TTS_dataset: "amuvarma/grouped-smol-8192"

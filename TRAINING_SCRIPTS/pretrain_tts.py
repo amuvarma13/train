@@ -117,7 +117,6 @@ training_args = TrainingArguments(
     logging_steps=1,
     fp16=True,
     output_dir=f"./{base_repo_id}",
-    fsdp="auto_wrap",
     report_to="wandb",
     save_steps=save_steps,
     remove_unused_columns=True,
@@ -128,7 +127,7 @@ training_args = TrainingArguments(
 
 
 
-trainer = FSDPTrainer(
+trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=ds1,

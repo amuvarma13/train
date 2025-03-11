@@ -1,14 +1,14 @@
 # Model
-model_name: "HuggingFaceTB/SmolLM2-360M-Instruct" 
-tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
+model_name: "HuggingFaceTB/SmolLM2-135-Instruct" 
+tokenizer_name: "HuggingFaceTB/SmolLM2-135-Instruct"
 
 # Training Args
 epochs: 1
-batch_size: 2
+batch_size: 4
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-3
+learning_rate: 5.0e-2
 
 
 # Datasets
@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/grouped-smol-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "360m-TTS"
-run_name: "5e3-3-batch2"
+project_name: "135m-TTS"
+run_name: "5e2-batch2"

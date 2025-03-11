@@ -4,7 +4,7 @@ tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 # Training Args
 epochs: 1
-batch_size: 1
+batch_size: 2
 number_processes: 8
 pad_token: 128263
 save_steps: 12000

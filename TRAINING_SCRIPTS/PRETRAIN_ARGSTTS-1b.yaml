@@ -4,11 +4,12 @@ tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 # Training Args
 epochs: 1
-batch_size: 1
+batch_size: 4
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-7
+learning_rate: 5.0e-5
+
 
 # Datasets
 TTS_dataset: "amuvarma/grouped-smol-8192"

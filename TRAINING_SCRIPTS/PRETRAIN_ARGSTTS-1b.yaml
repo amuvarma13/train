@@ -1,6 +1,6 @@
 # Model
-model_name: "HuggingFaceTB/SmolLM2-135-Instruct" 
-tokenizer_name: "HuggingFaceTB/SmolLM2-135-Instruct"
+model_name: "HuggingFaceTB/SmolLM2-135M-Instruct" 
+tokenizer_name: "HuggingFaceTB/SmolLM2-135M-Instruct"
 
 # Training Args
 epochs: 1

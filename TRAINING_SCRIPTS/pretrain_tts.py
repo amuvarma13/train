@@ -61,6 +61,7 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
+    print("features", features)
     # max_length = 3072
     input_ids = [f["input_ids"] for f in features]
 

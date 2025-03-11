@@ -8,7 +8,7 @@ batch_size: 1
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-2
+learning_rate: 5.0e-3
 
 
 # Datasets
@@ -17,4 +17,4 @@ TTS_dataset: "amuvarma/grouped-smol-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "360m-TTS"
-run_name: "5e2"
+run_name: "5e3-2"

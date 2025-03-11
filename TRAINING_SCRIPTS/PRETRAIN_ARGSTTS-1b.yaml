@@ -2,7 +2,7 @@
 model_name: "HuggingFaceTB/SmolLM2-135M-Instruct" 
 tokenizer_name: "HuggingFaceTB/SmolLM2-135M-Instruct"
 
-# Training Args
+# Training Args 
 epochs: 1
 batch_size: 1
 number_processes: 8

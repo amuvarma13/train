@@ -136,4 +136,4 @@ trainer = Trainer(
     data_collator=data_collator,
 )
 
-trainer.train()
+trainer.train(resume_from_checkpoint="checkpoints/checkpoint-36000")

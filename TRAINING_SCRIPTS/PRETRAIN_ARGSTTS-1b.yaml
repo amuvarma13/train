@@ -4,7 +4,7 @@ tokenizer_name: "HuggingFaceTB/SmolLM2-135M-Instruct"
 
 # Training Args 
 epochs: 1
-batch_size: 1
+batch_size: 4
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
@@ -17,4 +17,4 @@ TTS_dataset: "amuvarma/grouped-smol-8192"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "135m-TTS"
-run_name: "5e3-3-batch1-cont"
+run_name: "5e3-3-batch4-cont"

@@ -1,10 +1,10 @@
 # Model
-model_name: "HuggingFaceTB/SmolLM2-135M-Instruct" 
-tokenizer_name: "HuggingFaceTB/SmolLM2-135M-Instruct"
+model_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806" 
+tokenizer_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806"
 
 # Training Args
 epochs: 1
-batch_size: 2
+batch_size: 1
 number_processes: 8
 pad_token: 128263
 save_steps: 12000
@@ -12,7 +12,7 @@ learning_rate: 5.0e-3
 
 
 # Datasets
-TTS_dataset: "amuvarma/grouped-smol-8192"
+TTS_dataset: "amuvarma/brian-for-snac-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

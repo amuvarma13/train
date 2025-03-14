@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/emilia-snac-merged-18m-TTS-3072"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "135m-TTS"
-run_name: "5e2-batch2-nofa"
+project_name: "8b-pretrain-debug"
+run_name: "r0"

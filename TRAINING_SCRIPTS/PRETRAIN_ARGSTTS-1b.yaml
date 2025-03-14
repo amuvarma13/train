@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806" 
-tokenizer_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806"
+model_name: "meta-llama/Llama-3.1-8B-Instruct" 
+tokenizer_name: "meta-llama/Llama-3.1-8B-Instruct"
 
 # Training Args
 epochs: 1
@@ -12,7 +12,7 @@ learning_rate: 5.0e-3
 
 
 # Datasets
-TTS_dataset: "amuvarma/brian-for-snac-TTS"
+TTS_dataset: "amuvarma/emilia-snac-merged-18m-TTS-3072"
 
 # Naming and paths
 save_folder: "checkpoints"

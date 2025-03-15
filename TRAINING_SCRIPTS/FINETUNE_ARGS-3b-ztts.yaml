@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio-snacced-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "zac-135m-all"
-run_name: "5e4-0"
+project_name: "1b-tune"
+run_name: "5e6-unproc"
 
 resize_dataset: false

@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806" 
-tokenizer_name: "HuggingFaceTB/SmolLM2-135M-Instruct"
+model_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493" 
+tokenizer_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
 # Training Args
 epochs: 1

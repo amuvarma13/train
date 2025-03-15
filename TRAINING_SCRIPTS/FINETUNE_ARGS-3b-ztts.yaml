@@ -11,11 +11,11 @@ save_steps: 5000
 learning_rate: 5.0e-3
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-16k-TTS-smol"
+TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "va-tune-leo"
-run_name: "5e3-150m-16k"
+run_name: "5e3-150m-24k-offsetcorrect"
 
 resize_dataset: false

@@ -36,7 +36,10 @@ number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
 
 # tokenizer = AutoTokenizer.from_pretrained(tokenizer_name)
-model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
+model = AutoModelForCausalLM.from_pretrained(
+    model_name, 
+    # attn_implementation="flash_attention_2"
+    )
 
 
 ds = load_dataset(dsn, split="train") 
@@ -96,7 +99,7 @@ training_args = TrainingArguments(
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size, 
     logging_steps=1,
-    bf16=True,
+    # bf16=True,
     output_dir=f"./{base_repo_id}",
     # fsdp="auto_wrap",
     report_to="wandb", 

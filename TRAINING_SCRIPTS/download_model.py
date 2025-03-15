@@ -2,7 +2,7 @@ from huggingface_hub import snapshot_download
 
 # Download only model config and safetensors
 model_path = snapshot_download(
-    repo_id="meta-llama/Llama-3.1-8B",
+    repo_id="canopylabs/orpheus-tts-0.1-pretrained",
     allow_patterns=[
         "config.json",
         "*.safetensors",

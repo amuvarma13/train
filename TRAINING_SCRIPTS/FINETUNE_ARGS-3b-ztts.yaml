@@ -1,6 +1,6 @@
 # Model
-model_name: "canopylabs/orpheus-tts-0.1-pretrained" 
-tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
+model_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806" 
+tokenizer_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806"
 
 # Training Args
 epochs: 1
@@ -8,14 +8,14 @@ batch_size: 1
 number_processes: 1
 pad_token: 128263
 save_steps: 5000
-learning_rate: 5.0e-6
+learning_rate: 5.0e-4
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio-snacced-16k-TTS-16k"
+TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "1b-tune"
-run_name: "5e6-unproc-3b-16k-prop-warmup"
+project_name: "va-tune"
+run_name: "5e4-400m"
 
 resize_dataset: false

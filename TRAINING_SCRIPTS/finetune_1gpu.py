@@ -66,6 +66,7 @@ def compute_metrics(eval_pred):
     return {"accuracy": accuracy} 
 
 def data_collator(features):
+    max_length = 8192
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -82,6 +83,10 @@ def data_collator(features):
     input_ids = torch.nn.utils.rnn.pad_sequence([torch.tensor(i, dtype=torch.long) for i in input_ids], batch_first=True, padding_value=pad_token)
     attention_mask = torch.nn.utils.rnn.pad_sequence([torch.tensor(m, dtype=torch.long) for m in attention_mask], batch_first=True, padding_value=0)
     labels = torch.nn.utils.rnn.pad_sequence([torch.tensor(l, dtype=torch.long) for l in labels], batch_first=True, padding_value=-100)
+
+    input_ids = input_ids[:, :max_length]
+    attention_mask = attention_mask[:, :max_length]
+    labels = labels[:, :max_length]
 
     return {"input_ids": input_ids, "attention_mask": attention_mask, "labels": labels}
 

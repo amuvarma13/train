@@ -39,7 +39,7 @@ learning_rate = config["learning_rate"]
 model = AutoModelForCausalLM.from_pretrained(model_name, attn_implementation="flash_attention_2")
 
 
-ds = load_dataset(dsn, split="split_2") 
+ds = load_dataset(dsn, split="train") 
 
 wandb.init(project=project_name, name = run_name)
 

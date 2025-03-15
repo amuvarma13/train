@@ -11,7 +11,7 @@ save_steps: 5000
 learning_rate: 5.0e-3
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-16k"
+TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-16k-TTS-smol"
 
 # Naming and paths
 save_folder: "checkpoints"

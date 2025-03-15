@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio-snacced-16k-TTS-16k"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-tune"
-run_name: "5e6-unproc-3b-16k-prop"
+run_name: "5e6-unproc-3b-16k-prop-warmup"
 
 resize_dataset: false

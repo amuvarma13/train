@@ -11,11 +11,11 @@ save_steps: 5000
 learning_rate: 5.0e-6
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-splits-audio-snacced-TTS-zoe"
+TTS_dataset: "amuvarma/voice-actors-13-splits-audio-snacced-jess-TTS-zoe"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-tune"
-run_name: "5e6-unproc-3b"
+run_name: "5e6-unproc-3b-jess"
 
 resize_dataset: false

@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806" 
-tokenizer_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806"
+model_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806" 
+tokenizer_name: "amuvarma/135m-tts-pretrain-checkpoint-112806-of-112806"
 
 # Training Args
 epochs: 1
@@ -8,7 +8,7 @@ batch_size: 1
 number_processes: 1
 pad_token: 128263
 save_steps: 5000
-learning_rate: 5.0e-4
+learning_rate: 5.0e-3
 
 # Datasets
 TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "va-tune-leo"
-run_name: "5e4-400m"
+run_name: "5e3-150m"
 
 resize_dataset: false

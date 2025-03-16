@@ -3,7 +3,7 @@ model_name: "canopylabs/orpheus-tts-0.1-pretrained"
 tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
 
 # Training Args
-epochs: 1
+epochs: 2
 batch_size: 1
 number_processes: 4
 pad_token: 128263
@@ -17,4 +17,4 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio2300-full-res-TTS"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-8va-tune-fullprec"
-run_name: "r3b-shuffled"
+run_name: "r3b-shuffled-2eps"

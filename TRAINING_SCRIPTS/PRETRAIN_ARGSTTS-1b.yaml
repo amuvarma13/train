@@ -16,5 +16,5 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio2300-full-res-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "3b-8va-tune-fullprec"
-run_name: "r0"
+project_name: "1b-8va-tune-fullprec"
+run_name: "r3b"

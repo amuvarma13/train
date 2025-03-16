@@ -61,7 +61,7 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
-    max_length = 2048
+    max_length = 8192
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -107,6 +107,7 @@ model.resize_token_embeddings(len(tokenizer))
 
 
 ds1 = load_dataset(dsn1, split="train")
+ds1 = ds1.shuffle(seed=42).shuffle(seed=42)
 
 batch_total = batch_size * number_processes
 

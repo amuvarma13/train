@@ -12,7 +12,7 @@ learning_rate: 5.0e-6
 
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio2300-full-res-TTS"
+TTS_dataset: "amuvarma/voice-actors-13-full-audio2300-16k-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

@@ -3,7 +3,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
-base_repo_id = "checkpoints/checkpoint-600"
+base_repo_id = "checkpoints/checkpoint-1200"
 upload_name = "amuvarma/3b-8va-tune-full-prec"
 
 

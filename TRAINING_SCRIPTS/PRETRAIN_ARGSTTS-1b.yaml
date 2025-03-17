@@ -8,7 +8,7 @@ batch_size: 1
 number_processes: 4
 pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-6
+learning_rate: 5.0e-5
 
 
 # Datasets
@@ -17,4 +17,4 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-normalised-TTS"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-8va-tune-fullprec"
-run_name: "r3b-1ep-24k-norm"
+run_name: "r3b-1ep-24k-norm-5e5"

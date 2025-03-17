@@ -12,9 +12,9 @@ learning_rate: 5.0e-5
 
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-TTS"
+TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-8va-tune-fullprec"
-run_name: "r3b-1ep-24k-notnorm-5e5-end2e5"
+run_name: "r3b-1ep-24k-notnorm-5e5-end2e5-dedup"

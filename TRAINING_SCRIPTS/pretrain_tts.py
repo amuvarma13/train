@@ -123,9 +123,8 @@ training_args = TrainingArguments(
     save_steps=save_steps,
     remove_unused_columns=True,
     learning_rate=learning_rate,
-    lr_scheduler_type="cosine",
-    lr_end=learning_rate/2,  # Set this to your desired final learning rate
-    fsdp="auto_wrap",
+    lr_scheduler_type="cosine", 
+    fsdp = "auto_wrap",
     # warmup_steps=1000,
 )
 

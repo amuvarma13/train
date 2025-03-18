@@ -13,7 +13,7 @@ learning_rate: 5.0e-4
 
 
 # Datasets
-TTS_dataset: "amuvarma/tara-codes-smol-dedup-TTS"
+TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-16k-smol-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

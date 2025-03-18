@@ -75,9 +75,9 @@ def data_collator(features):
         labels = [f["labels"] for f in features]
 
 
-    input_ids = [ids[:max_length] for ids in input_ids]
-    attention_mask = [m[:max_length] for m in attention_mask]
-    labels = [l[:max_length] for l in labels]
+    # input_ids = [ids[:max_length] for ids in input_ids]
+    # attention_mask = [m[:max_length] for m in attention_mask]
+    # labels = [l[:max_length] for l in labels]
 
     # Convert all lists to tensors and pad
     input_ids = torch.nn.utils.rnn.pad_sequence([torch.tensor(
@@ -124,7 +124,7 @@ training_args = TrainingArguments(
     remove_unused_columns=True,
     learning_rate=learning_rate,
     lr_scheduler_type="cosine", 
-    # fsdp = "auto_wrap",
+    fsdp = "auto_wrap",
     # warmup_steps=1000,
 )
 

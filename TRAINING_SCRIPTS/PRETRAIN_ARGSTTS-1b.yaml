@@ -1,20 +1,20 @@
 # Model
-model_name: "HuggingFaceTB/SmolLM2-360M-Instruct" 
-tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
+model_name: "amuvarma/500m-dedup-tts-pret" 
+tokenizer_name: "amuvarma/500m-dedup-tts-pret"
 
 # Training Args
 epochs: 1
-batch_size: 2
-number_processes: 8
+batch_size: 1
+number_processes: 4
 pad_token: 0
 save_steps: 12000
 learning_rate: 5.0e-3
 
 
 # Datasets
-TTS_dataset: "amuvarma/emilia-snac-merged-18m-smol-dedup-8192"
+TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-smol-TTS-smol"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "400m-pretrain-dedups"
-run_name: "r0-5e3-batch-2"
+project_name: "400m-tune-dedups"
+run_name: "r0-5e3"

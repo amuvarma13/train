@@ -5,14 +5,14 @@ tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 4
+number_processes: 2
 pad_token: 0
 save_steps: 12000
 learning_rate: 5.0e-4
 
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-smol-TTS-smol"
+TTS_dataset: "amuvarma/notara-codes-smol-dedup"
 
 # Naming and paths
 save_folder: "checkpoints"

@@ -1,6 +1,6 @@
 # Model
 model_name: "amuvarma/500m-dedup-tts-pret" 
-tokenizer_name: "amuvarma/500m-dedup-tts-pret"
+tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 # Training Args
 epochs: 1

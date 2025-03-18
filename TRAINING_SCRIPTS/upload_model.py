@@ -3,8 +3,8 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
-base_repo_id = "checkpoints/checkpoint-746"
-upload_name = "amuvarma/400m-dedup-tts-multivtune"
+base_repo_id = "checkpoints/checkpoint-671"
+upload_name = "amuvarma/400m-dedup-tts-multivtune-nog"
 
 
 def upload_single_file(args):

@@ -1,5 +1,6 @@
 # Model
-model_name: "amuvarma/500m-dedup-tts-pret" 
+# model_name: "amuvarma/500m-dedup-tts-pret" 
+model_name: "checkpoints/checkpoint-671"
 tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
 
 # Training Args
@@ -12,7 +13,7 @@ learning_rate: 5.0e-4
 
 
 # Datasets
-TTS_dataset: "amuvarma/notara-codes-smol-dedup-TTS"
+TTS_dataset: "amuvarma/tara-codes-smol-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

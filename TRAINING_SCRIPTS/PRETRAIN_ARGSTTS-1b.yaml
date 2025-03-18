@@ -18,4 +18,4 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-16k-smol-TTS"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "400m-tune-dedups"
-run_name: "r0-5e4-tara-og"
+run_name: "r0-5e4-all-og-16"

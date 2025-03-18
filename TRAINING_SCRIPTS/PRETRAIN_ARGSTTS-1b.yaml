@@ -12,7 +12,7 @@ learning_rate: 5.0e-4
 
 
 # Datasets
-TTS_dataset: "amuvarma/notara-codes-smol-dedup"
+TTS_dataset: "amuvarma/notara-codes-smol-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

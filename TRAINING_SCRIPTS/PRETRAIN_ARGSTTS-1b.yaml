@@ -9,13 +9,13 @@ batch_size: 1
 number_processes: 2
 pad_token: 0
 save_steps: 12000
-learning_rate: 5.0e-5
+learning_rate: 5.0e-4
 
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-smol-TTS-smol"
+TTS_dataset: "amuvarma/notara-codes-smol-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "400m-tune-dedups"
-run_name: "r0-5e5-notara"
+run_name: "r0-5e4-notara-og"

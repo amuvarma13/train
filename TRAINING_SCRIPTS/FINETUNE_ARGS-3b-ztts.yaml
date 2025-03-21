@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "1b-8va-tune-fullprec"
-run_name: "5e3-400m-24k-fullprec"
+run_name: "1b-reg-tune"
 
 resize_dataset: false

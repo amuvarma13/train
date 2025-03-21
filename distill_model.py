@@ -82,7 +82,7 @@ training_args = TrainingArguments(
     num_train_epochs=1,
     per_device_train_batch_size=1,  # Batch size of 1 as required.
     logging_steps=1,
-    save_steps=50,
+    save_steps=10000,
 )
 
 # Instantiate the custom trainer.

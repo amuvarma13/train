@@ -53,6 +53,8 @@ class DistillationTrainer(Trainer):
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
             teacher_logits = teacher_outputs.logits
 
+            print(teacher_logits.shape)
+
 
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits

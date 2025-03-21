@@ -45,10 +45,8 @@ class DistillationTrainer(Trainer):
         device = model.device
         input_ids = inputs["input_ids"].to(device)
         attention_mask = inputs["attention_mask"].to(device)
-        print("calculating teacher logits")
         
         teacher.to(student.device)
-        print(teacher.device, input_ids.device, model.device)
 
 
         with torch.no_grad():
@@ -60,8 +58,7 @@ class DistillationTrainer(Trainer):
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits
 
-        # Compute distillation loss
-        print("calculating distillation loss")  
+
 
         temperature = 2.0
         student_logits_temp = student_logits / temperature

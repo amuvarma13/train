@@ -79,7 +79,7 @@ class DistillationTrainer(Trainer):
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(
     output_dir="./results",
-    num_train_epochs=3,
+    num_train_epochs=1,
     per_device_train_batch_size=1,  # Batch size of 1 as required.
     logging_steps=1,
     save_steps=10000,

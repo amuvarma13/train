@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingA
 from datasets import load_dataset
 import wandb
 
-wandb.init(project="distilling-3b-dev", name="r0")
+wandb.init(project="distilling-3b-dev", name="r0-5e4")
 
 
 teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"

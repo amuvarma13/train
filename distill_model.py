@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingA
 from datasets import load_dataset
 import wandb
 
-wandb.init(project="distilling-3b-dev", name="r0-5e4")
+wandb.init(project="distilling-3b-dev", name="r0-5e5")
 
 
 teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"
@@ -84,7 +84,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_steps=10000,
     report_to="wandb",
-    learning_rate=5e-4,
+    learning_rate=5e-5,
 )
 
 # Instantiate the custom trainer.

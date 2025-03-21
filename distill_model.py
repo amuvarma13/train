@@ -46,8 +46,9 @@ class DistillationTrainer(Trainer):
         attention_mask = inputs["attention_mask"].to(device)
         print("calculating teacher logits")
         
-
+        teacher.to(student.device)
         print(teacher.device, input_ids.device, model.device)
+
 
         with torch.no_grad():
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)

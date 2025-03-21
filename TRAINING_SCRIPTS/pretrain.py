@@ -11,7 +11,7 @@ import yaml
 import wandb
 from huggingface_hub import HfApi
 
-config_file = "PRETRAIN_ARGSTTS-1b.yaml"
+config_file = "PRETRAIN_ARGS.yaml"
 
 with open(config_file, "r") as file:
     config = yaml.safe_load(file)
@@ -42,15 +42,12 @@ class BatchedRatioDataset(Dataset):
         self.dataset1 = dataset1
         self.dataset2 = dataset2
         self.batch_total = batch_total
-        self.ratio = ratio  # Number of batches from dataset1 per one batch from dataset2.
+        self.ratio = ratio  
 
-        # Determine the number of complete cycles we can support.
-        # A full cycle uses (ratio) batches from dataset1 and 1 batch from dataset2.
         num_cycles_ds1 = len(dataset1) // (batch_total * ratio)
         num_cycles_ds2 = len(dataset2) // batch_total
         self.num_cycles = min(num_cycles_ds1, num_cycles_ds2)
 
-        # Total number of samples: number of cycles * (number of batches per cycle) * batch_total.
         self.length = self.num_cycles * (ratio + 1) * batch_total
 
     def __len__(self):
@@ -64,11 +61,8 @@ class BatchedRatioDataset(Dataset):
         pos_in_cycle = index % cycle_length
 
         if pos_in_cycle < self.ratio * self.batch_total:
-            # We are in one of the batches from dataset1.
-            # Determine which batch in this cycle and the sample's position within the batch.
             batch_in_cycle = pos_in_cycle // self.batch_total
             sample_in_batch = pos_in_cycle % self.batch_total
-            # Calculate the corresponding index in dataset1.
             ds1_index = cycle * self.ratio * self.batch_total + batch_in_cycle * self.batch_total + sample_in_batch
             return self.dataset1[ds1_index]
         else:
@@ -95,8 +89,7 @@ class FSDPTrainer(Trainer):
         super().__init__(*args, **kwargs)
         self.repo_id = base_repo_id
         self.api = HfApi()
-        # log_ratio determines the number of steps that log "text_loss"
-        # before logging "audio_loss" once.
+
         self.log_ratio = log_ratio
         self.text_step  = 0
         self.audio_step = 0
@@ -142,9 +135,6 @@ class FSDPTrainer(Trainer):
         with FSDP.state_dict_type(self.model, StateDictType.FULL_STATE_DICT, save_policy):
             cpu_state_dict = self.model.state_dict()
         self.model.save_pretrained(output_dir, state_dict=cpu_state_dict)
-
-
-
 
 
 def data_collator(features):
@@ -198,7 +188,7 @@ training_args = TrainingArguments(
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
     logging_steps=1,
-    fp16=True,
+    bf16=True,
     output_dir=f"./{base_repo_id}",
     fsdp="auto_wrap",
     report_to="wandb",

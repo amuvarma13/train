@@ -3,6 +3,10 @@ import torch.nn.functional as F
 from torch.utils.data import Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
 from datasets import load_dataset
+import wandb
+
+wandb.init(project="distilling-3b-dev", name="r0")
+
 
 teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"
 student_model_name = "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
@@ -11,7 +15,7 @@ teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name)
 teacher.eval()  # Freeze teacher parameters
 
 student = AutoModelForCausalLM.from_pretrained(student_model_name)
-student.resize_token_embeddings(teacher.config.vocab_size)  # Resize student embeddings to match teacher's vocabulary size
+teacher.resize_token_embeddings(student.config.vocab_size)  # Resize student embeddings to match teacher's vocabulary size
 
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
 pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
@@ -53,8 +57,6 @@ class DistillationTrainer(Trainer):
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
             teacher_logits = teacher_outputs.logits
 
-            print(teacher_logits.shape)
-
 
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits
@@ -88,6 +90,7 @@ trainer = DistillationTrainer(
     model=student,
     args=training_args,
     train_dataset=dataset,
+    report_to="wandb",
 )
 
 trainer.train()

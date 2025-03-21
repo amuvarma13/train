@@ -40,7 +40,7 @@ dataset = PreTokenizedDataset(raw_dataset, pad_token_id)
 
 # Define a custom Trainer by subclassing the Hugging Face Trainer
 class DistillationTrainer(Trainer):
-    def compute_loss(self, model, inputs, return_outputs=False):
+    def compute_loss(self, model, inputs, **kwargs):
         input_ids = inputs["input_ids"]
         attention_mask = inputs["attention_mask"]
 
@@ -66,8 +66,7 @@ class DistillationTrainer(Trainer):
         ) * (temperature ** 2)
 
         loss = kd_loss
-
-        return (loss, student_outputs) if return_outputs else loss
+        return loss
 
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(

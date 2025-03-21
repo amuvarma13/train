@@ -84,7 +84,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_steps=10000,
     report_to="wandb",
-    learning_rate=5e-6,
+    learning_rate=5e-4,
 )
 
 # Instantiate the custom trainer.

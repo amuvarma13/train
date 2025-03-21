@@ -15,7 +15,7 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "1b-8va-tune-fullprec"
+project_name: "new-1b-tune"
 run_name: "1b-reg-tune-nowa-5e5-b4-2"
 
 resize_dataset: false

@@ -15,7 +15,6 @@ student = AutoModelForCausalLM.from_pretrained(student_model_name)
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
 pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
 
-
 raw_dataset = load_dataset("amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS", split="train")
 
 class PreTokenizedDataset(Dataset):
@@ -39,35 +38,36 @@ class PreTokenizedDataset(Dataset):
 
 dataset = PreTokenizedDataset(raw_dataset, pad_token_id)
 
-# Custom loss function that trains the student solely on teacher outputs.
-def compute_loss(model, inputs, return_outputs=False):
-    input_ids = inputs["input_ids"]
-    attention_mask = inputs["attention_mask"]
+# Define a custom Trainer by subclassing the Hugging Face Trainer
+class DistillationTrainer(Trainer):
+    def compute_loss(self, model, inputs, return_outputs=False):
+        input_ids = inputs["input_ids"]
+        attention_mask = inputs["attention_mask"]
 
-    # Get teacher logits without gradient computation.
-    with torch.no_grad():
-        teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
-        teacher_logits = teacher_outputs.logits
+        # Get teacher logits without gradient computation.
+        with torch.no_grad():
+            teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
+            teacher_logits = teacher_outputs.logits
 
-    # Get student logits.
-    student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-    student_logits = student_outputs.logits
+        # Get student logits.
+        student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
+        student_logits = student_outputs.logits
 
-    # Temperature scaling.
-    temperature = 2.0
-    student_logits_temp = student_logits / temperature
-    teacher_logits_temp = teacher_logits / temperature
+        # Temperature scaling.
+        temperature = 2.0
+        student_logits_temp = student_logits / temperature
+        teacher_logits_temp = teacher_logits / temperature
 
-    # Compute KL divergence loss between teacher and student distributions.
-    kd_loss = F.kl_div(
-        F.log_softmax(student_logits_temp, dim=-1),
-        F.softmax(teacher_logits_temp, dim=-1),
-        reduction="batchmean",
-    ) * (temperature ** 2)
+        # Compute KL divergence loss between teacher and student distributions.
+        kd_loss = F.kl_div(
+            F.log_softmax(student_logits_temp, dim=-1),
+            F.softmax(teacher_logits_temp, dim=-1),
+            reduction="batchmean",
+        ) * (temperature ** 2)
 
-    loss = kd_loss
+        loss = kd_loss
 
-    return (loss, student_outputs) if return_outputs else loss
+        return (loss, student_outputs) if return_outputs else loss
 
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(
@@ -76,15 +76,13 @@ training_args = TrainingArguments(
     per_device_train_batch_size=1,  # Batch size of 1 as required.
     logging_steps=1,
     save_steps=50,
-    # weight_decay=0.01,
 )
 
-# Create the Trainer with the custom loss function.
-trainer = Trainer(
+# Instantiate the custom trainer.
+trainer = DistillationTrainer(
     model=student,
     args=training_args,
     train_dataset=dataset,
-    compute_loss=compute_loss,
 )
 
 trainer.train()

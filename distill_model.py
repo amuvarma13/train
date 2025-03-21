@@ -2,52 +2,63 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
+from datasets import load_dataset
 
-teacher_model_name = "big-model"
-student_model_name = "small-model"
+teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"
+student_model_name = "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
 teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name)
-teacher.eval() 
+teacher.eval()  # Freeze teacher parameters
 
 student = AutoModelForCausalLM.from_pretrained(student_model_name)
 
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
+pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
 
-class TextDataset(Dataset):
-    def __init__(self, texts, tokenizer, max_length=128):
-        self.encodings = tokenizer(texts, truncation=True, padding="max_length", max_length=max_length)
+
+raw_dataset = load_dataset("amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS", split="train")
+
+class PreTokenizedDataset(Dataset):
+    def __init__(self, hf_dataset, pad_token_id, label_from_input_ids=True):
+        self.input_ids = hf_dataset["input_ids"]
+        self.pad_token_id = pad_token_id
+        self.label_from_input_ids = label_from_input_ids
 
     def __getitem__(self, idx):
-        return {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
+        input_ids = torch.tensor(self.input_ids[idx])
+        attention_mask = (input_ids != self.pad_token_id).long()
+        labels = input_ids.clone() if self.label_from_input_ids else None
+        return {
+            "input_ids": input_ids,
+            "attention_mask": attention_mask,
+            "labels": labels,
+        }
 
     def __len__(self):
-        return len(self.encodings["input_ids"])
+        return len(self.input_ids)
 
-# Example texts; replace these with your actual dataset.
-texts = [
-    "Hello, how are you?",
-    "This is an example sentence for distillation.",
-    "Knowledge distillation transfers teacher behavior into a smaller model."
-]
-dataset = TextDataset(texts, tokenizer)
+dataset = PreTokenizedDataset(raw_dataset, pad_token_id)
 
 # Custom loss function that trains the student solely on teacher outputs.
 def compute_loss(model, inputs, return_outputs=False):
     input_ids = inputs["input_ids"]
-    attention_mask = inputs.get("attention_mask")
+    attention_mask = inputs["attention_mask"]
 
+    # Get teacher logits without gradient computation.
     with torch.no_grad():
         teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
         teacher_logits = teacher_outputs.logits
 
+    # Get student logits.
     student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
     student_logits = student_outputs.logits
 
-    # Temperature scaling
+    # Temperature scaling.
     temperature = 2.0
     student_logits_temp = student_logits / temperature
     teacher_logits_temp = teacher_logits / temperature
 
+    # Compute KL divergence loss between teacher and student distributions.
     kd_loss = F.kl_div(
         F.log_softmax(student_logits_temp, dim=-1),
         F.softmax(teacher_logits_temp, dim=-1),
@@ -58,17 +69,17 @@ def compute_loss(model, inputs, return_outputs=False):
 
     return (loss, student_outputs) if return_outputs else loss
 
-# Define training arguments for the Trainer
+# Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(
     output_dir="./results",
     num_train_epochs=3,
-    per_device_train_batch_size=2,
+    per_device_train_batch_size=1,  # Batch size of 1 as required.
     logging_steps=1,
     save_steps=50,
     weight_decay=0.01,
 )
 
-# Create the Trainer with the custom loss function
+# Create the Trainer with the custom loss function.
 trainer = Trainer(
     model=student,
     args=training_args,
@@ -76,5 +87,4 @@ trainer = Trainer(
     compute_loss=compute_loss,
 )
 
-# Start the distillation training process
 trainer.train()

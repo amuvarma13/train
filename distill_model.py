@@ -11,6 +11,7 @@ teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name)
 teacher.eval()  # Freeze teacher parameters
 
 student = AutoModelForCausalLM.from_pretrained(student_model_name)
+student.resize_token_embeddings(teacher.config.vocab_size)  # Resize student embeddings to match teacher's vocabulary size
 
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
 pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0

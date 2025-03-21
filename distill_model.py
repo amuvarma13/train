@@ -41,24 +41,21 @@ dataset = PreTokenizedDataset(raw_dataset, pad_token_id)
 # Define a custom Trainer by subclassing the Hugging Face Trainer
 class DistillationTrainer(Trainer):
     def compute_loss(self, model, inputs, **kwargs):
-        input_ids = inputs["input_ids"]
-        attention_mask = inputs["attention_mask"]
+        device = model.device
+        input_ids = inputs["input_ids"].to(device)
+        attention_mask = inputs["attention_mask"].to(device)
 
-        # Get teacher logits without gradient computation.
         with torch.no_grad():
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
             teacher_logits = teacher_outputs.logits
 
-        # Get student logits.
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits
 
-        # Temperature scaling.
         temperature = 2.0
         student_logits_temp = student_logits / temperature
         teacher_logits_temp = teacher_logits / temperature
 
-        # Compute KL divergence loss between teacher and student distributions.
         kd_loss = F.kl_div(
             F.log_softmax(student_logits_temp, dim=-1),
             F.softmax(teacher_logits_temp, dim=-1),

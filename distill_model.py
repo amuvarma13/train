@@ -83,6 +83,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=1,  # Batch size of 1 as required.
     logging_steps=1,
     save_steps=10000,
+    report_to="wandb",
 )
 
 # Instantiate the custom trainer.
@@ -90,7 +91,7 @@ trainer = DistillationTrainer(
     model=student,
     args=training_args,
     train_dataset=dataset,
-    report_to="wandb",
+
 )
 
 trainer.train()

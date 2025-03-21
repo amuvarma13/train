@@ -1,17 +1,17 @@
 # Model
-model_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806" 
-tokenizer_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806"
+model_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493" 
+tokenizer_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 1
+number_processes: 4
 pad_token: 128263
 save_steps: 5000
 learning_rate: 5.0e-5
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-splits-audio-leo-24k-TTS-smol"
+TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS"
 
 # Naming and paths
 save_folder: "checkpoints"

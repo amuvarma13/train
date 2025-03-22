@@ -5,7 +5,7 @@ tokenizer_name: "amuvarma/1b-extended_training-checkpoint-84000"
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 2
+number_processes: 4
 pad_token: 128263
 save_steps: 5000
 learning_rate: 5.0e-5
@@ -16,6 +16,6 @@ TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-24k-notnormalised-dedup-TTS"
 # Naming and paths
 save_folder: "checkpoints"
 project_name: "new-1b-tune"
-run_name: "1b-reg-tune-nowa-5e5-b4-2"
+run_name: "84000-5e5"
 
 resize_dataset: false

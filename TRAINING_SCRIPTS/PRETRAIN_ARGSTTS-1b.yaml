@@ -1,7 +1,7 @@
 # Model
-model_name: "canopylabs/orpheus-tts-0.1-pretrained" 
+model_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493" 
 # model_name: "checkpoints/checkpoint-671"
-tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
+tokenizer_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
 # Training Args
 epochs: 1
@@ -13,7 +13,7 @@ learning_rate: 5.0e-6
 
 
 # Datasets
-TTS_dataset: "amuvarma/multilingual-pretrain_1-8192"
+TTS_dataset: "amuvarma/em-EN-TTS-full-8192"
 
 # Naming and paths
 save_folder: "checkpoints"

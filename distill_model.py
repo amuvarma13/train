@@ -87,6 +87,7 @@ training_args = TrainingArguments(
     report_to="wandb",
     learning_rate=5e-5,
     bf16=True,
+    fsdp = "auto_wrap",
 )
 
 # Instantiate the custom trainer.

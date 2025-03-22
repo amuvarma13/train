@@ -1,21 +1,21 @@
 # Model
-model_name: "amuvarma/360m-tts-tune-checkpoint-112806-of-112806" 
+model_name: "canopylabs/orpheus-tts-0.1-pretrained" 
 # model_name: "checkpoints/checkpoint-671"
-tokenizer_name: "HuggingFaceTB/SmolLM2-360M-Instruct"
+tokenizer_name: "canopylabs/orpheus-tts-0.1-pretrained"
 
 # Training Args
 epochs: 1
 batch_size: 1
-number_processes: 1
-pad_token: 0
+number_processes: 8
+pad_token: 128263
 save_steps: 12000
-learning_rate: 5.0e-5
+learning_rate: 5.0e-6
 
 
 # Datasets
-TTS_dataset: "amuvarma/voice-actors-13-full-audio3k-16k-smol-TTS"
+TTS_dataset: "amuvarma/multilingual-pretrain_1-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "400m-tune-dedups"
-run_name: "r0-5e4-all-og-16"
+project_name: "multilingual-extended-train"
+run_name: "r0-5e6"

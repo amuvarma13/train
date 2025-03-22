@@ -18,4 +18,4 @@ save_folder: "checkpoints"
 project_name: "new-1b-tune"
 run_name: "84000-5e5"
 
-resize_dataset: false
+resize_dataset: false 

@@ -133,7 +133,7 @@ training_args = TrainingArguments(
     learning_rate=learning_rate,
     lr_scheduler_type="cosine", 
     fsdp = "auto_wrap",
-    # warmup_steps=1000,
+    warmup_steps=3000,
 )
 
 

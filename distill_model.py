@@ -77,16 +77,22 @@ class DistillationTrainer(Trainer):
         ) * (temperature ** 2)
 
         # Compute standard cross entropy losses.
+        # Shift logits and labels for next-token prediction.
+        shift_student_logits = student_logits[:, :-1, :].contiguous()
+        shift_teacher_logits = teacher_logits[:, :-1, :].contiguous()
+        shift_labels = input_ids[:, 1:].contiguous()
+
         student_ce_loss = F.cross_entropy(
-            student_logits.view(-1, student_logits.size(-1)),
-            input_ids.view(-1),
+            shift_student_logits.view(-1, shift_student_logits.size(-1)),
+            shift_labels.view(-1),
             ignore_index=pad_token_id
         )
         teacher_ce_loss = F.cross_entropy(
-            teacher_logits.view(-1, teacher_logits.size(-1)),
-            input_ids.view(-1),
+            shift_teacher_logits.view(-1, shift_teacher_logits.size(-1)),
+            shift_labels.view(-1),
             ignore_index=pad_token_id
         )
+
 
         # Log the losses to WandB.
         wandb.log({

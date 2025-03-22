@@ -95,6 +95,8 @@ class DistillationTrainer(Trainer):
 
 
         # Log the losses to WandB.
+        # print the device id to see if it is working
+        print(f"device id: {device}")
         wandb.log({
             "kd_loss": kd_loss.item(),
             "student_ce_loss": student_ce_loss.item(),

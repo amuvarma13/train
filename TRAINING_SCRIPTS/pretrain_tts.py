@@ -10,6 +10,7 @@ from torch.utils.data.distributed import DistributedSampler
 import yaml
 import wandb
 from huggingface_hub import HfApi
+from huggingface_hub import snapshot_download
 
 config_file = "PRETRAIN_ARGSTTS-1b.yaml"
 
@@ -32,6 +33,13 @@ save_steps = config["save_steps"]
 pad_token = config["pad_token"]
 number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
+
+snapshot_download(
+    repo_id=dsn1,
+    repo_type="dataset",   
+    revision="main",        
+    max_workers=8,     
+) 
 
 ds1 = load_dataset(dsn1, split="train")
 ds1 = ds1.shuffle(seed=42).shuffle(seed=42)

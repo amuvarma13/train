@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingA
 from datasets import load_dataset
 import wandb
 
-wandb.init(project="distilling-3b-dev-wxe", name="r0-5e5")
+wandb.init(project="distilling-3b-dev-wxe-deb", name="r0-5e5")
 
 teacher_model_name = "canopylabs/orpheus-3b-0.1-pretrained"
 student_model_name = "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
@@ -96,12 +96,12 @@ class DistillationTrainer(Trainer):
 
         # Log the losses to WandB.
         # print the device id to see if it is working
-        print(f"device id: {device}")
-        wandb.log({
-            "kd_loss": kd_loss.item(),
-            "student_ce_loss": student_ce_loss.item(),
-            "teacher_ce_loss": teacher_ce_loss.item()
-        })
+        if device == torch.device("cuda", 0):
+            wandb.log({
+                "kd_loss": kd_loss.item(),
+                "student_ce_loss": student_ce_loss.item(),
+                "teacher_ce_loss": teacher_ce_loss.item()
+            })
 
         return kd_loss
 

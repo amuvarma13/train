@@ -33,7 +33,8 @@ pad_token = config["pad_token"]
 number_processes = config["number_processes"]
 learning_rate = config["learning_rate"]
 
-
+ds1 = load_dataset(dsn1, split="train")
+ds1 = ds1.shuffle(seed=42).shuffle(seed=42)
 
 class FSDPTrainer(Trainer):
     def __init__(self, *args, **kwargs):
@@ -106,8 +107,7 @@ tokenizer.add_tokens(new_tokens)
 model.resize_token_embeddings(len(tokenizer))
 
 
-ds1 = load_dataset(dsn1, split="train")
-ds1 = ds1.shuffle(seed=42).shuffle(seed=42)
+
 
 batch_total = batch_size * number_processes
 

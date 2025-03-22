@@ -64,7 +64,7 @@ class DistillationTrainer(Trainer):
 
 
 
-        temperature = 64.0
+        temperature = 2.0
         student_logits_temp = student_logits / temperature
         teacher_logits_temp = teacher_logits / temperature
 

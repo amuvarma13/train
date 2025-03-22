@@ -101,6 +101,8 @@ class DistillationTrainer(Trainer):
 
         return kd_loss
 
+
+print("initialized training args")
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(
     output_dir="./results",
@@ -113,6 +115,8 @@ training_args = TrainingArguments(
     bf16=True,
     fsdp="auto_wrap",
 )
+
+print("initialized trainer")
 
 # Instantiate the custom trainer.
 trainer = DistillationTrainer(

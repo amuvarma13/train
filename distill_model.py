@@ -21,6 +21,7 @@ tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
 pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
 
 raw_dataset = load_dataset("amuvarma/em-EN-TTS-full-8192", split="train")
+raw_dataset = raw_dataset.select(range(100))
 
 class PreTokenizedDataset(Dataset):
     def __init__(self, hf_dataset, pad_token_id, label_from_input_ids=True):

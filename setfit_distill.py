@@ -19,7 +19,7 @@ raw_dataset = load_dataset("amuvarma/em-EN-TTS-full-8192", split="train")
 
 
 distillation_args = TrainingArguments(
-    batch_size=16,
+    per_device_train_batch_size=16,
     max_steps=500,
 )
 

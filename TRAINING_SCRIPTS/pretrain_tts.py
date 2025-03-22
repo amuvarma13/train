@@ -123,7 +123,7 @@ training_args = TrainingArguments(
     overwrite_output_dir=True,
     num_train_epochs=epochs,
     per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,
+    # per_device_eval_batch_size=batch_size,
     logging_steps=1,
     bf16=True,
     output_dir=f"./{base_repo_id}",
@@ -146,4 +146,4 @@ trainer = Trainer(
     data_collator=data_collator,
 )
 
-trainer.evaluate()
+trainer.train()

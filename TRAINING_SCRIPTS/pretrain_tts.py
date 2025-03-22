@@ -70,7 +70,7 @@ def compute_metrics(eval_pred):
 
 
 def data_collator(features):
-    max_length = 3072
+    # max_length = 3072
     input_ids = [f["input_ids"] for f in features]
 
     if any("attention_mask" not in f for f in features):
@@ -133,7 +133,7 @@ training_args = TrainingArguments(
     learning_rate=learning_rate,
     lr_scheduler_type="cosine", 
     fsdp = "auto_wrap",
-    warmup_steps=3000,
+    # warmup_steps=3000,
 )
 
 
@@ -141,7 +141,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    eval_dataset=ds1,
+    train_dataset=ds1,
     compute_metrics=compute_metrics,
     data_collator=data_collator,
 )

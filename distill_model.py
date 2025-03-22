@@ -105,7 +105,7 @@ class DistillationTrainer(Trainer):
                 "kd_loss": kd_loss.item(),
                 "student_ce_loss": student_ce_loss.item(),
                 "teacher_ce_loss": teacher_ce_loss.item(), 
-                "ce-diff": student_ce_loss.item() - teacher_ce_loss.item()
+                "ce_diff": student_ce_loss.item() - teacher_ce_loss.item()
             })
 
         return kd_loss

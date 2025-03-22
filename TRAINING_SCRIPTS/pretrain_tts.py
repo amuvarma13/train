@@ -140,7 +140,7 @@ training_args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=ds1,
+    eval_dataset=ds1,
     compute_metrics=compute_metrics,
     data_collator=data_collator,
 )

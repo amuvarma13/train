@@ -17,5 +17,5 @@ TTS_dataset: "amuvarma/em-EN-TTS-full-8192"
 
 # Naming and paths
 save_folder: "checkpoints"
-project_name: "multilingual-extended-train"
-run_name: "r1-5e6"
+project_name: "1b-extended-pretrain"
+run_name: "r0-5e6"

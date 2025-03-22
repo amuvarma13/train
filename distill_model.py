@@ -29,14 +29,17 @@ raw_dataset = load_dataset("amuvarma/em-EN-TTS-full-8192", split="train")
 
 print("loaded dataset")
 
-class PreTokenizedDataset(Dataset):
+class LazyPreTokenizedDataset(Dataset):
     def __init__(self, hf_dataset, pad_token_id, label_from_input_ids=True):
-        self.input_ids = hf_dataset["input_ids"]
+        # Instead of copying the whole column, store the dataset reference.
+        self.hf_dataset = hf_dataset
         self.pad_token_id = pad_token_id
         self.label_from_input_ids = label_from_input_ids
 
     def __getitem__(self, idx):
-        input_ids = torch.tensor(self.input_ids[idx])
+        # Fetch the example on demand.
+        example = self.hf_dataset[idx]
+        input_ids = torch.tensor(example["input_ids"])
         attention_mask = (input_ids != self.pad_token_id).long()
         labels = input_ids.clone() if self.label_from_input_ids else None
         return {
@@ -46,9 +49,10 @@ class PreTokenizedDataset(Dataset):
         }
 
     def __len__(self):
-        return len(self.input_ids)
+        return len(self.hf_dataset)
 
-dataset = PreTokenizedDataset(raw_dataset, pad_token_id)
+
+dataset = LazyPreTokenizedDataset(raw_dataset, pad_token_id)
 
 # Define a custom Trainer by subclassing the Hugging Face Trainer
 class DistillationTrainer(Trainer):

@@ -1,6 +1,6 @@
 # Model
-model_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493" 
-tokenizer_name: "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
+model_name: "amuvarma/1b-extended_training-checkpoint-84000" 
+tokenizer_name: "amuvarma/1b-extended_training-checkpoint-84000"
 
 # Training Args
 epochs: 1

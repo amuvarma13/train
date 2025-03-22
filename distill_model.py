@@ -11,10 +11,10 @@ wandb.init(project="distilling-3b-dev", name="r0-5e5")
 teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"
 student_model_name = "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
-teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name)
+teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name, attn_implementation="flash_attention_2")
 teacher.eval()  # Freeze teacher parameters
 
-student = AutoModelForCausalLM.from_pretrained(student_model_name)
+student = AutoModelForCausalLM.from_pretrained(student_model_name, attn_implementation="flash_attention_2")
 teacher.resize_token_embeddings(student.config.vocab_size)  # Resize student embeddings to match teacher's vocabulary size
 
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)

@@ -49,51 +49,32 @@ class DistillationTrainer(Trainer):
         device = model.device
         input_ids = inputs["input_ids"].to(device)
         attention_mask = inputs["attention_mask"].to(device)
+        
+        teacher.to(student.device)
 
-        # Ensure teacher is on the correct device.
-        teacher.to(device)
 
-        # Compute teacher outputs (without gradients)
         with torch.no_grad():
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
             teacher_logits = teacher_outputs.logits
 
-        # Compute student outputs
+
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits
 
-        # Compute distillation (KD) loss with temperature scaling.
+
+
         temperature = 64.0
         student_logits_temp = student_logits / temperature
         teacher_logits_temp = teacher_logits / temperature
+
         kd_loss = F.kl_div(
             F.log_softmax(student_logits_temp, dim=-1),
             F.softmax(teacher_logits_temp, dim=-1),
             reduction="batchmean",
         ) * (temperature ** 2)
 
-        # Compute regular cross entropy losses.
-        # Flatten logits and labels to compute token-level CE.
-        student_ce_loss = F.cross_entropy(
-            student_logits.view(-1, student_logits.size(-1)),
-            input_ids.view(-1),
-            ignore_index=pad_token_id
-        )
-        teacher_ce_loss = F.cross_entropy(
-            teacher_logits.view(-1, teacher_logits.size(-1)),
-            input_ids.view(-1),
-            ignore_index=pad_token_id
-        )
-
-        # Log the metrics to WandB.
-        wandb.log({
-            "kd_loss": kd_loss.item(),
-            "student_ce_loss": student_ce_loss.item(),
-            "teacher_ce_loss": teacher_ce_loss.item()
-        })
-
-        return kd_loss
-
+        loss = kd_loss
+        return loss
 
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(

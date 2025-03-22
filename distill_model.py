@@ -7,15 +7,18 @@ import wandb
 
 wandb.init(project="distilling-3b-dev", name="r0-5e5")
 
-
 teacher_model_name = "canopylabs/orpheus-3b-0.1-ft"
 student_model_name = "amuvarma/1b-tts-pretrain-checkpoint-108493-of-108493"
 
-teacher = AutoModelForCausalLM.from_pretrained(teacher_model_name, attn_implementation="flash_attention_2").to(torch.bfloat16)
+teacher = AutoModelForCausalLM.from_pretrained(
+    teacher_model_name, attn_implementation="flash_attention_2"
+).to(torch.bfloat16)
 teacher.eval()  # Freeze teacher parameters
 
-student = AutoModelForCausalLM.from_pretrained(student_model_name, attn_implementation="flash_attention_2")
-teacher.resize_token_embeddings(student.config.vocab_size)  # Resize student embeddings to match teacher's vocabulary size
+student = AutoModelForCausalLM.from_pretrained(
+    student_model_name, attn_implementation="flash_attention_2"
+)
+teacher.resize_token_embeddings(student.config.vocab_size)  # Resize teacher embeddings to match student's vocabulary size
 
 tokenizer = AutoTokenizer.from_pretrained(teacher_model_name)
 pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else 0
@@ -51,18 +54,17 @@ class DistillationTrainer(Trainer):
         input_ids = inputs["input_ids"].to(device)
         attention_mask = inputs["attention_mask"].to(device)
         
-        teacher.to(student.device)
+        # Ensure the teacher is on the same device as the student/model.
+        teacher.to(device)
 
-
+        # Compute teacher outputs (without gradients).
         with torch.no_grad():
             teacher_outputs = teacher(input_ids=input_ids, attention_mask=attention_mask)
             teacher_logits = teacher_outputs.logits
 
-
+        # Compute student outputs.
         student_outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         student_logits = student_outputs.logits
-
-
 
         temperature = 2.0
         student_logits_temp = student_logits / temperature
@@ -74,8 +76,26 @@ class DistillationTrainer(Trainer):
             reduction="batchmean",
         ) * (temperature ** 2)
 
-        loss = kd_loss
-        return loss
+        # Compute standard cross entropy losses.
+        student_ce_loss = F.cross_entropy(
+            student_logits.view(-1, student_logits.size(-1)),
+            input_ids.view(-1),
+            ignore_index=pad_token_id
+        )
+        teacher_ce_loss = F.cross_entropy(
+            teacher_logits.view(-1, teacher_logits.size(-1)),
+            input_ids.view(-1),
+            ignore_index=pad_token_id
+        )
+
+        # Log the losses to WandB.
+        wandb.log({
+            "kd_loss": kd_loss.item(),
+            "student_ce_loss": student_ce_loss.item(),
+            "teacher_ce_loss": teacher_ce_loss.item()
+        })
+
+        return kd_loss
 
 # Define training arguments with a per-device batch size of 1.
 training_args = TrainingArguments(
@@ -87,7 +107,7 @@ training_args = TrainingArguments(
     report_to="wandb",
     learning_rate=5e-5,
     bf16=True,
-    fsdp = "auto_wrap",
+    fsdp="auto_wrap",
 )
 
 # Instantiate the custom trainer.
@@ -95,7 +115,6 @@ trainer = DistillationTrainer(
     model=student,
     args=training_args,
     train_dataset=dataset,
-
 )
 
 trainer.train()
